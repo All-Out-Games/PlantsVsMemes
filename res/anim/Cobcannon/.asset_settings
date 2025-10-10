@@ -1,0 +1,14 @@
+[
+  {
+    "id": "anim/Cobcannon/Cobcannon_Projectile/Cobcannon_Projectile.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "anim/Cobcannon/Cobcannon.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  }
+]

@@ -1,0 +1,6 @@
+Starfruit_Projectile.png
+	size: 64, 60
+	filter: Linear, Linear
+	scale: 0.5
+starfruit_star
+	bounds: 3, 3, 56, 53

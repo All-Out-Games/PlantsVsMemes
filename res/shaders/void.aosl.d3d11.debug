@@ -1,0 +1,212 @@
+HLSL:
+Vertex Shader:
+cbuffer user_input: register(b1) {
+float tintStrength;
+float shadowBoost;
+float paletteBlackPoint;
+float paletteWhitePoint;
+float paletteGamma;
+float2 voidTiling;
+float2 voidScroll;
+float voidRotation;
+float2 voidScreenTiling;
+float distortStrength;
+float distortScale;
+float outlineLow;
+float outlineHigh;
+float outlineDarken;
+float outlineLumaMin;
+float outlineLumaMax;
+};
+
+#define MATRIX_TEXTURE_PROVIDED
+
+struct vs_in {
+    float2 pos: POS;
+    float2 uv: UV;
+    float2 uv2: UV1;
+    float4 color: COLOR;
+    int matrix_index: MATRIX_INDEX;
+};
+
+
+cbuffer params: register(b0) {
+    float4x4 mvp;
+    float4 resolution_time;
+    int matrix_image_size;
+};
+#define FLIP_IF_GL(y) do { } while (0);
+
+Texture2D<float4> matrices: register(t0);
+sampler matrices_smp: register(s0);
+
+#ifdef MATRIX_TEXTURE_PROVIDED
+int3 create_pixel_coord(int index) {
+    int x = index % matrix_image_size;
+    int y = index / matrix_image_size;
+    return int3(x, y, 0);
+}
+float4x4 final_mvp(vs_in inp) {
+    float4 _0 = matrices.Load(create_pixel_coord(inp.matrix_index.x*4 + 0));
+    float4 _1 = matrices.Load(create_pixel_coord(inp.matrix_index.x*4 + 1));
+    float4 _2 = matrices.Load(create_pixel_coord(inp.matrix_index.x*4 + 2));
+    float4 _3 = matrices.Load(create_pixel_coord(inp.matrix_index.x*4 + 3));
+    float4x4 model_matrix = float4x4(_0, _1, _2, _3);
+    return mul(mvp, model_matrix);
+}
+#endif
+
+float4 bc7_correct_alpha(float4 color) {
+    // map 254 to 255. this is because bc7 is lossy in the alpha channel and an opaque pixel often outputs as 254 alpha.
+    if (color.a > 0.995f && color.a <= 1.0f) color.a = 1.0f;
+    return color;
+}
+
+struct vs_out {
+	float4 color: COLOR0;
+	float2 uv: UV;
+	float2 shadow_uv: TEXCOORD0;
+	float2 uv_unit: TEXCOORD1;
+	float4 pos: SV_Position;
+};
+vs_out vs_main(vs_in inp) {
+	vs_out outp;
+	outp.pos = mul(mvp, float4(inp.pos.xy, 0, 1.0f));
+	outp.uv = inp.uv;
+	outp.color = inp.color;
+	outp.shadow_uv = (outp.pos.xy + float2(1,1)) / 2;
+	outp.uv_unit = inp.uv2; // 0..1 quad UVs independent of atlas
+	return outp;
+}
+
+
+
+Fragment Shader:
+cbuffer user_input: register(b1) {
+float tintStrength;
+float shadowBoost;
+float paletteBlackPoint;
+float paletteWhitePoint;
+float paletteGamma;
+float2 voidTiling;
+float2 voidScroll;
+float voidRotation;
+float2 voidScreenTiling;
+float distortStrength;
+float distortScale;
+float outlineLow;
+float outlineHigh;
+float outlineDarken;
+float outlineLumaMin;
+float outlineLumaMax;
+};
+
+Texture2D<float4> albedo: register(t0);
+sampler albedo_smp: register(s0);
+Texture2D<float4> noise_texture: register(t1);
+sampler noise_texture_smp: register(s1);
+Texture2D<float4> void_texture: register(t2);
+sampler void_texture_smp: register(s2);
+
+#define MATRIX_TEXTURE_PROVIDED
+
+struct vs_in {
+    float2 pos: POS;
+    float2 uv: UV;
+    float2 uv2: UV1;
+    float4 color: COLOR;
+    int matrix_index: MATRIX_INDEX;
+};
+
+
+cbuffer params: register(b0) {
+    float4x4 mvp;
+    float4 resolution_time;
+    int matrix_image_size;
+};
+#define FLIP_IF_GL(y) do { } while (0);
+
+Texture2D<float4> matrices: register(t0);
+sampler matrices_smp: register(s0);
+
+#ifdef MATRIX_TEXTURE_PROVIDED
+int3 create_pixel_coord(int index) {
+    int x = index % matrix_image_size;
+    int y = index / matrix_image_size;
+    return int3(x, y, 0);
+}
+float4x4 final_mvp(vs_in inp) {
+    float4 _0 = matrices.Load(create_pixel_coord(inp.matrix_index.x*4 + 0));
+    float4 _1 = matrices.Load(create_pixel_coord(inp.matrix_index.x*4 + 1));
+    float4 _2 = matrices.Load(create_pixel_coord(inp.matrix_index.x*4 + 2));
+    float4 _3 = matrices.Load(create_pixel_coord(inp.matrix_index.x*4 + 3));
+    float4x4 model_matrix = float4x4(_0, _1, _2, _3);
+    return mul(mvp, model_matrix);
+}
+#endif
+
+float4 bc7_correct_alpha(float4 color) {
+    // map 254 to 255. this is because bc7 is lossy in the alpha channel and an opaque pixel often outputs as 254 alpha.
+    if (color.a > 0.995f && color.a <= 1.0f) color.a = 1.0f;
+    return color;
+}
+
+float noise(float2 p)
+{
+	float s = noise_texture.Sample(noise_texture_smp, float2(1.0f, 2.0f - 2.0f*cos(resolution_time.z))*resolution_time.z*20.0f + p).x;
+	s *= s;
+	return s;
+}
+
+float4 ps_main(float4 vtxColor: COLOR0, float2 uv: UV, float2 shadow_uv: TEXCOORD0, float2 uv_unit: TEXCOORD1): SV_Target0 {
+	float4 base = vtxColor * albedo.Sample(albedo_smp, uv);
+
+	// Basic luminance for optional outline shaping (can be disabled via outlineDarken=0)
+	float luma = dot(base.rgb, float3(0.299f, 0.587f, 0.114f));
+	float maxRGB = max(base.r, max(base.g, base.b));
+	float nonOutline = smoothstep(outlineLow, outlineHigh, maxRGB);
+
+	// Build transform for the void texture
+	float t = resolution_time.z;
+	// Choose mapping: screen-space if voidScreenTiling > 0, else sprite UVs (unit)
+	float2 uvBase = float2(shadow_uv.x, 1.0f - shadow_uv.y);
+	float useScreen = step(0.0f, (voidScreenTiling.x + voidScreenTiling.y));
+	float2 mapped = lerp(uv_unit, uvBase, useScreen);
+	float2 tiling = lerp(voidTiling, voidScreenTiling, useScreen);
+	// Aspect-correct rotation so image doesn't stretch
+	float aspect = max(0.0001f, resolution_time.x / max(1.0f, resolution_time.y));
+	float s = sin(voidRotation), c = cos(voidRotation);
+	float2 centered = mapped - 0.5f;
+	float2 corrected = float2(centered.x * aspect, centered.y);
+	float2x2 R = float2x2(c, -s, s, c);
+	float2 rotated = mul(R, corrected);
+	float2 uncorrected = float2(rotated.x / aspect, rotated.y);
+	float2 uvT = uncorrected * tiling + 0.5f + voidScroll * t;
+
+	// Distort UVs with animated noise for nebulous motion
+	float2 nuv = uvT * distortScale + float2(t*0.05f, -t*0.04f);
+	float2 warp = float2(noise(nuv + float2(1.3f, 2.1f)), noise(nuv + float2(-2.7f, 0.9f)));
+	warp = (warp - 0.5f) * 2.0f * distortStrength;
+	uvT = frac(uvT + warp); // wrap AFTER distortion for seamless tiling
+
+	// Sample void color texture
+	float3 voidCol = void_texture.Sample(void_texture_smp, uvT).rgb;
+
+	// Simple blend: mix nebula over base using tintStrength
+	float3 rgb = lerp(base.rgb, voidCol, saturate(tintStrength));
+
+	// (Optional) darken outlines; set outlineDarken=0 to disable
+	float outlineMask = 1.0f - nonOutline;
+	float edge = 1.0f - outlineMask;
+	float targetLuma = lerp(outlineLumaMin, outlineLumaMax, edge);
+	float3 outlineGray = float3(targetLuma, targetLuma, targetLuma);
+	rgb = lerp(rgb, outlineGray, outlineMask * saturate(outlineDarken));
+
+	// Premultiply and output
+	rgb = saturate(rgb);
+	rgb *= base.a;
+	return float4(rgb, base.a);
+}
+
+
+

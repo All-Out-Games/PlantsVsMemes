@@ -1,0 +1,30 @@
+Melonpult.png
+	size: 392, 96
+	filter: Linear, Linear
+	scale: 0.5
+MEyes
+	bounds: 308, 47, 43, 28
+	rotate: 90
+MFront
+	bounds: 223, 6, 84, 31
+	rotate: 90
+MLeafBL
+	bounds: 367, 57, 33, 22
+	rotate: 90
+MLeafBR
+	bounds: 339, 57, 33, 25
+	rotate: 90
+MSpring
+	bounds: 257, 34, 56, 28
+	rotate: 90
+MelonBody
+	bounds: 91, 3, 87, 63
+	rotate: 90
+MeloninCup
+	bounds: 3, 7, 85, 83
+cup
+	bounds: 157, 9, 81, 63
+	rotate: 90
+shadow
+	bounds: 287, 21, 69, 18
+	rotate: 90

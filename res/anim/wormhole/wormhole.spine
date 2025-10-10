@@ -1,0 +1,139 @@
+{
+"skeleton": { "hash": "OvSdcruIbj8", "spine": "4.0.64", "x": -89.5, "y": -89.5, "width": 179, "height": 179 },
+"bones": [
+	{ "name": "root" },
+	{ "name": "bone", "parent": "root", "scaleX": 0.9273, "scaleY": 0.9273 },
+	{ "name": "bone2", "parent": "root" }
+],
+"slots": [
+	{ "name": "wormhole_1", "bone": "bone2", "attachment": "wormhole_1" },
+	{ "name": "wormhole_black_1", "bone": "bone", "attachment": "wormhole_black_1" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"wormhole_1": {
+				"wormhole_1": { "width": 179, "height": 179 },
+				"wormhole_2": { "width": 179, "height": 179 },
+				"wormhole_3": { "width": 179, "height": 179 }
+			},
+			"wormhole_black_1": {
+				"wormhole_black_1": { "width": 137, "height": 137 },
+				"wormhole_black_2": { "width": 137, "height": 137 },
+				"wormhole_black_3": { "width": 137, "height": 137 }
+			}
+		}
+	}
+],
+"animations": {
+	"activate": {
+		"slots": {
+			"wormhole_1": {
+				"attachment": [
+					{ "time": 0.125, "name": "wormhole_2" },
+					{ "time": 0.25, "name": "wormhole_3" },
+					{ "time": 0.375, "name": "wormhole_1" },
+					{ "time": 0.5, "name": "wormhole_2" },
+					{ "time": 0.625, "name": "wormhole_3" }
+				]
+			},
+			"wormhole_black_1": {
+				"attachment": [
+					{ "time": 0.125, "name": "wormhole_black_2" },
+					{ "time": 0.25, "name": "wormhole_black_3" },
+					{ "time": 0.375, "name": "wormhole_black_1" },
+					{ "time": 0.5, "name": "wormhole_black_2" },
+					{ "time": 0.625, "name": "wormhole_black_3" }
+				]
+			}
+		},
+		"bones": {
+			"root": {
+				"scale": [
+					{
+						"time": 0.125,
+						"curve": [ 0.167, 1, 0.25, 0.631, 0.167, 1, 0.25, 0.516 ]
+					},
+					{
+						"time": 0.2917,
+						"x": 0.631,
+						"y": 0.516,
+						"curve": [ 0.333, 0.631, 0.375, 0.824, 0.333, 0.516, 0.377, 0.915 ]
+					},
+					{
+						"time": 0.4167,
+						"x": 0.991,
+						"y": 1.103,
+						"curve": [ 0.455, 1.142, 0.49, 1.456, 0.45, 1.26, 0.49, 1.378 ]
+					},
+					{
+						"time": 0.5417,
+						"x": 1.411,
+						"y": 1.333,
+						"curve": [ 0.641, 1.324, 0.639, 1, 0.641, 1.246, 0.639, 1 ]
+					},
+					{ "time": 0.75 }
+				]
+			},
+			"bone": {
+				"scale": [
+					{},
+					{ "time": 0.0833, "x": 1.088 },
+					{ "time": 0.3333, "y": 1.251 },
+					{ "time": 0.4167, "x": 1.262 },
+					{ "time": 0.625, "y": 1.088 },
+					{ "time": 0.75 }
+				]
+			}
+		}
+	},
+	"loop": {
+		"slots": {
+			"wormhole_1": {
+				"attachment": [
+					{ "time": 0.125, "name": "wormhole_2" },
+					{ "time": 0.25, "name": "wormhole_3" }
+				]
+			},
+			"wormhole_black_1": {
+				"attachment": [
+					{ "time": 0.125, "name": "wormhole_black_2" },
+					{ "time": 0.25, "name": "wormhole_black_3" }
+				]
+			}
+		},
+		"bones": {
+			"root": {
+				"scale": [
+					{
+						"curve": [ 0.042, 1, 0.083, 1.015, 0.042, 1, 0.083, 0.994 ]
+					},
+					{
+						"time": 0.125,
+						"x": 1.015,
+						"y": 0.994,
+						"curve": [ 0.181, 1.015, 0.236, 0.993, 0.181, 0.994, 0.236, 1.013 ]
+					},
+					{
+						"time": 0.2917,
+						"x": 0.993,
+						"y": 1.013,
+						"curve": [ 0.319, 0.993, 0.347, 1, 0.319, 1.013, 0.347, 1 ]
+					},
+					{ "time": 0.375 }
+				]
+			},
+			"bone": {
+				"scale": [
+					{ "x": 1.01, "y": 1.036 },
+					{ "time": 0.0417, "y": 1.048 },
+					{ "time": 0.125 },
+					{ "time": 0.25, "x": 1.042 },
+					{ "time": 0.375, "x": 1.01, "y": 1.036 }
+				]
+			}
+		}
+	}
+}
+}

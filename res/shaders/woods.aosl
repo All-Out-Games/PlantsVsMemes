@@ -1,0 +1,65 @@
+!!inputs {
+    texture albedo ALBEDO
+    texture leavesTex
+    float2 leavesTiling
+    float2 leavesScroll
+    float leavesStrength
+    float4 leavesTint
+    float darkLow
+    float darkHigh
+    float whiteLow
+    float whiteHigh
+}
+
+!!pipeline {
+    Pixel_Format: RGBA8
+    Blend_Enabled: true
+    Depth_Enabled: true
+    Blend_Src: ONE
+    Blend_Dst: ONE_MINUS_SRC_ALPHA
+    Blend_Op: ADD
+    Alpha_Blend_Src: ONE
+    Alpha_Blend_Dst: ONE
+    Alpha_Blend_Op: ADD
+    Blend_Color: (1, 1, 1, 1)
+}
+
+!!vs
+struct vs_out {
+    float4 color: COLOR0;
+    float2 uv: UV;
+    float4 pos: SV_Position;
+};
+vs_out vs_main(vs_in inp) {
+    vs_out outp;
+    outp.pos = mul(mvp, float4(inp.pos.xy, 0, 1.0f));
+    outp.uv = inp.uv;
+    outp.color = inp.color;
+    return outp;
+}
+
+!!ps
+
+float4 ps_main(float4 vtxColor: COLOR0, float2 uv: UV): SV_Target0 {
+    float4 base = vtxColor * albedo.Sample(albedo_smp, uv);
+    float t = resolution_time.z;
+
+    // Mask: apply on midtones only (exclude near-black outlines and near-white highlights)
+    float maxRGB = max(base.r, max(base.g, base.b));
+    float nonBlack = smoothstep(darkLow, darkHigh, maxRGB);
+    float notWhite = 1.0f - smoothstep(whiteLow, whiteHigh, maxRGB);
+    float mask = nonBlack * notWhite;
+
+    // Tileable leaves overlay
+    float2 luv = frac(uv * leavesTiling + leavesScroll * t);
+    float4 leaves = leavesTex.Sample(leavesTex_smp, luv) * leavesTint;
+    leaves.rgb *= leaves.a; // respect texture alpha
+
+    // Replace base color with leaves where mask applies (fully replacing when strength=1)
+    float s = saturate(leavesStrength) * mask;
+    float3 rgb = lerp(base.rgb, leaves.rgb, s);
+    rgb = saturate(rgb) * base.a;
+    return float4(rgb, base.a);
+}
+
+

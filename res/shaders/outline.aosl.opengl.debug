@@ -1,0 +1,114 @@
+GLSL
+Vertex Shader:
+#version 300 es
+precision highp float;
+precision highp int;
+
+struct type_params
+{
+    mat4 mvp;
+    vec4 resolution_time;
+    int matrix_image_size;
+};
+
+uniform type_params params;
+
+layout(location = 0) in vec2 in_var_POS;
+layout(location = 1) in vec2 in_var_UV;
+layout(location = 3) in vec4 in_var_COLOR;
+out vec4 VARYING_0;
+out vec2 VARYING_0_1;
+
+void main()
+{
+    VARYING_0 = in_var_COLOR;
+    VARYING_0_1 = in_var_UV;
+    gl_Position = vec4(in_var_POS, 0.0, 1.0) * params.mvp;
+}
+
+
+
+Fragment Shader:
+#version 300 es
+precision highp float;
+precision highp int;
+
+struct type_user_input
+{
+    vec4 outline_color;
+    float outline_thickness_px;
+    float outline_softness_px;
+    float alpha_threshold;
+};
+
+uniform type_user_input user_input;
+
+uniform highp sampler2D albedo;
+uniform highp sampler2D albedo_1;
+
+in vec4 VARYING_0;
+in vec2 VARYING_0_1;
+layout(location = 0) out vec4 out_var_SV_Target0;
+
+void main()
+{
+    vec4 _46 = VARYING_0 * texture(albedo, VARYING_0_1);
+    float _49 = isnan(user_input.outline_thickness_px) ? 0.0 : (isnan(0.0) ? user_input.outline_thickness_px : max(0.0, user_input.outline_thickness_px));
+    float _52 = isnan(user_input.outline_softness_px) ? 0.0 : (isnan(0.0) ? user_input.outline_softness_px : max(0.0, user_input.outline_softness_px));
+    float _55 = clamp(user_input.alpha_threshold, 0.0, 1.0);
+    uvec2 _56 = uvec2(textureSize(albedo_1, 0));
+    float _59 = float(_56.x);
+    float _61 = float(_56.y);
+    vec2 _64 = vec2(1.0) / vec2(isnan(_59) ? 1.0 : (isnan(1.0) ? _59 : max(1.0, _59)), isnan(_61) ? 1.0 : (isnan(1.0) ? _61 : max(1.0, _61)));
+    vec2 _66 = _64 * (isnan(_49) ? 1.0 : (isnan(1.0) ? _49 : max(1.0, _49)));
+    float _67 = _46.w;
+    float _68 = _66.x;
+    vec4 _72 = texture(albedo, VARYING_0_1 + vec2(_68, 0.0));
+    float _73 = _72.w;
+    float _74 = isnan(_73) ? 0.0 : (isnan(0.0) ? _73 : max(0.0, _73));
+    float _75 = -_68;
+    vec4 _79 = texture(albedo, VARYING_0_1 + vec2(_75, 0.0));
+    float _80 = _79.w;
+    float _81 = isnan(_80) ? _74 : (isnan(_74) ? _80 : max(_74, _80));
+    float _82 = _66.y;
+    vec4 _86 = texture(albedo, VARYING_0_1 + vec2(0.0, _82));
+    float _87 = _86.w;
+    float _88 = isnan(_87) ? _81 : (isnan(_81) ? _87 : max(_81, _87));
+    float _89 = -_82;
+    vec4 _93 = texture(albedo, VARYING_0_1 + vec2(0.0, _89));
+    float _94 = _93.w;
+    float _95 = isnan(_94) ? _88 : (isnan(_88) ? _94 : max(_88, _94));
+    vec4 _98 = texture(albedo, VARYING_0_1 + _66);
+    float _99 = _98.w;
+    float _100 = isnan(_99) ? _95 : (isnan(_95) ? _99 : max(_95, _99));
+    vec4 _104 = texture(albedo, VARYING_0_1 + vec2(_75, _82));
+    float _105 = _104.w;
+    float _106 = isnan(_105) ? _100 : (isnan(_100) ? _105 : max(_100, _105));
+    vec4 _110 = texture(albedo, VARYING_0_1 + vec2(_68, _89));
+    float _111 = _110.w;
+    float _112 = isnan(_111) ? _106 : (isnan(_106) ? _111 : max(_106, _111));
+    vec4 _116 = texture(albedo, VARYING_0_1 + vec2(_75, _89));
+    float _117 = _116.w;
+    float _118 = isnan(_117) ? _112 : (isnan(_112) ? _117 : max(_112, _117));
+    vec2 _119 = _66 * 0.5;
+    float _120 = _119.x;
+    vec4 _124 = texture(albedo, VARYING_0_1 + vec2(_120, 0.0));
+    float _125 = _124.w;
+    float _126 = isnan(_125) ? _118 : (isnan(_118) ? _125 : max(_118, _125));
+    vec4 _131 = texture(albedo, VARYING_0_1 + vec2(-_120, 0.0));
+    float _132 = _131.w;
+    float _133 = isnan(_132) ? _126 : (isnan(_126) ? _132 : max(_126, _132));
+    float _134 = _119.y;
+    vec4 _138 = texture(albedo, VARYING_0_1 + vec2(0.0, _134));
+    float _139 = _138.w;
+    float _140 = isnan(_139) ? _133 : (isnan(_133) ? _139 : max(_133, _139));
+    vec4 _145 = texture(albedo, VARYING_0_1 + vec2(0.0, -_134));
+    float _146 = _145.w;
+    float _149 = _64.x;
+    float _150 = _64.y;
+    float _153 = _55 + ((isnan(_52) ? 9.9999999747524270787835121154785e-07 : (isnan(9.9999999747524270787835121154785e-07) ? _52 : max(9.9999999747524270787835121154785e-07, _52))) / (isnan(_150) ? _149 : (isnan(_149) ? _150 : max(_149, _150))));
+    float _161 = user_input.outline_color.w * (smoothstep(_55, _153, isnan(_146) ? _140 : (isnan(_140) ? _146 : max(_140, _146))) * (1.0 - smoothstep(_55, _153, _67)));
+    float _162 = 1.0 - _67;
+    out_var_SV_Target0 = vec4((_46.xyz * _67) + ((user_input.outline_color.xyz * _161) * _162), clamp(_161 * _162 + _67, 0.0, 1.0));
+}
+

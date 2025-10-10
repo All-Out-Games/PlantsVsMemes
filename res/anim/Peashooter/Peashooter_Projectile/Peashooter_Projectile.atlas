@@ -1,0 +1,9 @@
+Peashooter_Projectile.png
+	size: 104, 56
+	filter: Linear, Linear
+	scale: 0.5
+pea
+	bounds: 3, 3, 49, 49
+pea_hit
+	bounds: 55, 7, 45, 43
+	rotate: 90

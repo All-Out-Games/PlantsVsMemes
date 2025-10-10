@@ -1,0 +1,117 @@
+!!inputs {
+	texture albedo ALBEDO
+	texture noise_texture NOISE
+	texture void_texture VOID // optional: nebula/gradient; acts as color source
+	// Tint and shading consistency
+	float tintStrength // 0..1, how strongly to apply the void color
+	float shadowBoost // extra tinting on dark bases
+	float paletteBlackPoint // for luma normalization
+	float paletteWhitePoint
+	float paletteGamma
+	// UV placement/animation of the void texture
+	float2 voidTiling // tiling multiplier in sprite UV space
+	float2 voidScroll // uv scroll speed (uv/sec)
+	float voidRotation // radians
+	float2 voidScreenTiling // screen-space tiling (repeats across screen)
+	// Noise-based distortion of the void texture
+	float distortStrength // uv warp amount
+	float distortScale // noise scale for warp
+	// (Starfield removed)
+	// Outline controls
+	float outlineLow
+	float outlineHigh
+	float outlineDarken
+	float outlineLumaMin
+	float outlineLumaMax
+}
+
+!!pipeline {
+	Pixel_Format: RGBA8_SRGB
+	Blend_Enabled: true
+	Depth_Enabled: true
+	Blend_Src: ONE
+	Blend_Dst: ONE_MINUS_SRC_ALPHA
+	Blend_Op: ADD
+	Alpha_Blend_Src: ONE
+	Alpha_Blend_Dst: ONE
+	Alpha_Blend_Op: ADD
+	Blend_Color: (1, 1, 1, 1)
+}
+
+!!vs
+struct vs_out {
+	float4 color: COLOR0;
+	float2 uv: UV;
+	float2 shadow_uv: TEXCOORD0;
+	float2 uv_unit: TEXCOORD1;
+	float4 pos: SV_Position;
+};
+vs_out vs_main(vs_in inp) {
+	vs_out outp;
+	outp.pos = mul(mvp, float4(inp.pos.xy, 0, 1.0f));
+	outp.uv = inp.uv;
+	outp.color = inp.color;
+	outp.shadow_uv = (outp.pos.xy + float2(1,1)) / 2;
+	outp.uv_unit = inp.uv2; // 0..1 quad UVs independent of atlas
+	return outp;
+}
+
+!!ps
+float noise(float2 p)
+{
+	float s = noise_texture.Sample(noise_texture_smp, float2(1.0f, 2.0f - 2.0f*cos(resolution_time.z))*resolution_time.z*20.0f + p).x;
+	s *= s;
+	return s;
+}
+
+float4 ps_main(float4 vtxColor: COLOR0, float2 uv: UV, float2 shadow_uv: TEXCOORD0, float2 uv_unit: TEXCOORD1): SV_Target0 {
+	float4 base = vtxColor * albedo.Sample(albedo_smp, uv);
+
+	// Basic luminance for optional outline shaping (can be disabled via outlineDarken=0)
+	float luma = dot(base.rgb, float3(0.299f, 0.587f, 0.114f));
+	float maxRGB = max(base.r, max(base.g, base.b));
+	float nonOutline = smoothstep(outlineLow, outlineHigh, maxRGB);
+
+	// Build transform for the void texture
+	float t = resolution_time.z;
+	// Choose mapping: screen-space if voidScreenTiling > 0, else sprite UVs (unit)
+	float2 uvBase = float2(shadow_uv.x, 1.0f - shadow_uv.y);
+	float useScreen = step(0.0f, (voidScreenTiling.x + voidScreenTiling.y));
+	float2 mapped = lerp(uv_unit, uvBase, useScreen);
+	float2 tiling = lerp(voidTiling, voidScreenTiling, useScreen);
+	// Aspect-correct rotation so image doesn't stretch
+	float aspect = max(0.0001f, resolution_time.x / max(1.0f, resolution_time.y));
+	float s = sin(voidRotation), c = cos(voidRotation);
+	float2 centered = mapped - 0.5f;
+	float2 corrected = float2(centered.x * aspect, centered.y);
+	float2x2 R = float2x2(c, -s, s, c);
+	float2 rotated = mul(R, corrected);
+	float2 uncorrected = float2(rotated.x / aspect, rotated.y);
+	float2 uvT = uncorrected * tiling + 0.5f + voidScroll * t;
+
+	// Distort UVs with animated noise for nebulous motion
+	float2 nuv = uvT * distortScale + float2(t*0.05f, -t*0.04f);
+	float2 warp = float2(noise(nuv + float2(1.3f, 2.1f)), noise(nuv + float2(-2.7f, 0.9f)));
+	warp = (warp - 0.5f) * 2.0f * distortStrength;
+	uvT = frac(uvT + warp); // wrap AFTER distortion for seamless tiling
+
+	// Sample void color texture
+	float3 voidCol = void_texture.Sample(void_texture_smp, uvT).rgb;
+
+	// Simple blend: mix nebula over base using tintStrength
+	float3 rgb = lerp(base.rgb, voidCol, saturate(tintStrength));
+
+	// (Optional) darken outlines; set outlineDarken=0 to disable
+	float outlineMask = 1.0f - nonOutline;
+	float edge = 1.0f - outlineMask;
+	float targetLuma = lerp(outlineLumaMin, outlineLumaMax, edge);
+	float3 outlineGray = float3(targetLuma, targetLuma, targetLuma);
+	rgb = lerp(rgb, outlineGray, outlineMask * saturate(outlineDarken));
+
+	// Premultiply and output
+	rgb = saturate(rgb);
+	rgb *= base.a;
+	return float4(rgb, base.a);
+}
+
+

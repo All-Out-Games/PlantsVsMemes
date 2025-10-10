@@ -1,0 +1,157 @@
+---
+alwaysApply: true
+---
+# Spine Reference
+We use Esoteric Spine to animate characters and objects. The Player component has a SpineAnimator property, for other objects get the Spine_Animator using Entity.GetComponent<Spine_Animator>()
+
+- Spine methods MUST run on the client or they will do nothing.
+- Never set the player's skeleton yourself. Player skeletons from the project are merged together automatically. 
+
+## Skins
+There is a tool to identify what what skins are available to you. This tool can be ran by executing `cd .cursor/spine-parser-tool; dotnet run ..\..\res\<rest_of_path.spine> skins` (DO NOT PIPE TO CAT) to get the skins names. NEVER assume you know the names of the skins.
+
+To set the skin for the SpineAnimator call `SpineInstance.EnableSkin("<skin_name>");`, then You MUST call `SpineInstance.RefreshSkins()`.
+
+## Crewchsia
+You can control the color of any spine rig including player's character with the .SetCrewchsia(int) method of the Spine Animator.
+Here are some example colors:
+Red(Index 0)
+Cyan(Index 1)
+Green(Index 2)
+Yellow(Index 3)
+Pink(Index 5)
+Black(Index 7)
+Purple(Index 8)
+White 1 (Index 18)
+
+## Some other commonly used spine methods
+```cs
+SpineInstance.Scale = new Vector2(2.4f, 2.4f);
+SpineInstance.Speed = 0.5f;
+SpineInstance.SetSkeleton(Assets.GetAsset<SpineSkeletonAsset>("INSERT PATH.spine"));
+```
+
+## Animations
+There is a tool to identify what what animations are available to you. This tool can be ran by executing `cd .cursor/spine-parser-tool; dotnet run ..\..\res\<rest_of_path.spine> animations` (DO NOT PIPE TO CAT) to get the animations names. NEVER assume you know the names of the animations.
+
+For simple animations you can call:
+`SpineAnimator.SpineInstance.SetAnimation("AnimationName", loop);`
+Prefer this unless you know you need to use the state machine (player/npc animations). Be careful to avoid calling SetAnimation every frame or it will never progress. 
+
+## State Machines
+The player has a SpineAnimator with a StateMachine created by default. If requested by the user you can add additional animations with animation names from the above tool. 
+
+```cs
+  // MyPlayer.cs
+  public static void SetupPlayerStateMachine()
+  {
+    // Will refer to the implictly created player state machine, which you can add to here. 
+    var sm = SpineAnimator.SpineInstance.StateMachine;
+
+    var aoLayer = sm.TryGetLayerByIndex(0);
+
+    var aoIdleState = aoLayer.TryGetStateByName("Idle");
+    var aoRunState = aoLayer.TryGetStateByName("Run_Fast");
+
+    var movingVar = sm.TryGetVariableByName("moving");
+
+    var use1hIk = sm.TryGetVariableByName("use_ik");
+    var use2hIk = sm.CreateVariable("use_2h_ik", StateMachineVariableKind.BOOLEAN);
+
+    var aimRun1hFast = aoLayer.CreateState("redsun/Run_Fast_mIK", 0, true);
+    var aimRun2hFast = aoLayer.CreateState("redsun/Run_Fast_mIK", 0, true);
+    var aimIdle1h = aoLayer.CreateState("redsun/Idle_mIK", 0, true);
+    var aimIdle2h = aoLayer.CreateState("redsun/Idle_mIK", 0, true);
+
+    //Entry
+    aoLayer.CreateGlobalTransition(aoIdleState, false).CreateTriggerCondition(sm.CreateVariable("cancel_all", StateMachineVariableKind.TRIGGER));
+    aoLayer.CreateTransition(aoIdleState, aimIdle1h, false).CreateBoolCondition(use1hIk, true);
+    aoLayer.CreateTransition(aoIdleState, aimIdle2h, false).CreateBoolCondition(use2hIk, true);
+    aoLayer.CreateTransition(aoRunState, aimRun1hFast, false).CreateBoolCondition(use1hIk, true);
+    aoLayer.CreateTransition(aoRunState, aimRun2hFast, false).CreateBoolCondition(use2hIk, true);
+    //Idle <-> Run
+    aoLayer.CreateTransition(aimRun1hFast, aimIdle1h, false).CreateBoolCondition(movingVar, false);
+    aoLayer.CreateTransition(aimIdle1h, aimRun1hFast, false).CreateBoolCondition(movingVar, true);
+    aoLayer.CreateTransition(aimRun2hFast, aimIdle2h, false).CreateBoolCondition(movingVar, false);
+    aoLayer.CreateTransition(aimIdle2h, aimRun2hFast, false).CreateBoolCondition(movingVar, true);
+    //Exit
+    aoLayer.CreateTransition(aimIdle1h, aoIdleState, false).CreateBoolCondition(use1hIk, false);
+    aoLayer.CreateTransition(aimIdle2h, aoIdleState, false).CreateBoolCondition(use2hIk, false);
+    aoLayer.CreateTransition(aimRun1hFast, aoRunState, false).CreateBoolCondition(use1hIk, false);
+    aoLayer.CreateTransition(aimRun2hFast, aoRunState, false).CreateBoolCondition(use2hIk, false);
+
+    var flinchState = aoLayer.CreateState("016ARP/Flinch", 0, false);
+    var deathState = aoLayer.CreateState("Death_No_HP", 0, false);
+
+    var spawnInState = aoLayer.CreateState("016ARP/Spawn_In", 0, false);
+    var wakeUpState = aoLayer.CreateState("016ARP/Wake_Up", 0, false);
+
+    var flinchTrigger = sm.CreateVariable("flinch", StateMachineVariableKind.TRIGGER);
+    var deathTrigger = sm.CreateVariable("death", StateMachineVariableKind.TRIGGER);
+    var spawnTrigger = sm.CreateVariable("spawn", StateMachineVariableKind.TRIGGER);
+
+    aoLayer.CreateGlobalTransition(aoIdleState, false).CreateTriggerCondition(sm.CreateVariable("cancel_all", StateMachineVariableKind.TRIGGER));
+    aoLayer.CreateGlobalTransition(flinchState).CreateTriggerCondition(flinchTrigger);
+    aoLayer.CreateTransition(flinchState, aoRunState, true);
+
+    aoLayer.CreateGlobalTransition(deathState).CreateTriggerCondition(deathTrigger);
+    aoLayer.CreateTransition(deathState, aoRunState, false);
+
+    aoLayer.CreateGlobalTransition(spawnInState).CreateTriggerCondition(spawnTrigger);
+    aoLayer.CreateTransition(spawnInState, aoRunState, true);
+
+    var sitState = aoLayer.CreateState("Emote/Sit_Down", 0, false);
+    var sitTrigger = sm.CreateVariable("sit", StateMachineVariableKind.TRIGGER);
+    aoLayer.CreateGlobalTransition(sitState).CreateTriggerCondition(sitTrigger);
+    aoLayer.CreateTransition(sitState, aoRunState, true);
+
+    // Additive Layer (used when you want to layer e.g. punching while walking)
+    var additiveLayer = sm.CreateLayer("additive_layer", 1);
+    var idleState = additiveLayer.CreateState("__CLEAR_TRACK__", 0, true);
+    additiveLayer.InitialState = idleState;
+
+    additiveLayer.CreateGlobalTransition(idleState, false).CreateTriggerCondition(sm.TryGetVariableByName("cancel_all"));
+    additiveLayer.AddSimpleTriggeredState("punch2", "016ARP/Punch_mIK_AL");
+    additiveLayer.AddSimpleTriggeredState("place_block", "Place_Block_AL");
+    additiveLayer.AddSimpleTriggeredState("flinch_big", "Flinch_Big");
+    additiveLayer.AddSimpleTriggeredState("handless", "Handless", false, true);
+
+    additiveLayer.AddSimpleTriggeredState("shoot_1h_weapon", "redsun/Shoot_Gun_mIK_AL");
+    additiveLayer.AddSimpleTriggeredState("shoot_2h_weapon", "redsun/Shoot_Gun_mIK_AL_twohands");
+
+    var dustOffState = additiveLayer.CreateState("Emote/Dust_Self_Off", 0, false);
+    var dustOffTrigger = sm.CreateVariable("dust_off", StateMachineVariableKind.TRIGGER);
+    additiveLayer.CreateGlobalTransition(dustOffState).CreateTriggerCondition(dustOffTrigger);
+    additiveLayer.CreateTransition(dustOffState, idleState, true);
+
+    additiveLayer.AddSimpleTriggeredState("attack_melee_1", "Attack_Melee_1");
+  }
+```
+
+For complex non-player SpineAnimators you can create your own state machine like so:
+```cs
+  public void SetupStateMachine()
+  {
+    var sm = StateMachine.Make();
+    SpineAnimator.SpineInstance.SetStateMachine(sm, Entity);
+
+    var gameLayer = SpineAnimator.SpineInstance.StateMachine.CreateLayer("game_layer", 10);
+    var empty = gameLayer.CreateState("__CLEAR_TRACK__", 0, true);
+
+    var idleState = gameLayer.CreateState("016ARP_Cop/Idle", 0, true);
+    var runState = gameLayer.CreateState("016ARP_Cop/Run", 0, true);
+    var chaseIdleState = gameLayer.CreateState("016ARP_Cop/Chase_Idle", 0, true);
+    var chaseRunState = gameLayer.CreateState("016ARP_Cop/Chase_Run", 0, true);
+
+    var movingBool = SpineAnimator.SpineInstance.StateMachine.CreateVariable("moving", StateMachineVariableKind.BOOLEAN);
+    var chasingBool = SpineAnimator.SpineInstance.StateMachine.CreateVariable("chasing", StateMachineVariableKind.BOOLEAN);
+
+    // Create transitions...
+
+    // Add states...
+
+    gameLayer.InitialState = idleState;
+  }
+```
+
+To have a spine animator be aware of the player's mouse/aiming direction use Player.SetMouseIKEnabled.

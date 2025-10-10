@@ -1,0 +1,68 @@
+{
+"skeleton": { "hash": "MojWC1AI6YI", "spine": "4.0.64" },
+"bones": [
+	{ "name": "root" },
+	{ "name": "cactus_spine", "parent": "root", "length": 175.82, "rotation": 0.91, "x": -16.74, "y": -3.5 }
+],
+"slots": [
+	{ "name": "cactus_spine", "bone": "cactus_spine", "attachment": "cactus_spine" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"cactus_spine": {
+				"cactus_spine": { "x": 43.04, "y": 1.18, "rotation": -0.91, "width": 141, "height": 77 },
+				"cactus_spine_hit": { "x": 19.6, "y": -2.18, "width": 127, "height": 112 }
+			}
+		}
+	}
+],
+"animations": {
+	"Projectile": {
+		"bones": {
+			"cactus_spine": {
+				"scale": [
+					{
+						"curve": [ 0.033, 1, 0.067, 1.308, 0.033, 1, 0.067, 0.832 ]
+					},
+					{
+						"time": 0.1,
+						"x": 1.308,
+						"y": 0.832,
+						"curve": [ 0.122, 1.308, 0.144, 1, 0.122, 0.832, 0.144, 1 ]
+					},
+					{ "time": 0.1667 }
+				]
+			}
+		}
+	},
+	"Projectile_Hit": {
+		"slots": {
+			"cactus_spine": {
+				"rgba": [
+					{
+						"time": 0.0667,
+						"color": "ffffffff",
+						"curve": [ 0.156, 1, 0.244, 1, 0.156, 1, 0.244, 1, 0.156, 1, 0.244, 1, 0.156, 0.33, 0.244, 0 ]
+					},
+					{ "time": 0.3333, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": "cactus_spine_hit" }
+				]
+			}
+		},
+		"bones": {
+			"cactus_spine": {
+				"scale": [
+					{
+						"curve": [ 0.111, 1.586, 0.222, 1.879, 0.111, 1.586, 0.222, 1.879 ]
+					},
+					{ "time": 0.3333, "x": 1.879, "y": 1.879 }
+				]
+			}
+		}
+	}
+}
+}

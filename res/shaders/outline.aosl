@@ -1,0 +1,83 @@
+!!inputs {
+    texture albedo ALBEDO
+    float4 outline_color // RGBA; A scales outline opacity
+    float outline_thickness_px // in source texture pixels (>= 0)
+    float outline_softness_px // edge softness in pixels (0 = hard)
+    float alpha_threshold // alpha considered as filled (0..1)
+}
+
+!!pipeline {
+    Pixel_Format: RGBA8_SRGB
+    Blend_Enabled: true
+    Depth_Enabled: true
+    Blend_Src: ONE
+    Blend_Dst: ONE_MINUS_SRC_ALPHA
+    Blend_Op: ADD
+    Alpha_Blend_Src: ONE
+    Alpha_Blend_Dst: ONE
+    Alpha_Blend_Op: ADD
+    Blend_Color: (1, 1, 1, 1)
+}
+
+!!vs
+struct vs_out {
+    float4 color: COLOR0;
+    float2 uv: UV;
+    float4 pos: SV_Position;
+};
+vs_out vs_main(vs_in inp) {
+    vs_out outp;
+    outp.pos = mul(mvp, float4(inp.pos.xy, 0, 1.0f));
+    outp.uv = inp.uv;
+    outp.color = inp.color;
+    return outp;
+}
+
+!!ps
+float4 ps_main(float4 vtxColor: COLOR0, float2 uv: UV): SV_Target0
+{
+    float4 base = vtxColor * albedo.Sample(albedo_smp, uv);
+
+    // Early out if no outline requested
+    float thickness = max(0.0f, outline_thickness_px);
+    float softness = max(0.0f, outline_softness_px);
+    float aThresh = saturate(alpha_threshold);
+
+    // Gather neighbor alpha using 8-direction ring at radius in pixels
+    uint iw, ih; albedo.GetDimensions(iw, ih);
+    float2 texel = 1.0f / float2(max(1.0f, (float)iw), max(1.0f, (float)ih));
+    float2 r = texel * max(1.0f, thickness);
+
+    float aC = base.a;
+    float aN = 0.0f;
+    aN = max(aN, albedo.Sample(albedo_smp, uv + float2( r.x,  0  )).a);
+    aN = max(aN, albedo.Sample(albedo_smp, uv + float2(-r.x,  0  )).a);
+    aN = max(aN, albedo.Sample(albedo_smp, uv + float2( 0  ,  r.y)).a);
+    aN = max(aN, albedo.Sample(albedo_smp, uv + float2( 0  , -r.y)).a);
+    aN = max(aN, albedo.Sample(albedo_smp, uv + float2( r.x,  r.y)).a);
+    aN = max(aN, albedo.Sample(albedo_smp, uv + float2(-r.x,  r.y)).a);
+    aN = max(aN, albedo.Sample(albedo_smp, uv + float2( r.x, -r.y)).a);
+    aN = max(aN, albedo.Sample(albedo_smp, uv + float2(-r.x, -r.y)).a);
+
+    // Optionally sample at half radius for thicker coverage
+    float2 rh = r * 0.5f;
+    aN = max(aN, albedo.Sample(albedo_smp, uv + float2( rh.x,  0  )).a);
+    aN = max(aN, albedo.Sample(albedo_smp, uv + float2(-rh.x,  0  )).a);
+    aN = max(aN, albedo.Sample(albedo_smp, uv + float2( 0  ,  rh.y)).a);
+    aN = max(aN, albedo.Sample(albedo_smp, uv + float2( 0  , -rh.y)).a);
+
+    // Outline exists where neighbors are filled but current pixel is not
+    float filledNeighbor = smoothstep(aThresh, aThresh + max(1e-6f, softness) / max(texel.x, texel.y), aN);
+    float unfilledHere = 1.0f - smoothstep(aThresh, aThresh + max(1e-6f, softness) / max(texel.x, texel.y), aC);
+    float outlineMask = filledNeighbor * unfilledHere;
+
+    float oAlpha = outline_color.a * outlineMask;
+
+    // Composite outline behind base using premultiplied alpha
+    float outA = saturate(aC + oAlpha * (1.0f - aC));
+    float3 outRGB = base.rgb * aC + outline_color.rgb * oAlpha * (1.0f - aC);
+
+    return float4(outRGB, outA);
+}
+
+

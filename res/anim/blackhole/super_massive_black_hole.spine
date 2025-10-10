@@ -1,0 +1,132 @@
+{
+"skeleton": { "hash": "tr/xnW72HQU", "spine": "4.0.64", "x": -1873.63, "y": -997.01, "width": 3683, "height": 2060 },
+"bones": [
+	{ "name": "root", "x": -4.57 },
+	{ "name": "bone", "parent": "root", "y": -25 }
+],
+"slots": [
+	{ "name": "black hole/back glow", "bone": "bone", "attachment": "supermassive black hole/back glow" },
+	{ "name": "black hole/black_hole_lower_glow", "bone": "bone", "attachment": "supermassive black hole/black_hole_lower_glow" },
+	{ "name": "black hole/black_hole_animation_low_1", "bone": "bone", "attachment": "supermassive black hole/black_hole_animation_low_1" },
+	{ "name": "black hole/black_hole", "bone": "bone", "attachment": "supermassive black hole/black_hole" },
+	{ "name": "black hole/black_hole_upper_glow", "bone": "bone", "attachment": "supermassive black hole/black_hole_upper_glow" },
+	{ "name": "black hole/black_hole_animation_top_1", "bone": "bone", "attachment": "supermassive black hole/black_hole_animation_top_1" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"black hole/back glow": {
+				"supermassive black hole/back glow": { "x": 8.94, "y": 57.99, "width": 2084, "height": 2060 }
+			},
+			"black hole/black_hole": {
+				"supermassive black hole/black_hole": { "x": 8.94, "y": 36.99, "width": 976, "height": 976 }
+			},
+			"black hole/black_hole_animation_low_1": {
+				"supermassive black hole/black_hole_animation_low_1": { "x": 129.94, "y": -269.51, "width": 1200, "height": 811 },
+				"supermassive black hole/black_hole_animation_low_2": { "x": 121.44, "y": -270.01, "width": 1215, "height": 812 },
+				"supermassive black hole/black_hole_animation_low_3": { "x": 114.94, "y": -273.51, "width": 1214, "height": 805 },
+				"supermassive black hole/black_hole_animation_low_4": { "x": 115.44, "y": -282.51, "width": 1229, "height": 787 },
+				"supermassive black hole/black_hole_animation_low_5": { "x": 115.94, "y": -270.51, "width": 1228, "height": 811 },
+				"supermassive black hole/black_hole_animation_low_6": { "x": 116.44, "y": -270.51, "width": 1229, "height": 811 }
+			},
+			"black hole/black_hole_animation_top_1": {
+				"supermassive black hole/black_hole_animation_top_1": { "x": -40.56, "y": 93.99, "width": 3087, "height": 1524 },
+				"supermassive black hole/black_hole_animation_top_2": { "x": -37.56, "y": 93.49, "width": 3095, "height": 1523 },
+				"supermassive black hole/black_hole_animation_top_3": { "x": -38.56, "y": 92.49, "width": 3095, "height": 1523 },
+				"supermassive black hole/black_hole_animation_top_4": { "x": -41.06, "y": 91.99, "width": 3102, "height": 1526 },
+				"supermassive black hole/black_hole_animation_top_5": { "x": -35.06, "y": 92.99, "width": 3082, "height": 1524 },
+				"supermassive black hole/black_hole_animation_top_6": { "x": -40.06, "y": 93.49, "width": 3088, "height": 1525 }
+			},
+			"black hole/black_hole_lower_glow": {
+				"supermassive black hole/black_hole_lower_glow": { "x": 77.44, "y": -252.01, "width": 1519, "height": 1078 }
+			},
+			"black hole/black_hole_upper_glow": {
+				"supermassive black hole/black_hole_upper_glow": { "x": -27.56, "y": 39.49, "width": 3683, "height": 1821 }
+			}
+		}
+	}
+],
+"animations": {
+	"loop": {
+		"slots": {
+			"black hole/black_hole_animation_low_1": {
+				"attachment": [
+					{ "time": 0.0667, "name": "supermassive black hole/black_hole_animation_low_2" },
+					{ "time": 0.1333, "name": "supermassive black hole/black_hole_animation_low_3" },
+					{ "time": 0.2, "name": "supermassive black hole/black_hole_animation_low_4" },
+					{ "time": 0.2667, "name": "supermassive black hole/black_hole_animation_low_5" },
+					{ "time": 0.3333, "name": "supermassive black hole/black_hole_animation_low_6" },
+					{ "time": 0.4, "name": "supermassive black hole/black_hole_animation_low_1" },
+					{ "time": 0.4667, "name": "supermassive black hole/black_hole_animation_low_2" },
+					{ "time": 0.5333, "name": "supermassive black hole/black_hole_animation_low_3" },
+					{ "time": 0.6, "name": "supermassive black hole/black_hole_animation_low_4" },
+					{ "time": 0.6667, "name": "supermassive black hole/black_hole_animation_low_5" },
+					{ "time": 0.7333, "name": "supermassive black hole/black_hole_animation_low_6" }
+				]
+			},
+			"black hole/black_hole_animation_top_1": {
+				"attachment": [
+					{ "time": 0.0667, "name": "supermassive black hole/black_hole_animation_top_2" },
+					{ "time": 0.1333, "name": "supermassive black hole/black_hole_animation_top_3" },
+					{ "time": 0.2, "name": "supermassive black hole/black_hole_animation_top_4" },
+					{ "time": 0.2667, "name": "supermassive black hole/black_hole_animation_top_5" },
+					{ "time": 0.3333, "name": "supermassive black hole/black_hole_animation_top_6" },
+					{ "time": 0.4, "name": "supermassive black hole/black_hole_animation_top_1" },
+					{ "time": 0.4667, "name": "supermassive black hole/black_hole_animation_top_2" },
+					{ "time": 0.5333, "name": "supermassive black hole/black_hole_animation_top_3" },
+					{ "time": 0.6, "name": "supermassive black hole/black_hole_animation_top_4" },
+					{ "time": 0.6667, "name": "supermassive black hole/black_hole_animation_top_5" },
+					{ "time": 0.7333, "name": "supermassive black hole/black_hole_animation_top_6" }
+				]
+			}
+		},
+		"bones": {
+			"bone": {
+				"rotate": [
+					{
+						"curve": [ 0.067, 0, 0.133, 0.48 ]
+					},
+					{
+						"time": 0.2,
+						"value": 0.48,
+						"curve": [ 0.267, 0.48, 0.333, 0.13 ]
+					},
+					{
+						"time": 0.4,
+						"curve": [ 0.467, -0.13, 0.533, -0.33 ]
+					},
+					{
+						"time": 0.6,
+						"value": -0.33,
+						"curve": [ 0.667, -0.33, 0.733, 0 ]
+					},
+					{ "time": 0.8 }
+				],
+				"scale": [
+					{
+						"curve": [ 0.067, 1, 0.133, 1.003, 0.067, 1, 0.133, 0.997 ]
+					},
+					{
+						"time": 0.2,
+						"x": 1.003,
+						"y": 0.997,
+						"curve": [ 0.267, 1.003, 0.333, 1.001, 0.267, 0.997, 0.333, 0.999 ]
+					},
+					{
+						"time": 0.4,
+						"curve": [ 0.467, 0.999, 0.533, 0.998, 0.467, 1.001, 0.533, 1.003 ]
+					},
+					{
+						"time": 0.6,
+						"x": 0.998,
+						"y": 1.003,
+						"curve": [ 0.667, 0.998, 0.733, 1, 0.667, 1.003, 0.733, 1 ]
+					},
+					{ "time": 0.8 }
+				]
+			}
+		}
+	}
+}
+}

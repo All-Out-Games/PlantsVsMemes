@@ -1,0 +1,2447 @@
+[
+  {
+    "id": "grass.png",
+    "texture": {
+      "resample_multiplier": 1,
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "tile.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/memes/luck_blocks/luck_block_ethereal.png",
+    "texture": {
+      "pivot": [
+        0.1965814828872681,
+        -0.7268463969230652
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/luck_blocks/luck_block_mythical.png",
+    "texture": {
+      "pivot": [
+        0.1895607709884644,
+        -0.7913247346878052
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/luck_blocks/luck_block_legendary.png",
+    "texture": {
+      "pivot": [
+        0.1825399398803711,
+        -0.7561547160148621
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/woodsevent/nightsmonster_canneloni_troppi.png",
+    "texture": {
+      "resample_multiplier": 0.7500000000000000,
+      "pixels_per_unit": 170,
+      "pivot": [
+        0.0193355083465576,
+        -0.8766233325004578
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/woodsevent/nightsmonster_canneloni.png",
+    "texture": {
+      "pixels_per_unit": 190,
+      "pivot": [
+        -0.0145544409751892,
+        -0.8858997821807861
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/woodsevent/nightsmonster.png",
+    "texture": {
+      "pivot": [
+        0.0950144529342651,
+        -0.8719851374626160
+      ]
+    }
+  },
+  {
+    "id": "Textures/Event_Woods/dirt_tile.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Textures/Event_Woods/Cliff/iron_peaks_2.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Textures/Event_Woods/drygrass floor/drygrassfloor_bottomedge.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Textures/Event_Woods/drygrass floor/drygrassfloor_topedge.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Textures/Event_Woods/drygrass floor/drygrassfloor_sideedge.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Textures/Event_Woods/drygrass floor/drygrass_colour_square.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Textures/memes/woodsevent/trippi_troppi_baby.png",
+    "texture": {
+      "pivot": [
+        0.2247362136840820,
+        -0.8323563337326050
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/woodsevent/tralalero_tralala_baby.png",
+    "texture": {
+      "pivot": [
+        0,
+        -0.8323563337326050
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/woodsevent/chimpanzini_bananini_baby.png",
+    "texture": {
+      "pivot": [
+        0.0899127721786499,
+        -0.8675263524055481
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/woodsevent/brr_brr_patapim_baby.png",
+    "texture": {
+      "pivot": [
+        0.0929616689682007,
+        -0.8792496919631958
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/SSundeeAmbalabu_Troppa_sushi.png",
+    "texture": {
+      "pivot": [
+        0.0796874761581421,
+        -0.8675263524055481
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/SSundeeAmbalabu_Troppa.png",
+    "texture": {
+      "pivot": [
+        0.1206513643264771,
+        -0.8792496919631958
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/SSundeeAmbalabu.png",
+    "texture": {
+      "pivot": [
+        -0.0184520483016968,
+        -0.8616646528244019
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/strawberry_elephant_ambalabu_golubiro.png",
+    "texture": {
+      "pivot": [
+        0.0373711585998535,
+        -0.8792496919631958
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/strawberry_elephant_ambalabu.png",
+    "texture": {
+      "pivot": [
+        0.0324641466140747,
+        -0.8558030128479004
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/dindin.png",
+    "texture": {
+      "pivot": [
+        0.1138420104980469,
+        -0.9202813506126404
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/dindin_Tric_Trac_Assassino.png",
+    "texture": {
+      "pivot": [
+        0.0352046489715576,
+        -0.8616646528244019
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/dindin_Tric_Trac.png",
+    "texture": {
+      "pivot": [
+        0.1508563756942749,
+        -0.8733879923820496
+      ]
+    }
+  },
+  {
+    "id": "Textures/pedestale_spark_item.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "ui/shop_backplate_3_ocean.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Textures/memes/new/Trulimero_Trulicina_Crostini_Orangutini.png",
+    "texture": {
+      "pivot": [
+        0.0358275175094604,
+        -0.8011049032211304
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Trulimero_Trulicina_Crostini.png",
+    "texture": {
+      "pivot": [
+        0.0412919521331787,
+        -0.7918968200683594
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/trulimero_trulicina.png",
+    "texture": {
+      "pivot": [
+        0,
+        -0.7642725110054016
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/TrippiTroppiSmurf_Lemonchello.png",
+    "texture": {
+      "pivot": [
+        0.0099583864212036,
+        -0.8195211291313171
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/TrippiTroppiSmurf.png",
+    "texture": {
+      "pivot": [
+        0.0200248956680298,
+        -0.7918968200683594
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/trippiTroppi.png",
+    "texture": {
+      "pivot": [
+        -0.0275229215621948,
+        -0.7296602725982666
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Tric_Trac_Baraboom_Gangsta_Watermelon.png",
+    "texture": {
+      "pivot": [
+        0.0902394056320190,
+        -0.6998158097267151
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Tric_Trac_Baraboom_Gangsta.png",
+    "texture": {
+      "pivot": [
+        0.1285563707351685,
+        -0.6906076669692993
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Tric_Trac_Baraboom.png",
+    "texture": {
+      "pivot": [
+        0.0874644517898560,
+        -0.6998158097267151
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Tracotucotulu_Delapeladustuz_Troppi_Trulicina.png",
+    "texture": {
+      "pivot": [
+        0.0090090036392212,
+        -0.7650275826454163
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Tracotucotulu_Delapeladustuz_Troppi.png",
+    "texture": {
+      "pivot": [
+        -0.0270270109176636,
+        -0.7790657281875610
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Tracotucotulu Delapeladustuz.png",
+    "texture": {
+      "pivot": [
+        0.0450450181961060,
+        -0.8347167968750000
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/tob_tobi_tobi_tric_trac_avocadini.png",
+    "texture": {
+      "pivot": [
+        -0.0436896681785583,
+        -0.6600360870361328
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/tob_tobi_tobi_tric_trac.png",
+    "texture": {
+      "pivot": [
+        0.1483620405197144,
+        -0.6690777540206909
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Tob_Tobi_Tobi.png",
+    "texture": {
+      "pivot": [
+        0.1048928499221802,
+        -0.7866184115409851
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/TimCheese_tatatata_gangster.png",
+    "texture": {
+      "pivot": [
+        -0.0102607011795044,
+        -0.7956600189208984
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/TimCheese_tatatata.png",
+    "texture": {
+      "pivot": [
+        0.0104873180389404,
+        -0.8770343065261841
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/TimCheese.png",
+    "texture": {
+      "pivot": [
+        0.0506891012191772,
+        -0.8860759139060974
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Ti_ti_ti_Sahur_Luliloli_tungtung.png",
+    "texture": {
+      "pivot": [
+        0.0605945587158203,
+        -0.9041590690612793
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Ti_ti_ti_Sahur_Luliloli.png",
+    "texture": {
+      "pivot": [
+        0.0549809932708740,
+        -0.8137431740760803
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/TeTeTeTeTeSahur.png",
+    "texture": {
+      "pivot": [
+        0.0451196432113647,
+        -0.8931859731674194
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/tetetete_sahur_titititi_dindin.png",
+    "texture": {
+      "pivot": [
+        -0.1677573323249817,
+        -0.8747697472572327
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/tetetete_sahur_titititi.png",
+    "texture": {
+      "pivot": [
+        -0.1743119359016418,
+        -0.8670709729194641
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/talpa_di_fero_corni_watermeloni.png",
+    "texture": {
+      "pivot": [
+        -0.0242856740951538,
+        -0.8655616641044617
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/talpa_di_fero_corni.png",
+    "texture": {
+      "pivot": [
+        -0.2877375483512878,
+        -0.8655616641044617
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Talpa_di_Fero.png",
+    "texture": {
+      "pivot": [
+        0.2201834917068481,
+        -0.8398933410644531
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Svinina_Bombardino_Tititi_Tetetete.png",
+    "texture": {
+      "pivot": [
+        0.2278416156768799,
+        -0.8655616641044617
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Svinina_Bombardino_Tititi.png",
+    "texture": {
+      "pivot": [
+        0.1009174585342407,
+        -0.8192005753517151
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Strawberelli_Flamingelli_Orangutini_Kiwi.png",
+    "texture": {
+      "pivot": [
+        -0.1401070952415466,
+        -0.8931859731674194
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Strawberelli_Flamingelli_Orangutini.png",
+    "texture": {
+      "pivot": [
+        -0.0917580127716064,
+        -0.9023940563201904
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Strawberelli_Flamingelli.png",
+    "texture": {
+      "pivot": [
+        0,
+        -0.8747697472572327
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Spijuniro_Golubiro_Pipi.png",
+    "texture": {
+      "pivot": [
+        -0.0160345435142517,
+        -0.8418130874633789
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Spijuniro_Golubiro_Pip_Ambalabu.png",
+    "texture": {
+      "pivot": [
+        0.0601593255996704,
+        -0.8325623869895935
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Smurfcat_Bandito_assassino.png",
+    "texture": {
+      "pivot": [
+        0,
+        -0.8788158893585205
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Smurfcat_Bandito.png",
+    "texture": {
+      "pivot": [
+        0,
+        -0.8973172307014465
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/smurfcat.png",
+    "texture": {
+      "pivot": [
+        0.0892567634582520,
+        -0.8880665302276611
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Sixtee_Seven_Cannelloni_Strawberini.png",
+    "texture": {
+      "resample_multiplier": 0.8000000119209290,
+      "pixels_per_unit": 170,
+      "pivot": [
+        -0.0921658873558044,
+        -0.8502303361892700
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Sixtee_Seven_Cannelloni.png",
+    "texture": {
+      "pixels_per_unit": 200,
+      "pivot": [
+        -0.0921658873558044,
+        -0.8605991005897522
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Sixtee_Seven.png",
+    "texture": {
+      "pivot": [
+        0.1105990409851074,
+        -0.8416233062744141
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/sigma_boy_strawberini_craberini.png",
+    "texture": {
+      "pivot": [
+        0.0172566175460815,
+        -0.9065679311752319
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/sigma_boy_strawberini.png",
+    "texture": {
+      "pivot": [
+        -0.0436549782752991,
+        -0.8880665302276611
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/sigma_boy.png",
+    "texture": {
+      "pivot": [
+        -0.0786308646202087,
+        -0.8603144884109497
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/schleemerini_monsterini.png",
+    "texture": {
+      "pivot": [
+        -0.1843317747116089,
+        -0.8849612474441528
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Salamino_Penguino_sigma_TricTrac.png",
+    "texture": {
+      "pivot": [
+        0.1675666570663452,
+        -0.8510637879371643
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Salamino_Penguino_sigma.png",
+    "texture": {
+      "pivot": [
+        0.0994323492050171,
+        -0.8695651888847351
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Salamino_Penguino.png",
+    "texture": {
+      "pivot": [
+        0.1027983427047729,
+        -0.8788158893585205
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Rhino_Toasterino_Gangster_Troppi.png",
+    "texture": {
+      "pivot": [
+        -0.0102168917655945,
+        -0.8973172307014465
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Rhino_Toasterino_Gangster.png",
+    "texture": {
+      "pivot": [
+        -0.0750173926353455,
+        -0.8973172307014465
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/rhino_toasterino.png",
+    "texture": {
+      "pivot": [
+        -0.0224161744117737,
+        -0.9065679311752319
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Racooni_Jandelini_Ballerina_Antilopini.png",
+    "texture": {
+      "pivot": [
+        0,
+        -0.9065679311752319
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Racooni_Jandelini_Ballerina.png",
+    "texture": {
+      "pivot": [
+        -0.0353718996047974,
+        -0.8880665302276611
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Racooni_Jandelini.png",
+    "texture": {
+      "pivot": [
+        -0.3037387728691101,
+        -0.8973172307014465
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Quivioli_Ameleonni_Bombardino_Octopussini.png",
+    "texture": {
+      "pivot": [
+        0.0277777910232544,
+        -0.8022087812423706
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Quivioli_Ameleonni_Bombardino.png",
+    "texture": {
+      "pivot": [
+        0,
+        -0.8031580448150635
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Quivioli_Ameleonni.png",
+    "texture": {
+      "pivot": [
+        0,
+        -0.8058071732521057
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Pipi_Watermelon_Quivioli_Trulicina.png",
+    "texture": {
+      "pivot": [
+        0.1296296119689941,
+        -0.8372924923896790
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Pipi_Watermelon_Quivioli.png",
+    "texture": {
+      "pivot": [
+        0,
+        -0.8457248806953430
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Pipi_Watermelon.png",
+    "texture": {
+      "pivot": [
+        0.0198765993118286,
+        -0.8364311456680298
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Pipi_Potato_Pipi_Tatata.png",
+    "texture": {
+      "pivot": [
+        -0.0962868332862854,
+        -0.7899627685546875
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Pipi_Potato_Pipi.png",
+    "texture": {
+      "pivot": [
+        -0.1813487410545349,
+        -0.8178437948226929
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Pipi_Potato.png",
+    "texture": {
+      "pivot": [
+        0.0155122280120850,
+        -0.8178437948226929
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Pipi_Kiwi_Tetetete_Tob_Tobi.png",
+    "texture": {
+      "pivot": [
+        -0.0305286645889282,
+        -0.8643122315406799
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Pipi_Kiwi_Tetetete.png",
+    "texture": {
+      "pivot": [
+        0.0140525102615356,
+        -0.8834826350212097
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/pipi_kiwi.png",
+    "texture": {
+      "pivot": [
+        0.0587410926818848,
+        -0.8450703620910645
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Pipi_Corni_Tim_Tracotucotulu.png",
+    "texture": {
+      "pivot": [
+        -0.1059215068817139,
+        -0.8322662711143494
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Pipi_Corni_Tim.png",
+    "texture": {
+      "pivot": [
+        -0.2718080282211304,
+        -0.8499413728713989
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Pipi_Corni.png",
+    "texture": {
+      "pivot": [
+        -0.3163276314735413,
+        -0.8616646528244019
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Pipi_Avocado_Toasterino_bombardino.png",
+    "texture": {
+      "pivot": [
+        -0.0064964294433594,
+        -0.8675263524055481
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Pipi_Avocado_Toasterino.png",
+    "texture": {
+      "pivot": [
+        -0.0062161684036255,
+        -0.8675263524055481
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Pipi_Avocado.png",
+    "texture": {
+      "pivot": [
+        -0.0121799707412720,
+        -0.8733879923820496
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Perochello_Lemonchello_Troppi_ambalabu.png",
+    "texture": {
+      "pivot": [
+        -0.1600391864776611,
+        -0.8440796732902527
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Perochello_Lemonchello_Troppi.png",
+    "texture": {
+      "pivot": [
+        -0.1979022026062012,
+        -0.8733879923820496
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Orangutini_Ananasini_Cocosino.png",
+    "texture": {
+      "pivot": [
+        0.0153180360794067,
+        -0.9202813506126404
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Orangutini_Ananasini_Cocosino_Flamingelli.png",
+    "texture": {
+      "pivot": [
+        -0.0359003543853760,
+        -0.9026963114738464
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Pandaccini_Bananini.png",
+    "texture": {
+      "pivot": [
+        0.0716050863265991,
+        -0.8968346714973450
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Pandaccini_Bananini_potato.png",
+    "texture": {
+      "pivot": [
+        0.3191540241241455,
+        -0.8675263524055481
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Pandaccini_Bananini_potato_Quivioli.png",
+    "texture": {
+      "pivot": [
+        0.2895394563674927,
+        -0.8675263524055481
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Penguino_Cocosino.png",
+    "texture": {
+      "pivot": [
+        -0.0897812247276306,
+        -0.9085580110549927
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Penguino_Cocosino_sigma.png",
+    "texture": {
+      "pivot": [
+        -0.1143632531166077,
+        -0.8792496919631958
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Penguino_Cocosino_sigma_salamino.png",
+    "texture": {
+      "pivot": [
+        -0.0986959338188171,
+        -0.8792496919631958
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Perochello_Lemonchello.png",
+    "texture": {
+      "pivot": [
+        -0.1437788605690002,
+        -0.8616646528244019
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Orangutini_Ananasini.png",
+    "texture": {
+      "pivot": [
+        0.0232259035110474,
+        -0.9261429905891418
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/nightsmonster.png",
+    "texture": {
+      "pivot": [
+        0.0654969215393066,
+        -0.8909729719161987
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Lionel_Cactuseli_PipiWatermelon_DiFero.png",
+    "texture": {
+      "pivot": [
+        0.0000003576278687,
+        -0.8851113319396973
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Lionel_Cactuseli_PipiWatermelon.png",
+    "texture": {
+      "pivot": [
+        -0.0061513781547546,
+        -0.9026963114738464
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Lionel_Cactuseli.png",
+    "texture": {
+      "pivot": [
+        0.0127067565917969,
+        -0.8909729719161987
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/LeruleruleruleBrrBrrTroppi.png",
+    "texture": {
+      "pivot": [
+        -0.1111111044883728,
+        -0.8158711791038513
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/LeruleruleruleBrrBrr.png",
+    "texture": {
+      "pivot": [
+        0.0555462837219238,
+        -0.8440796732902527
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Lerulerulerule.png",
+    "texture": {
+      "pivot": [
+        -0.1137012243270874,
+        -0.8382180333137512
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Gorillo_Watermellondrillo.png",
+    "texture": {
+      "pivot": [
+        -0.0204865336418152,
+        -0.9085580110549927
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/gorillo_lemonchello_blueberrini.png",
+    "texture": {
+      "pivot": [
+        -0.0131247639656067,
+        -0.9085580110549927
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/gorillo_lemonchello.png",
+    "texture": {
+      "pivot": [
+        -0.0141488313674927,
+        -0.8968346714973450
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/GangsterFootera_TungTung_kurkur.png",
+    "texture": {
+      "pivot": [
+        0.0549733638763428,
+        -0.8792496919631958
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/GangsterFootera_TungTung.png",
+    "texture": {
+      "pivot": [
+        0.0411597490310669,
+        -0.8851113319396973
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/GangsterFootera.png",
+    "texture": {
+      "pivot": [
+        0.2062019109725952,
+        -0.7444313764572144
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Ganganzelli_Trulala_sigma_Tric_Trac.png",
+    "texture": {
+      "pivot": [
+        -0.0107126832008362,
+        -0.9085580110549927
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Ganganzelli_Trulala_sigma.png",
+    "texture": {
+      "pivot": [
+        -0.0206086039543152,
+        -0.9202813506126404
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Ganganzelli_Trulala.png",
+    "texture": {
+      "pivot": [
+        -0.0105969309806824,
+        -0.9261429905891418
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/frigoCamelo_tetetete_rhino.png",
+    "texture": {
+      "pivot": [
+        -0.0146406292915344,
+        -0.8440796732902527
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/frigoCamelo_tetetete.png",
+    "texture": {
+      "pivot": [
+        -0.0069254040718079,
+        -0.8558030128479004
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/frigoCamelo.png",
+    "texture": {
+      "pivot": [
+        -0.0141344666481018,
+        -0.8733879923820496
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Fluriflura_Tim_dindin.png",
+    "texture": {
+      "pivot": [
+        0.0083427429199219,
+        -0.8968346714973450
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Fluriflura_Tim.png",
+    "texture": {
+      "pivot": [
+        -0.0110645294189453,
+        -0.8909729719161987
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Fluriflura.png",
+    "texture": {
+      "pivot": [
+        -0.0119956135749817,
+        -0.8733879923820496
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Dragon_Cannelloni_Tracotucotulu_Potato.png",
+    "texture": {
+      "pivot": [
+        0.0141774415969849,
+        -0.8733879923820496
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Dragon_Cannelloni_Tracotucotulu.png",
+    "texture": {
+      "pivot": [
+        0,
+        -0.8514571785926819
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Dragon_Cannelloni.png",
+    "texture": {
+      "pivot": [
+        0,
+        -0.8844028115272522
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Cocossini_mama_strawberelli_assassino.png",
+    "texture": {
+      "pivot": [
+        0.0409356355667114,
+        -0.8798778057098389
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Cocossini_mama_strawberelli.png",
+    "texture": {
+      "pivot": [
+        0.0324597358703613,
+        -0.8616646528244019
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Cocossini_Mama.png",
+    "texture": {
+      "pivot": [
+        -0.0490770936012268,
+        -0.8382180333137512
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Chef_Crabracadabra_Lirili_Gangster.png",
+    "texture": {
+      "pivot": [
+        -0.0066533088684082,
+        -0.8851113319396973
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Chef_Crabracadabra_Lirili.png",
+    "texture": {
+      "pivot": [
+        0.0809642076492310,
+        -0.8792496919631958
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Chef_Crabracadabra.png",
+    "texture": {
+      "pivot": [
+        -0.0085146427154541,
+        -0.8733879923820496
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Cavallo_Virtuoso_Crabracadabra_Tetete.png",
+    "texture": {
+      "pivot": [
+        -0.0079071521759033,
+        -0.8499413728713989
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Cavallo_Virtuoso_Crabracadabra.png",
+    "texture": {
+      "pivot": [
+        -0.0362835526466370,
+        -0.7971863746643066
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Cavallo_Virtuoso.png",
+    "texture": {
+      "pivot": [
+        0.0000003576278687,
+        -0.7737396955490112
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Brri_Brri_Bicus_Tigrullini_TungTung.png",
+    "texture": {
+      "pivot": [
+        -0.0195903182029724,
+        -0.9202813506126404
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Brri_Brri_Bicus_Tigrullini.png",
+    "texture": {
+      "pivot": [
+        -0.1019573807716370,
+        -0.9202813506126404
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Brri_Brri_Bicus.png",
+    "texture": {
+      "pivot": [
+        -0.0099654197692871,
+        -0.8851113319396973
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/bobrito_bandito_tob_tobi_Crabracada.png",
+    "texture": {
+      "pivot": [
+        0.0440332889556885,
+        -0.8440796732902527
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/bobrito_bandito_tob_tobi.png",
+    "texture": {
+      "pivot": [
+        0.0577988624572754,
+        -0.8499413728713989
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/bobrito_bandito.png",
+    "texture": {
+      "pivot": [
+        0.0236260890960693,
+        -0.9144196510314941
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Blueberrini_Octopussini_kurkur_Orangutini.png",
+    "texture": {
+      "pivot": [
+        -0.1669745445251465,
+        -0.8792496919631958
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Blueberrini_Octopussini_kurkur.png",
+    "texture": {
+      "pivot": [
+        -0.0967605710029602,
+        -0.8792496919631958
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Blueberrini_Octopussini.png",
+    "texture": {
+      "pivot": [
+        -0.0058479309082031,
+        -0.8646616339683533
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Bananita_Dolphinita_Camelo_trulicina.png",
+    "texture": {
+      "pivot": [
+        0.0918693542480469,
+        -0.8675263524055481
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Bananita_Dolphinita_Camelo.png",
+    "texture": {
+      "pivot": [
+        0.0079386234283447,
+        -0.9144196510314941
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Bananita_Dolphinita.png",
+    "texture": {
+      "pivot": [
+        0.0000003576278687,
+        -0.9261429905891418
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Bambini_Crostini_Salamini.png",
+    "texture": {
+      "pivot": [
+        0.0456027984619141,
+        -0.8851113319396973
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Bambini_Crostini.png",
+    "texture": {
+      "pivot": [
+        0.0643274784088135,
+        -0.9087856411933899
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Avocadorilla_pipi_Tric_Trac.png",
+    "texture": {
+      "pivot": [
+        0.0776101350784302,
+        -0.9026963114738464
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Avocadorilla_pipi.png",
+    "texture": {
+      "pivot": [
+        0.1967970132827759,
+        -0.9085580110549927
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Avocadini_Antilopini_Trulala_toasterino.png",
+    "texture": {
+      "pivot": [
+        0.0000004768371582,
+        -0.8909729719161987
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Bambini_Crostini_Salamini_Tititi.png",
+    "texture": {
+      "resample_multiplier": 0.8000000119209290,
+      "pixels_per_unit": 200,
+      "pivot": [
+        0.0000004768371582,
+        -0.8792496919631958
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Avocadorilla.png",
+    "texture": {
+      "pixels_per_unit": 280,
+      "pivot": [
+        0.1132059097290039,
+        -0.9202813506126404
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Avocadini_Guffo.png",
+    "texture": {
+      "pivot": [
+        -0.0364415645599365,
+        -0.9144196510314941
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Avocadini_Guffo_BrriBri_Tititi.png",
+    "texture": {
+      "pixels_per_unit": 210,
+      "pivot": [
+        -0.0877193212509155,
+        -0.8987395763397217
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Avocadini_Guffo_BrriBri.png",
+    "texture": {
+      "pixels_per_unit": 260,
+      "pivot": [
+        -0.0153512358665466,
+        -0.9144196510314941
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Avocadini_Antilopini_Trulala.png",
+    "texture": {
+      "pixels_per_unit": 300,
+      "pivot": [
+        0.3396100997924805,
+        -0.9026963114738464
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Schleemerini_monsterini_Gangster_Chef.png",
+    "texture": {
+      "pixels_per_unit": 600,
+      "pivot": [
+        -0.0577639341354370,
+        -0.8325623869895935
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Schleemerini_monsterini_Gangster.png",
+    "texture": {
+      "pixels_per_unit": 680,
+      "pivot": [
+        -0.1843317747116089,
+        -0.8930282592773438
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Dragon Cannelloni.png",
+    "texture": {
+      "pixels_per_unit": 200
+    }
+  },
+  {
+    "id": "Textures/memes/new/Ti_Ti_Ti_Sahur.png",
+    "texture": {
+      "pixels_per_unit": 300,
+      "pivot": [
+        0.1711711883544922,
+        -0.7193035483360291
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Spijuniro_Golubiro.png",
+    "texture": {
+      "pixels_per_unit": 300,
+      "pivot": [
+        -0.0808615088462830,
+        -0.8788158893585205
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Svinina_Bombardino.png",
+    "texture": {
+      "pixels_per_unit": 300,
+      "pivot": [
+        0.2040283679962158,
+        -0.8379373550415039
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/Avocadini_Antilopini.png",
+    "texture": {
+      "pixels_per_unit": 300,
+      "pivot": [
+        0.2750371694564819,
+        -0.8968346714973450
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/new/FrulliFrulla.png",
+    "texture": {
+      "pixels_per_unit": 400
+    }
+  },
+  {
+    "id": "Textures/Shop.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/memes/strawberry_elephant.png",
+    "texture": {
+      "resample_multiplier": 0.8000000119209290,
+      "pivot": [
+        0.0811610221862793,
+        -0.8264946937561035
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/lagrandecombination.png",
+    "texture": {
+      "resample_multiplier": 0.8000000119209290,
+      "pivot": [
+        0.1053901910781860,
+        -0.9026963114738464
+      ]
+    }
+  },
+  {
+    "id": "ui/champdefraise.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Spines/PlayerCharacter2/playercharacter.png",
+    "texture": {
+      "resample_multiplier": 0.8000000119209290
+    }
+  },
+  {
+    "id": "Spines/BoogieBomb/CAP99_sonic_grenade.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/memes/zibra_zurbra_zibralini.png",
+    "texture": {
+      "pivot": [
+        -0.0753464102745056,
+        -0.8675263524055481
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/zibra_patapim_assassino.png",
+    "texture": {
+      "pivot": [
+        -0.1169590353965759,
+        -0.8381097912788391
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/zibra_patapim.png",
+    "texture": {
+      "pivot": [
+        -0.0641893744468689,
+        -0.8323563337326050
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/tung_tung_bananini_watermeloni.png",
+    "texture": {
+      "pivot": [
+        -0.0671485066413879,
+        -0.8558030128479004
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/tung_tung_bananini.png",
+    "texture": {
+      "pivot": [
+        -0.0665587186813354,
+        -0.8323563337326050
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/trigrrullini_watermellini_cocofanto_cappucino.png",
+    "texture": {
+      "pivot": [
+        -0.0116959214210510,
+        -0.8547996878623962
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/trigrrullini_watermellini_cocofanto.png",
+    "texture": {
+      "pivot": [
+        -0.0830129384994507,
+        -0.8558030128479004
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/trigrrullini_watermellini.png",
+    "texture": {
+      "pivot": [
+        -0.0175438523292542,
+        -0.8952995538711548
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/ta_ta_sahur_larila_zibrazubra.png",
+    "texture": {
+      "pivot": [
+        -0.0362967848777771,
+        -0.8851113319396973
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/ta_ta_sahur_larila.png",
+    "texture": {
+      "pivot": [
+        0.0074019432067871,
+        -0.8792496919631958
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/ta_ta_sahur.png",
+    "texture": {
+      "pivot": [
+        -0.1047018766403198,
+        -0.8792496919631958
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/lirili_larila_ambalabu_tatatasahur.png",
+    "texture": {
+      "pivot": [
+        0.0513508319854736,
+        -0.7971863746643066
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/lirili_larila_ambalabu.png",
+    "texture": {
+      "pivot": [
+        -0.0061295032501221,
+        -0.8264946937561035
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/lirili_larila.png",
+    "texture": {
+      "pivot": [
+        -0.0175438523292542,
+        -0.6915091276168823
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/Karkerkar_Kurkur_ambalabu_tungtung.png",
+    "texture": {
+      "pivot": [
+        0.0462763309478760,
+        -0.7737396955490112
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/Karkerkar_Kurkur_Ambalabu.png",
+    "texture": {
+      "pivot": [
+        0.0229437351226807,
+        -0.7796013951301575
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/Karkerkar_Kurkur.png",
+    "texture": {
+      "pivot": [
+        -0.0074397921562195,
+        -0.7561547160148621
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/il_cacto_hipopotamo_bananini_tungtung.png",
+    "texture": {
+      "pivot": [
+        0.0728889703750610,
+        -0.8440796732902527
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/il_cacto_hipopotamo_bananini.png",
+    "texture": {
+      "pivot": [
+        0.0801327228546143,
+        -0.8147713541984558
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/il_cacto_hipopotamo.png",
+    "texture": {
+      "pivot": [
+        0.1501871347427368,
+        -0.8206330537796021
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/glorbo_fruttodrillo_lulilolli_cappucina.png",
+    "texture": {
+      "pivot": [
+        -0.1111111044883728,
+        -0.7898817658424377
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/glorbo_fruttodrillo_lulilolli.png",
+    "texture": {
+      "pivot": [
+        -0.0701754093170166,
+        -0.8056514859199524
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/glorbo_fruttodrillo.png",
+    "texture": {
+      "pivot": [
+        -0.0350877046585083,
+        -0.8328016996383667
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/cocosino_rhino_lirili_fruttodrillo.png",
+    "texture": {
+      "pivot": [
+        -0.0233917832374573,
+        -0.7725759148597717
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/cocosino_rhino_lirili.png",
+    "texture": {
+      "pivot": [
+        -0.0292397737503052,
+        -0.7985740900039673
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/cocosino_rhino.png",
+    "texture": {
+      "pivot": [
+        -0.0526315569877625,
+        -0.7848434448242188
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/cocofanto_elefanto.png",
+    "texture": {
+      "pivot": [
+        -0.0000004172325134,
+        -0.8675263524055481
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/cocofanto_cocosino_cacto.png",
+    "texture": {
+      "pivot": [
+        0.0312154293060303,
+        -0.8558030128479004
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/cocofanto_cocosino.png",
+    "texture": {
+      "pivot": [
+        0.0066115856170654,
+        -0.8851113319396973
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/chimpanzini_Watermellini_Cocosino.png",
+    "texture": {
+      "pivot": [
+        -0.0000004768371582,
+        -0.9085580110549927
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/chimpanzini_Watermellini.png",
+    "texture": {
+      "pivot": [
+        0.0069490671157837,
+        -0.9026963114738464
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/chimpanzini_bananini.png",
+    "texture": {
+      "pivot": [
+        0.0220509767532349,
+        -0.8909729719161987
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/cappuccino_ballerina_Cacto.png",
+    "texture": {
+      "pivot": [
+        0.0467835664749146,
+        -0.8860242962837219
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/cappuccino_ballerina.png",
+    "texture": {
+      "pivot": [
+        -0.0058479309082031,
+        -0.9084127545356750
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/cappuccino_assassino.png",
+    "texture": {
+      "pivot": [
+        0,
+        -0.8692810535430908
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/burbaloni_lulilolli.png",
+    "texture": {
+      "pivot": [
+        0.0236177444458008,
+        -0.7854630351066589
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/burbaloni_bananini_fruttodrillo.png",
+    "texture": {
+      "pivot": [
+        0.1044900417327881,
+        -0.8558030128479004
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/burbaloni_bananini.png",
+    "texture": {
+      "pivot": [
+        0.0435371398925781,
+        -0.8206330537796021
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/BrrBrr_TungTung_ZibraZubra.png",
+    "texture": {
+      "pivot": [
+        0.0175079107284546,
+        -0.6389214396476746
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/BrrBrr_TungTung.png",
+    "texture": {
+      "pivot": [
+        -0.0848498344421387,
+        -0.6271981000900269
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/BrrBrr.png",
+    "texture": {
+      "pivot": [
+        -0.0370554924011230,
+        -0.6389214396476746
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/boneca_burbaloni_tatasahur.png",
+    "texture": {
+      "pivot": [
+        0.0078953504562378,
+        -0.8558030128479004
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/boneca_burbaloni.png",
+    "texture": {
+      "pivot": [
+        -0.0000005364418030,
+        -0.8472450375556946
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/boneca.png",
+    "texture": {
+      "pivot": [
+        -0.0083153843879700,
+        -0.7941384315490723
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/ballerina_cappuccina.png",
+    "texture": {
+      "pivot": [
+        -0.0388898849487305,
+        -0.6506447792053223
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/ballerina_BrrBrr.png",
+    "texture": {
+      "pivot": [
+        -0.0441879034042358,
+        -0.8968346714973450
+      ]
+    }
+  },
+  {
+    "id": "Textures/stairs.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Dice/dice.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/Terrain/simplified_forest_ground/forest_ground_1.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/Terrain/simplified_forest_ground/forest_ground_2.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/Terrain/simplified_forest_ground/forest_ground_3.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/Terrain/simplified_forest_ground/forest_ground_4.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/Terrain/simplified_forest_ground/forest_ground_5.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/Terrain/dirt_ground/tile1.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/Terrain/dirt_ground/tile2.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Map Assets/drygrass floor/drygrassfloor_3.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/drygrass floor/drygrassfloor_bottomcorner.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/drygrass floor/drygrassfloor_bottomedge.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/drygrass floor/drygrassfloor_sideedge.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/drygrass floor/drygrassfloor_topedge.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/drygrass floor/drygrass_colour_square.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/Water fx/repeatable 1.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/Water fx/repeatable 2.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/Tile Sets/floor tile1.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/Tile Sets/Sidewalk1.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/Tile Sets/Sidewalk2.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/Tile Sets/stonetile1.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/Sidewalk/sidewalk_top.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/Sidewalk/sidewalk_R.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/Sidewalk/sidewalk_l.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/Sidewalk/sidewalk_bottom.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/water2/water1.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/water2/water2.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/water2/water3.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/water2/water_end1.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/water2/water_end2.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/water2/water_end3.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/Cliff/iron_peaks_2.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Textures/memes/WIP Meme Body Parts/trigrrullini_watermellini/trigrrullini_watermellini_Head.png",
+    "texture": {
+      "pixels_per_unit": 350
+    }
+  },
+  {
+    "id": "Textures/memes/WIP Meme Body Parts/trigrrullini_watermellini/trigrrullini_watermellini_Body.png",
+    "texture": {
+      "pixels_per_unit": 350
+    }
+  },
+  {
+    "id": "Map Assets/cages/horizontal_wallcage.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/cages/frontdoor_cage.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Map Assets/cages/floor_light.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Dice/021MBR_Dice.png"
+  },
+  {
+    "id": "ui/bubblegum_seemless.png",
+    "texture": {
+      "resample_multiplier": 0.5000000000000000,
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "ui/diamond_seemless.png",
+    "texture": {
+      "resample_multiplier": 0.5000000000000000,
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "ui/rainbow_seemless.png",
+    "texture": {
+      "resample_multiplier": 0.5000000000000000,
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "ui/flames_seemless.png",
+    "texture": {
+      "resample_multiplier": 0.5000000000000000,
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "ui/toxic_seemless.png",
+    "texture": {
+      "resample_multiplier": 0.5000000000000000,
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "ui/gold_seemless.png",
+    "texture": {
+      "resample_multiplier": 0.5000000000000000,
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Spines/StaticItems/021MBR_props.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Spines/ENCH135_smelting_furnace/skeleton.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Spines/Incinerator/incinerator.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/Nuclear Fission Machine.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Spines/Magnet/MAG111_Magnet_Station.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/Laser Amplifier Glass.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/button_ground.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/Dropper.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Spines/Conveyor/resource_tube.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Spines/Furnace2/TIS112_furnace.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Spines/Luck/purchaseMachines.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Spines/Luck/EVTW120_mirror_portal.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/Popcorn/backside.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/Popcorn/frontside.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/Popcorn/machine.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/Popcorn/top.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Spines/ConveyorBeltMiddle/SC_conveyor_belt.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/tunnel_bot.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/tunnel_top.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/tunnel_top_shadow.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Spines/VerticalBelt/vertical_belt.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/space_nebula.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Textures/space_nebula2.png",
+    "texture": {
+      "wrap_repeat": true
+    }
+  },
+  {
+    "id": "Spines/PlayerCharacter/playercharacter.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "Textures/memes/ballerina_BrrBrr_Lirili.png",
+    "texture": {
+      "pivot": [
+        -0.0505005121231079,
+        -0.9026963114738464
+      ]
+    }
+  },
+  {
+    "id": "Textures/memes/tung_tung.png",
+    "texture": {
+      "pivot": [
+        -0.0398971438407898,
+        -0.7971863746643066
+      ]
+    }
+  }
+]

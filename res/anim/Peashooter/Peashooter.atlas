@@ -1,0 +1,19 @@
+Peashooter.png
+	size: 296, 84
+	filter: Linear, Linear
+	scale: 0.5
+Back
+	bounds: 194, 7, 72, 36
+	rotate: 90
+Cheek
+	bounds: 253, 55, 24, 22
+	rotate: 90
+Head
+	bounds: 3, 17, 104, 62
+Mouth
+	bounds: 278, 48, 13, 31
+Stem
+	bounds: 110, 3, 81, 76
+shadow
+	bounds: 232, 10, 69, 18
+	rotate: 90

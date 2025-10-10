@@ -1,0 +1,22 @@
+Melonpult_Projectile.png
+	size: 572, 104
+	filter: Linear, Linear
+	scale: 0.5
+images/Melon/Melonprojectile
+	bounds: 290, 13, 85, 88
+images/Melon/Splat1
+	bounds: 497, 32, 69, 47
+	rotate: 90
+images/Melon/Splat2
+	bounds: 188, 3, 98, 99
+	rotate: 90
+images/Melon/Splat3
+	bounds: 438, 42, 59, 56
+	rotate: 90
+images/Melon/Splat4
+	bounds: 378, 41, 57, 60
+images/Melon/SplatDrop
+	bounds: 547, 77, 22, 24
+	offsets: 0, 1, 22, 25
+images/Melon/Splatter
+	bounds: 3, 21, 182, 80

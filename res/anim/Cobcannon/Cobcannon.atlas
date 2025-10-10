@@ -1,0 +1,16 @@
+Cobcannon.png
+	size: 976, 124
+	filter: Linear, Linear
+	scale: 0.5
+base
+	bounds: 553, 70, 188, 49
+leaf_bottom
+	bounds: 744, 70, 153, 49
+leaf_top
+	bounds: 217, 22, 170, 97
+shadow
+	bounds: 3, 3, 211, 116
+sweetcorn
+	bounds: 390, 41, 160, 78
+wheel
+	bounds: 900, 41, 72, 78

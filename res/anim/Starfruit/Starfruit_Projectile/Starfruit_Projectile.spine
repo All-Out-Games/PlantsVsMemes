@@ -1,0 +1,61 @@
+{
+"skeleton": { "hash": "Vs/ZoJscynM", "spine": "4.0.64", "x": -54, "y": -52, "width": 111, "height": 106 },
+"bones": [
+	{ "name": "root" },
+	{ "name": "bone", "parent": "root", "x": 1, "y": 1 }
+],
+"slots": [
+	{ "name": "starfruit_star", "bone": "bone", "attachment": "starfruit_star" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"starfruit_star": {
+				"starfruit_star": { "x": 0.5, "width": 111, "height": 106 }
+			}
+		}
+	}
+],
+"animations": {
+	"Projectile": {
+		"bones": {
+			"bone": {
+				"rotate": [
+					{},
+					{ "time": 0.5, "value": -360 }
+				]
+			}
+		}
+	},
+	"Projectile_Hit": {
+		"slots": {
+			"starfruit_star": {
+				"rgba": [
+					{
+						"color": "ffffffff",
+						"curve": [ 0.111, 1, 0.222, 1, 0.111, 1, 0.222, 1, 0.111, 1, 0.222, 1, 0.111, 0.33, 0.222, 0 ]
+					},
+					{ "time": 0.3333, "color": "ffffff00" }
+				]
+			}
+		},
+		"bones": {
+			"bone": {
+				"rotate": [
+					{
+						"curve": [ 0.167, -240, 0.333, -360 ]
+					},
+					{ "time": 0.5, "value": -360 }
+				],
+				"scale": [
+					{
+						"curve": [ 0.111, 1.836, 0.222, 2.255, 0.111, 1.836, 0.222, 2.255 ]
+					},
+					{ "time": 0.3333, "x": 2.255, "y": 2.255 }
+				]
+			}
+		}
+	}
+}
+}

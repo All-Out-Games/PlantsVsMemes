@@ -1,0 +1,22 @@
+wormhole.png
+	size: 556, 556
+	filter: Linear, Linear
+wormhole_1
+	bounds: 6, 372, 177, 177
+	offsets: 1, 1, 179, 179
+wormhole_2
+	bounds: 6, 189, 177, 177
+	offsets: 1, 1, 179, 179
+wormhole_3
+	bounds: 6, 6, 177, 177
+	offsets: 1, 1, 179, 179
+wormhole_black_1
+	bounds: 189, 413, 135, 136
+	offsets: 1, 1, 137, 137
+wormhole_black_2
+	bounds: 189, 271, 135, 136
+	offsets: 1, 1, 137, 137
+wormhole_black_3
+	bounds: 189, 130, 135, 136
+	offsets: 1, 1, 137, 137
+	rotate: 90

@@ -1,0 +1,361 @@
+---
+description: Only for Navmesh and NPC AI pathfinding
+alwaysApply: false
+---
+Here is an example of a basic NPC AI that walks between waypoints or chases the player if they have a high "wanted level". You can adapt this example to your requirements
+```cs
+public partial class PoliceAI : Component
+{
+  public Vector2[] Waypoints;
+  float lastHitTime;
+  float HIT_COOLDOWN = 0.78f;
+
+  private int MAX_WAY_POINT_DISTANCE = 25;
+  private ulong rngSeed;
+  private float MOVEMENT_SPEED = 180f;
+  private float CHASE_SPEED = 380f;
+  private float WAYPOINT_REACHED_DISTANCE = 1f;
+  private float MIN_CHASE_RANGE = 5f;
+  private float MAX_CHASE_RANGE = 30f;
+  private float HIT_DISTANCE = 1f;
+  Vector2[] PathPoints = new Vector2[32];
+  public Movement_Agent Agent;
+  public SyncVar<Entity> CurrentChaseTarget = new SyncVar<Entity>(null);
+  public SyncVar<bool> IsStunned = new SyncVar<bool>(false);
+
+  public SyncVar<Vector2> TargetWaypoint = new SyncVar<Vector2>(Vector2.Zero);
+  public Spine_Animator SpineAnimator;
+  public ThingWithHealth Health;
+
+  bool IsDead = false;
+  float RespawnTime = -1f;
+
+  // Used to know when to display the health bar
+  float lastDamageTime = -1f;
+
+  public override void Awake()
+  {
+    Health = GetComponent<ThingWithHealth>();
+    Health.MaxHealth = 75;
+    Health.Health = 75;
+
+    SpineAnimator = GetComponent<Spine_Animator>();
+    SpineAnimator.Awaken();
+    SpineAnimator.SetCrewchsia(7);
+    Agent = GetComponent<Movement_Agent>();
+    Agent.NavmeshToLockTo = GameManager.Instance.RootNavmesh;
+
+    rngSeed = RNG.Seed(Entity.NetworkId);
+
+    Health.OnChanged += (oldHealth, newHealth) =>
+    {
+      if (newHealth < oldHealth)
+      {
+        // Record last time cop took damage for health bar display
+        lastDamageTime = Time.TimeSinceStartup;
+
+        if (newHealth > 0)
+        {
+          TriggerAlertAnimation();
+        }
+      }
+
+      if (newHealth == Health.MaxHealth) return;
+
+      if (Network.IsServer && Health.LastDamagedBy.Value.Alive() && Health.LastDamagedBy.Value.GetComponent<MyPlayer>().Alive())
+      {
+        var player = Health.LastDamagedBy.Value.GetComponent<MyPlayer>();
+        player.WantedLevel += 0.5f;
+      }
+
+      if (newHealth <= 0)
+      {
+        HandleDeath();
+        return;
+      }
+    };
+
+    // init patrol points list
+    var PatrolPoints = Entity.FindByName("CopPatrolPoints").Children;
+    Waypoints = new Vector2[Entity.FindByName("CopPatrolPoints").GetChildCount()];
+    var i = 0;
+    foreach (var point in PatrolPoints)
+    {
+      Waypoints[i] = point.Position;
+      i++;
+    }
+
+    SetupStateMachine();
+
+    if (Network.IsServer)
+    {
+      TargetWaypoint.Set(GetNextWaypoint());
+    }
+
+    Agent.CustomVelocityCallback = (agent, currentVelocity, input, dt) =>
+    {
+      if (IsStunned.Value)
+      {
+        SpineAnimator.SpineInstance.StateMachine.SetBool("moving", false);
+        return currentVelocity;
+      }
+
+      var targetPos = CurrentChaseTarget.Value != null ? CurrentChaseTarget.Value.Position : TargetWaypoint.Value;
+
+      var distanceToTarget = Vector2.Distance(Entity.Position, targetPos);
+
+      // we're there so let's pick somewhere else to go if this was just a waypoint
+      if (distanceToTarget <= WAYPOINT_REACHED_DISTANCE)
+      {
+        if (Network.IsServer && CurrentChaseTarget.Value == null)
+        {
+          TargetWaypoint.Set(GetNextWaypoint());
+        }
+
+        SpineAnimator.SpineInstance.StateMachine.SetBool("moving", false);
+        return currentVelocity;
+      }
+
+      // path towards em
+      if (GameManager.Instance.RootNavmesh.TryFindPath(agent.Entity.Position, targetPos, ref PathPoints, out int pathLength))
+      {
+        Vector2 nextPoint = PathPoints[1];
+        Vector2 diff = nextPoint - agent.Entity.Position;
+        float length = (float)Math.Sqrt(diff.X * diff.X + diff.Y * diff.Y);
+        Vector2 direction = length > 0 ? diff / length : Vector2.Zero;
+
+        SpineAnimator.SpineInstance.StateMachine.SetBool("moving", true);
+        Entity.LocalScale = new Vector2(direction.X < 0 ? -1 : 1, 1);
+
+        return currentVelocity + direction * (CurrentChaseTarget.Value != null ? GetChaseSpeed(CurrentChaseTarget.Value.GetComponent<MyPlayer>().WantedLevel) : MOVEMENT_SPEED) * dt;
+      }
+
+      return currentVelocity;
+    };
+
+    CurrentChaseTarget.OnSync += OnTargetSet;
+  }
+
+  public void OnTargetSet(Entity _, Entity newTarget)
+  {
+    SpineAnimator.SpineInstance.StateMachine.SetBool("chasing", newTarget.Alive());
+  }
+
+  public float GetChaseSpeed(float wantedLevel)
+  {
+    switch (wantedLevel)
+    {
+      case 1:
+        return CHASE_SPEED * 0.4f;
+      case 2:
+        return CHASE_SPEED * 0.6f;
+      case 3:
+        return CHASE_SPEED * 0.9f;
+      default:
+        return CHASE_SPEED * 1.1f;
+    }
+  }
+
+  // Gets the waypoints in range and then selects a random one
+  public Vector2 GetNextWaypoint()
+  {
+    var waypointsInRange = Waypoints.Where(waypoint => Vector2.Distance(Entity.Position, waypoint) <= MAX_WAY_POINT_DISTANCE).ToList();
+
+    if (waypointsInRange.Count == 0)
+    {
+      return Waypoints[RNG.RangeInt(ref rngSeed, 0, Waypoints.Length)];
+    }
+
+    var selectedIndex = RNG.RangeInt(ref rngSeed, 0, waypointsInRange.Count - 1);
+
+    return waypointsInRange[selectedIndex];
+  }
+
+  // TODO: make this use the custom collider/vision
+  float GetChaseRange(MyPlayer player, float wantedLevel)
+  {
+    if (wantedLevel < 1) return 0;
+
+    // Stealth gamepass
+    if (wantedLevel < 4 && Purchasing.OwnsGamePass(player, "684088945995720644ca06a9"))
+    {
+      return 0f;
+    }
+
+    wantedLevel = Math.Max(1f, Math.Min(5f, wantedLevel));
+
+    float t = (wantedLevel - 1f) / 4f;
+    return MIN_CHASE_RANGE + (MAX_CHASE_RANGE - MIN_CHASE_RANGE) * t;
+  }
+
+  public override void Update()
+  {
+    if (Network.IsServer)
+    {
+      if (IsDead)
+      {
+        if (Time.TimeSinceStartup >= RespawnTime)
+        {
+          Respawn();
+        }
+        return;
+      }
+
+      // Find closest wanted player within range
+      Entity closestPlayer = null;
+      float closestDistance = float.MaxValue;
+
+      foreach (var player in Scene.Components<MyPlayer>())
+      {
+        if (!player.Entity.Alive() || player.WantedLevel < 1) continue;
+
+        float chaseRange = GetChaseRange(player, player.WantedLevel);
+        float distance = Vector2.Distance(Entity.Position, player.Entity.Position);
+        if (distance <= chaseRange && distance < closestDistance)
+        {
+          if (player.IsHidden) continue;
+          closestDistance = distance;
+          closestPlayer = player.Entity;
+        }
+
+        // wack da player if we close enough
+        if (distance <= HIT_DISTANCE && Time.TimeSinceStartup - lastHitTime >= HIT_COOLDOWN)
+        {
+          CallClient_TriggerHitAnimation();
+          player.HealthManager.Damage(19, Entity);
+        }
+      }
+
+      // set the chase target to the person we've found
+      if (closestPlayer.Alive())
+      {
+        if (!CurrentChaseTarget.Value.Alive())
+        {
+          CallClient_TriggerAlertAnimation();
+        }
+
+        CurrentChaseTarget.Set(closestPlayer);
+      }
+      else
+      {
+        CurrentChaseTarget.Set(null);
+      }
+    }
+  }
+
+  public override void LateUpdate()
+  {
+    if (!Network.IsClient) return;
+
+    // Only draw while alive and recently damaged (within 3s)
+    if (Health.Health > 0 && Time.TimeSinceStartup - lastDamageTime <= 3f)
+    {
+      var barRect = new Rect(new Vector2(Entity.Position.X, Entity.Position.Y)).TopCenterRect();
+      HealthBar.DrawHealthBar(barRect, Health.Health, Health.MaxHealth, "red");
+    }
+  }
+
+  [ClientRpc]
+  public void TriggerAlertAnimation()
+  {
+    SpineAnimator.SpineInstance.StateMachine.SetTrigger("alert");
+  }
+
+  [ClientRpc]
+  public void TriggerHitAnimation()
+  {
+    SFX.Play(Assets.GetAsset<AudioAsset>("sfx/police-baton-hit.wav"), new SFX.PlaySoundDesc() { Volume = 0.35f, Position = Entity.Position, Positional = true, RangeMultiplier = 1.5f, Delay = 0.2f });
+    SpineAnimator.SpineInstance.StateMachine.SetTrigger("hit");
+    lastHitTime = Time.TimeSinceStartup;
+  }
+
+  [ClientRpc]
+  public void TriggerDonutAnimation()
+  {
+    SpineAnimator.SpineInstance.StateMachine.SetTrigger("donut");
+  }
+
+  public void SetupStateMachine()
+  {
+    var sm = StateMachine.Make();
+    SpineAnimator.SpineInstance.SetStateMachine(sm, Entity);
+
+    var gameLayer = SpineAnimator.SpineInstance.StateMachine.CreateLayer("game_layer", 10);
+    var empty = gameLayer.CreateState("__CLEAR_TRACK__", 0, true);
+
+    var idleState = gameLayer.CreateState("016ARP_Cop/Idle", 0, true);
+    var runState = gameLayer.CreateState("016ARP_Cop/Run", 0, true);
+    var chaseIdleState = gameLayer.CreateState("016ARP_Cop/Chase_Idle", 0, true);
+    var chaseRunState = gameLayer.CreateState("016ARP_Cop/Chase_Run", 0, true);
+
+    var movingBool = SpineAnimator.SpineInstance.StateMachine.CreateVariable("moving", StateMachineVariableKind.BOOLEAN);
+    var chasingBool = SpineAnimator.SpineInstance.StateMachine.CreateVariable("chasing", StateMachineVariableKind.BOOLEAN);
+
+    gameLayer.CreateTransition(empty, idleState, false).CreateBoolCondition(chasingBool, false);
+    gameLayer.CreateTransition(idleState, runState, false).CreateBoolCondition(movingBool, true);
+    gameLayer.CreateTransition(runState, idleState, false).CreateBoolCondition(movingBool, false);
+
+    gameLayer.CreateTransition(empty, chaseIdleState, false).CreateBoolCondition(chasingBool, true);
+    gameLayer.CreateTransition(chaseIdleState, chaseRunState, false).CreateBoolCondition(movingBool, true);
+    gameLayer.CreateTransition(chaseRunState, chaseIdleState, false).CreateBoolCondition(movingBool, false);
+
+    gameLayer.CreateTransition(idleState, chaseIdleState, false).CreateBoolCondition(chasingBool, true);
+    gameLayer.CreateTransition(runState, chaseRunState, false).CreateBoolCondition(chasingBool, true);
+    gameLayer.CreateTransition(chaseIdleState, idleState, false).CreateBoolCondition(chasingBool, false);
+    gameLayer.CreateTransition(chaseRunState, runState, false).CreateBoolCondition(chasingBool, false);
+
+    var alertState = gameLayer.CreateState("016ARP_Cop/Alert", 0, false);
+    var alertTrigger = SpineAnimator.SpineInstance.StateMachine.CreateVariable("alert", StateMachineVariableKind.TRIGGER);
+    gameLayer.CreateGlobalTransition(alertState).CreateTriggerCondition(alertTrigger);
+    gameLayer.CreateTransition(alertState, empty, true);
+
+    var hitState = gameLayer.CreateState("016ARP_Cop/Hit", 0, false);
+    var hitTrigger = SpineAnimator.SpineInstance.StateMachine.CreateVariable("hit", StateMachineVariableKind.TRIGGER);
+    gameLayer.CreateGlobalTransition(hitState).CreateTriggerCondition(hitTrigger);
+    gameLayer.CreateTransition(hitState, empty, true);
+
+    var spawnState = gameLayer.CreateState("016ARP_Cop/Spawn_In", 0, false);
+    var spawnTrigger = SpineAnimator.SpineInstance.StateMachine.CreateVariable("spawn", StateMachineVariableKind.TRIGGER);
+    gameLayer.CreateGlobalTransition(spawnState).CreateTriggerCondition(spawnTrigger);
+    gameLayer.CreateTransition(spawnState, empty, true);
+
+    var donutState = gameLayer.CreateState("016ARP_Cop/Donut", 0, false);
+    var donutTrigger = SpineAnimator.SpineInstance.StateMachine.CreateVariable("donut", StateMachineVariableKind.TRIGGER);
+    gameLayer.CreateGlobalTransition(donutState).CreateTriggerCondition(donutTrigger);
+    gameLayer.CreateTransition(donutState, empty, true);
+
+    var flinchState = gameLayer.CreateState("016ARP_Cop/Donut", 0, false);
+    var flinchTrigger = SpineAnimator.SpineInstance.StateMachine.CreateVariable("flinch", StateMachineVariableKind.TRIGGER);
+    gameLayer.CreateGlobalTransition(flinchState).CreateTriggerCondition(flinchTrigger);
+    gameLayer.CreateTransition(flinchState, empty, true);
+
+    gameLayer.InitialState = idleState;
+  }
+
+  void HandleDeath()
+  {
+    SpineAnimator.SpineInstance.StateMachine.SetTrigger("spawn");
+
+    if (!Network.IsServer || IsDead) return;
+
+    IsDead = true;
+
+
+    RespawnTime = Time.TimeSinceStartup + 0.6f;
+  }
+
+  void Respawn()
+  {
+    // Move to a random waypoint and play spawn animation forwards
+    var newPos = Waypoints[RNG.RangeInt(ref rngSeed, 0, Waypoints.Length - 1)];
+    Entity.Position = newPos;
+
+    Health.Health = Health.MaxHealth;
+
+    SpineAnimator.SpineInstance.Speed = 1f;
+    SpineAnimator.SpineInstance.StateMachine.SetTrigger("spawn");
+
+    IsDead = false;
+  }
+}
+```

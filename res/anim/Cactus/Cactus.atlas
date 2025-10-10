@@ -1,0 +1,19 @@
+Cactus.png
+	size: 300, 116
+	filter: Linear, Linear
+	scale: 0.5
+images/CArmL
+	bounds: 85, 37, 57, 76
+images/CArmR
+	bounds: 199, 62, 46, 51
+	offsets: 0, 1, 46, 52
+images/CFlower
+	bounds: 145, 52, 61, 51
+	rotate: 90
+images/CactusMouth
+	bounds: 269, 76, 27, 37
+images/Cbody
+	bounds: 3, 3, 79, 110
+images/shadow
+	bounds: 248, 44, 69, 18
+	rotate: 90

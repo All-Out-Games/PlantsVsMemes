@@ -1,0 +1,23 @@
+Walnut.png
+	size: 444, 136
+	filter: Linear, Linear
+	scale: 0.5
+images/Shelll1
+	bounds: 390, 97, 26, 34
+images/Walnut
+	bounds: 3, 3, 109, 128
+images/WalnutBroke
+	bounds: 115, 14, 108, 117
+	offsets: 0, 0, 108, 120
+images/WalnutBrokeDead
+	bounds: 226, 15, 107, 116
+	offsets: 0, 0, 107, 119
+images/shadow
+	bounds: 369, 62, 69, 18
+	rotate: 90
+images/shell2
+	bounds: 336, 72, 59, 30
+	rotate: 90
+images/shell3
+	bounds: 419, 108, 23, 22
+	rotate: 90

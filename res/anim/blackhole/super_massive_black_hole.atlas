@@ -1,0 +1,55 @@
+super_massive_black_hole.png
+	size: 7480, 7480
+	filter: Linear, Linear
+supermassive black hole/back glow
+	bounds: 3105, 850, 2060, 2041
+	offsets: 12, 1, 2084, 2060
+supermassive black hole/black_hole
+	bounds: 5171, 685, 974, 974
+	offsets: 1, 1, 976, 976
+supermassive black hole/black_hole_animation_low_1
+	bounds: 6151, 476, 1198, 809
+	offsets: 1, 1, 1200, 811
+	rotate: 90
+supermassive black hole/black_hole_animation_low_2
+	bounds: 2753, 36, 1213, 808
+	offsets: 1, 2, 1215, 812
+supermassive black hole/black_hole_animation_low_3
+	bounds: 5986, 1680, 1211, 803
+	offsets: 1, 1, 1214, 805
+	rotate: 90
+supermassive black hole/black_hole_animation_low_4
+	bounds: 6198, 3192, 1227, 784
+	offsets: 1, 2, 1229, 787
+	rotate: 90
+supermassive black hole/black_hole_animation_low_5
+	bounds: 1521, 265, 1226, 808
+	offsets: 1, 2, 1228, 811
+supermassive black hole/black_hole_animation_low_6
+	bounds: 5171, 1665, 1226, 809
+	offsets: 1, 1, 1229, 811
+	rotate: 90
+supermassive black hole/black_hole_animation_top_1
+	bounds: 3687, 4425, 3085, 1521
+	offsets: 1, 2, 3087, 1524
+supermassive black hole/black_hole_animation_top_2
+	bounds: 6, 2607, 3093, 1520
+	offsets: 1, 1, 3095, 1523
+supermassive black hole/black_hole_animation_top_3
+	bounds: 3687, 5952, 3093, 1521
+	offsets: 1, 1, 3095, 1523
+supermassive black hole/black_hole_animation_top_4
+	bounds: 6, 4133, 3100, 1523
+	offsets: 1, 1, 3102, 1526
+supermassive black hole/black_hole_animation_top_5
+	bounds: 3112, 2897, 3080, 1522
+	offsets: 1, 1, 3082, 1524
+supermassive black hole/black_hole_animation_top_6
+	bounds: 6, 1079, 3086, 1522
+	offsets: 1, 2, 3088, 1525
+supermassive black hole/black_hole_lower_glow
+	bounds: 6, 6, 1509, 1067
+	offsets: 5, 5, 1519, 1078
+supermassive black hole/black_hole_upper_glow
+	bounds: 6, 5662, 3675, 1811
+	offsets: 4, 5, 3683, 1821

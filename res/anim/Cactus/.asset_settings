@@ -1,0 +1,14 @@
+[
+  {
+    "id": "anim/Cactus/Cactus_Projectile/Cactus_Projectile.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  },
+  {
+    "id": "anim/Cactus/Cactus.png",
+    "texture": {
+      "resample_multiplier": 1
+    }
+  }
+]

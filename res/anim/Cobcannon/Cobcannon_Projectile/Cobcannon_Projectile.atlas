@@ -1,0 +1,11 @@
+Cobcannon_Projectile.png
+	size: 292, 84
+	filter: Linear, Linear
+	scale: 0.5
+popcorn1
+	bounds: 230, 18, 63, 57
+	rotate: 90
+popcorn2
+	bounds: 166, 19, 61, 62
+sweetcorn
+	bounds: 3, 3, 160, 78

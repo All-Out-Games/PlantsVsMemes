@@ -1,0 +1,26 @@
+Sunflower.png
+	size: 384, 100
+	filter: Linear, Linear
+	scale: 0.5
+body
+	bounds: 282, 41, 24, 54
+head
+	bounds: 109, 16, 79, 64
+	rotate: 90
+leaf_L
+	bounds: 204, 45, 50, 35
+	rotate: 90
+leaf_R
+	bounds: 242, 52, 43, 38
+	rotate: 90
+petals_normal
+	bounds: 3, 3, 103, 92
+root_leg_L
+	bounds: 346, 50, 45, 35
+	rotate: 90
+root_leg_R
+	bounds: 309, 50, 45, 35
+	rotate: 90
+shadow
+	bounds: 176, 19, 76, 25
+	rotate: 90

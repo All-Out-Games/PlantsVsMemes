@@ -1,0 +1,253 @@
+MSL(OSX)
+Vertex Shader:
+#include <metal_stdlib>
+#include <simd/simd.h>
+
+using namespace metal;
+
+struct type_params
+{
+    float4x4 mvp;
+    float4 resolution_time;
+    int matrix_image_size;
+};
+
+struct vs_main_out
+{
+    float4 out_var_COLOR0 [[user(locn0)]];
+    float2 out_var_UV [[user(locn1)]];
+    float2 out_var_TEXCOORD0 [[user(locn2)]];
+    float2 out_var_TEXCOORD1 [[user(locn3)]];
+    float4 gl_Position [[position]];
+};
+
+struct vs_main_in
+{
+    float2 in_var_POS [[attribute(0)]];
+    float2 in_var_UV [[attribute(1)]];
+    float2 in_var_UV1 [[attribute(2)]];
+    float4 in_var_COLOR [[attribute(3)]];
+};
+
+vertex vs_main_out vs_main(vs_main_in in [[stage_in]], constant type_params& params [[buffer(0)]])
+{
+    vs_main_out out = {};
+    float4 _42 = params.mvp * float4(in.in_var_POS, 0.0, 1.0);
+    out.out_var_COLOR0 = in.in_var_COLOR;
+    out.out_var_UV = in.in_var_UV;
+    out.out_var_TEXCOORD0 = (_42.xy + float2(1.0)) * float2(0.5);
+    out.out_var_TEXCOORD1 = in.in_var_UV1;
+    out.gl_Position = _42;
+    return out;
+}
+
+
+
+Fragment Shader:
+#include <metal_stdlib>
+#include <simd/simd.h>
+
+using namespace metal;
+
+struct type_user_input
+{
+    float tintStrength;
+    float shadowBoost;
+    float paletteBlackPoint;
+    float paletteWhitePoint;
+    float paletteGamma;
+    packed_float2 voidTiling;
+    float2 voidScroll;
+    float voidRotation;
+    float2 voidScreenTiling;
+    float distortStrength;
+    float distortScale;
+    float outlineLow;
+    float outlineHigh;
+    float outlineDarken;
+    float outlineLumaMin;
+    float outlineLumaMax;
+};
+
+struct type_params
+{
+    float4x4 mvp;
+    float4 resolution_time;
+    int matrix_image_size;
+};
+
+struct ps_main_out
+{
+    float4 out_var_SV_Target0 [[color(0)]];
+};
+
+struct ps_main_in
+{
+    float4 in_var_COLOR0 [[user(locn0)]];
+    float2 in_var_UV [[user(locn1)]];
+    float2 in_var_TEXCOORD0 [[user(locn2)]];
+    float2 in_var_TEXCOORD1 [[user(locn3)]];
+};
+
+fragment ps_main_out ps_main(ps_main_in in [[stage_in]], constant type_params& params [[buffer(0)]], constant type_user_input& user_input [[buffer(1)]], texture2d<float> albedo [[texture(0)]], texture2d<float> noise_texture [[texture(1)]], texture2d<float> void_texture [[texture(2)]], sampler albedo_smp [[sampler(0)]], sampler noise_texture_smp [[sampler(1)]], sampler void_texture_smp [[sampler(2)]])
+{
+    ps_main_out out = {};
+    float4 _80 = in.in_var_COLOR0 * albedo.sample(albedo_smp, in.in_var_UV);
+    float _90 = smoothstep(user_input.outlineLow, user_input.outlineHigh, precise::max(_80.x, precise::max(_80.y, _80.z)));
+    float2 _104 = float2(step(0.0, user_input.voidScreenTiling.x + user_input.voidScreenTiling.y));
+    float _116 = precise::max(9.9999997473787516355514526367188e-05, params.resolution_time.x / precise::max(1.0, params.resolution_time.y));
+    float _119 = sin(user_input.voidRotation);
+    float _120 = cos(user_input.voidRotation);
+    float2 _121 = mix(in.in_var_TEXCOORD1, float2(in.in_var_TEXCOORD0.x, 1.0 - in.in_var_TEXCOORD0.y), _104) - float2(0.5);
+    float2 _130 = float2(_121.x * _116, _121.y) * float2x2(float2(_120, -_119), float2(_119, _120));
+    float2 _139 = fma(float2(_130.x / _116, _130.y), mix(float2(user_input.voidTiling), user_input.voidScreenTiling, _104), float2(0.5)) + (user_input.voidScroll * params.resolution_time.z);
+    float2 _146 = (_139 * user_input.distortScale) + float2(params.resolution_time.z * 0.0500000007450580596923828125, params.resolution_time.z * (-0.039999999105930328369140625));
+    float2 _154 = (float2(1.0, fma(-2.0, cos(params.resolution_time.z), 2.0)) * params.resolution_time.z) * 20.0;
+    float4 _157 = noise_texture.sample(noise_texture_smp, (_154 + (_146 + float2(1.2999999523162841796875, 2.099999904632568359375))));
+    float _158 = _157.x;
+    float4 _163 = noise_texture.sample(noise_texture_smp, (_154 + (_146 + float2(-2.7000000476837158203125, 0.89999997615814208984375))));
+    float _164 = _163.x;
+    float _199 = _80.w;
+    out.out_var_SV_Target0 = float4(fast::clamp(mix(mix(_80.xyz, void_texture.sample(void_texture_smp, fract(_139 + (((float2(_158 * _158, _164 * _164) - float2(0.5)) * 2.0) * user_input.distortStrength))).xyz, float3(fast::clamp(user_input.tintStrength, 0.0, 1.0))), float3(mix(user_input.outlineLumaMin, user_input.outlineLumaMax, _90)), float3((1.0 - _90) * fast::clamp(user_input.outlineDarken, 0.0, 1.0))), float3(0.0), float3(1.0)) * _199, _199);
+    return out;
+}
+
+
+MSL(iOS)
+Vertex Shader:
+#include <metal_stdlib>
+#include <simd/simd.h>
+
+using namespace metal;
+
+struct type_params
+{
+    float4x4 mvp;
+    float4 resolution_time;
+    int matrix_image_size;
+};
+
+struct vs_main_in
+{
+    float2 in_var_POS [[attribute(0)]];
+    float2 in_var_UV [[attribute(1)]];
+    float2 in_var_UV1 [[attribute(2)]];
+    float4 in_var_COLOR [[attribute(3)]];
+};
+
+struct vs_main_out
+{
+    float4 out_out_var_COLOR0 [[user(locn0)]];
+    float2 out_out_var_UV [[user(locn1)]];
+    float2 out_out_var_TEXCOORD0 [[user(locn2)]];
+    float2 out_out_var_TEXCOORD1 [[user(locn3)]];
+    float4 out_gl_Position [[position]];
+};
+
+struct vs_main_in_1
+{
+    float2 in_in_var_POS [[attribute(0)]];
+    float2 in_in_var_UV [[attribute(1)]];
+    float2 in_in_var_UV1 [[attribute(2)]];
+    float4 in_in_var_COLOR [[attribute(3)]];
+};
+
+vertex vs_main_out vs_main(vs_main_in_1 in [[stage_in]], constant type_params& params [[buffer(0)]])
+{
+    vs_main_out out = {};
+    vs_main_out out_1 = {};
+    float4 _42 = params.mvp * float4(in.in.in_var_POS, 0.0, 1.0);
+    out.out.out_var_COLOR0 = in.in.in_var_COLOR;
+    out.out.out_var_UV = in.in.in_var_UV;
+    out.out.out_var_TEXCOORD0 = (_42.xy + float2(1.0)) * float2(0.5);
+    out.out.out_var_TEXCOORD1 = in.in.in_var_UV1;
+    out.gl_Position = _42;
+    return out_1;
+}
+
+
+
+Fragment Shader:
+#include <metal_stdlib>
+#include <simd/simd.h>
+
+using namespace metal;
+
+struct type_user_input
+{
+    float tintStrength;
+    float shadowBoost;
+    float paletteBlackPoint;
+    float paletteWhitePoint;
+    float paletteGamma;
+    packed_float2 voidTiling;
+    float2 voidScroll;
+    float voidRotation;
+    float2 voidScreenTiling;
+    float distortStrength;
+    float distortScale;
+    float outlineLow;
+    float outlineHigh;
+    float outlineDarken;
+    float outlineLumaMin;
+    float outlineLumaMax;
+};
+
+struct type_params
+{
+    float4x4 mvp;
+    float4 resolution_time;
+    int matrix_image_size;
+};
+
+struct ps_main_out
+{
+    float4 out_var_SV_Target0 [[color(0)]];
+};
+
+struct ps_main_in
+{
+    float4 in_var_COLOR0 [[user(locn0)]];
+    float2 in_var_UV [[user(locn1)]];
+    float2 in_var_TEXCOORD0 [[user(locn2)]];
+    float2 in_var_TEXCOORD1 [[user(locn3)]];
+};
+
+struct ps_main_out_1
+{
+    float4 out_out_var_SV_Target0 [[color(0)]];
+};
+
+struct ps_main_in_1
+{
+    float4 in_in_var_COLOR0 [[user(locn0)]];
+    float2 in_in_var_UV [[user(locn1)]];
+    float2 in_in_var_TEXCOORD0 [[user(locn2)]];
+    float2 in_in_var_TEXCOORD1 [[user(locn3)]];
+};
+
+fragment ps_main_out_1 ps_main(ps_main_in_1 in [[stage_in]], constant type_params& params [[buffer(0)]], constant type_user_input& user_input [[buffer(1)]], texture2d<float> albedo [[texture(0)]], texture2d<float> noise_texture [[texture(1)]], texture2d<float> void_texture [[texture(2)]], sampler albedo_smp [[sampler(0)]], sampler noise_texture_smp [[sampler(1)]], sampler void_texture_smp [[sampler(2)]])
+{
+    ps_main_out out = {};
+    ps_main_out_1 out_1 = {};
+    float4 _80 = in.in.in_var_COLOR0 * albedo.sample(albedo_smp, in.in.in_var_UV);
+    float _90 = smoothstep(user_input.outlineLow, user_input.outlineHigh, precise::max(_80.x, precise::max(_80.y, _80.z)));
+    float2 _104 = float2(step(0.0, user_input.voidScreenTiling.x + user_input.voidScreenTiling.y));
+    float _116 = precise::max(9.9999997473787516355514526367188e-05, params.resolution_time.x / precise::max(1.0, params.resolution_time.y));
+    float _119 = sin(user_input.voidRotation);
+    float _120 = cos(user_input.voidRotation);
+    float2 _121 = mix(in.in.in_var_TEXCOORD1, float2(in.in.in_var_TEXCOORD0.x, 1.0 - in.in.in_var_TEXCOORD0.y), _104) - float2(0.5);
+    float2 _130 = float2(_121.x * _116, _121.y) * float2x2(float2(_120, -_119), float2(_119, _120));
+    float2 _139 = fma(float2(_130.x / _116, _130.y), mix(float2(user_input.voidTiling), user_input.voidScreenTiling, _104), float2(0.5)) + (user_input.voidScroll * params.resolution_time.z);
+    float2 _146 = (_139 * user_input.distortScale) + float2(params.resolution_time.z * 0.0500000007450580596923828125, params.resolution_time.z * (-0.039999999105930328369140625));
+    float2 _154 = (float2(1.0, fma(-2.0, cos(params.resolution_time.z), 2.0)) * params.resolution_time.z) * 20.0;
+    float4 _157 = noise_texture.sample(noise_texture_smp, (_154 + (_146 + float2(1.2999999523162841796875, 2.099999904632568359375))));
+    float _158 = _157.x;
+    float4 _163 = noise_texture.sample(noise_texture_smp, (_154 + (_146 + float2(-2.7000000476837158203125, 0.89999997615814208984375))));
+    float _164 = _163.x;
+    float _199 = _80.w;
+    out.out.out_var_SV_Target0 = float4(fast::clamp(mix(mix(_80.xyz, void_texture.sample(void_texture_smp, fract(_139 + (((float2(_158 * _158, _164 * _164) - float2(0.5)) * 2.0) * user_input.distortStrength))).xyz, float3(fast::clamp(user_input.tintStrength, 0.0, 1.0))), float3(mix(user_input.outlineLumaMin, user_input.outlineLumaMax, _90)), float3((1.0 - _90) * fast::clamp(user_input.outlineDarken, 0.0, 1.0))), float3(0.0), float3(1.0)) * _199, _199);
+    return out_1;
+}
+
+

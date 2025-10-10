@@ -1,0 +1,58 @@
+GLSL
+Vertex Shader:
+#version 300 es
+precision highp float;
+precision highp int;
+
+struct type_params
+{
+    mat4 mvp;
+    vec4 resolution_time;
+    int matrix_image_size;
+};
+
+uniform type_params params;
+
+layout(location = 0) in vec2 in_var_POS;
+layout(location = 1) in vec2 in_var_UV;
+layout(location = 3) in vec4 in_var_COLOR;
+out vec4 VARYING_0;
+out vec2 VARYING_0_1;
+out vec2 VARYING_0_2;
+
+void main()
+{
+    vec4 _39 = vec4(in_var_POS, 0.0, 1.0) * params.mvp;
+    VARYING_0 = in_var_COLOR;
+    VARYING_0_1 = in_var_UV;
+    VARYING_0_2 = (_39.xy + vec2(1.0)) * vec2(0.5);
+    gl_Position = _39;
+}
+
+
+
+Fragment Shader:
+#version 300 es
+precision highp float;
+precision highp int;
+
+struct type_user_input
+{
+    float bleachStrength;
+};
+
+uniform type_user_input user_input;
+
+uniform highp sampler2D albedo;
+
+in vec4 VARYING_0;
+in vec2 VARYING_0_1;
+layout(location = 0) out vec4 out_var_SV_Target0;
+
+void main()
+{
+    vec4 _39 = VARYING_0 * texture(albedo, VARYING_0_1);
+    float _47 = _39.w;
+    out_var_SV_Target0 = vec4(clamp(mix(_39.xyz, vec3(1.0), vec3(clamp(user_input.bleachStrength, 0.0, 1.0))), vec3(0.0), vec3(1.0)) * _47, _47);
+}
+
