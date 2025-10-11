@@ -21,6 +21,7 @@ public class BrainrotCatalogEntry
 public static class BrainrotCatalog
 {
 	public static readonly Dictionary<string, BrainrotCatalogEntry> Entries = new Dictionary<string, BrainrotCatalogEntry> { };
+	public static readonly Dictionary<string, Item_Definition> ItemDefinitions = new Dictionary<string, Item_Definition>();
 	private static int NextStableId;
 	// Species evolution map: from catalogId -> to catalogId
 	public static readonly Dictionary<string, string> EvolutionMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
@@ -250,6 +251,7 @@ public static class BrainrotCatalog
 	{
 		RegisterAllNewMemes();
 		RebuildSortedIndex();
+		InitializeItemDefinitions();
 		SetConditionalPercentsWithinRarity(BrainrotValueRarity.Mythic, new Dictionary<string, float> {
 			{ "DragonCannelloni", 0.01f },
 			{ "LuckyBlock_Mythic", 0.01f },
@@ -961,6 +963,95 @@ public static class BrainrotCatalog
 				if (!StableIdToKey.ContainsKey(sid)) StableIdToKey[sid] = kv.Key;
 				if (!KeyToStableId.ContainsKey(kv.Key)) KeyToStableId[kv.Key] = sid;
 			}
+		}
+	}
+
+	public static void InitializeItemDefinitions()
+	{
+		ItemDefinitions.Clear();
+		
+		foreach (var kv in Entries)
+		{
+			string brainrotId = kv.Key;
+			var entry = kv.Value;
+			
+			if (entry == null)
+				continue;
+			
+			var itemDesc = new ItemDescription()
+			{
+				Id = brainrotId,
+				Name = entry.Name ?? brainrotId,
+				StackSize = 1,
+				Icon = entry.Sprite.Name,
+			};
+
+			var itemDef = Item_Definition.Create(itemDesc);
+			ItemDefinitions[brainrotId] = itemDef;
+		}
+		
+		Log.Info($"Initialized {ItemDefinitions.Count} Brainrot Item Definitions");
+	}
+
+	static string TryGetTexturePath(string brainrotId, Texture texture)
+	{
+		if (texture == null) return string.Empty;
+		
+		// Common paths for brainrot textures based on the References file
+		string[] possiblePaths = new string[]
+		{
+			$"Textures/memes/{brainrotId}.png",
+			$"Textures/memes/new/{brainrotId}.png",
+			$"Textures/memes/woodsevent/{brainrotId}.png",
+			$"Textures/memes/luck_blocks/{brainrotId}.png",
+		};
+		
+		// For now, try the most common path
+		// TODO: Store actual paths in BrainrotCatalogEntry for accuracy
+		return $"Textures/memes/{brainrotId}.png";
+	}
+
+	public static Item_Definition GetItemDefinition(string brainrotId)
+	{
+		if (ItemDefinitions.TryGetValue(brainrotId, out var itemDef))
+			return itemDef;
+		return null;
+	}
+
+	// Helper method to grant a Brainrot item to a player's inventory
+	// This should only be called on the server
+	public static bool GrantBrainrotToPlayer(MyPlayer player, string brainrotId, int quantity = 1)
+	{
+		if (!Network.IsServer)
+		{
+			Log.Info("GrantBrainrotToPlayer must be called on the server");
+			return false;
+		}
+
+		if (player == null || !player.Entity.Alive())
+		{
+			Log.Info("Invalid player");
+			return false;
+		}
+
+		var itemDef = GetItemDefinition(brainrotId);
+		if (itemDef == null)
+		{
+			Log.Info($"Brainrot '{brainrotId}' not found in catalog");
+			return false;
+		}
+
+		var item = Inventory.CreateItem(itemDef, quantity);
+		if (Inventory.CanMoveItemToInventory(item, player.DefaultInventory, out var willDestroyItem))
+		{
+			Inventory.MoveItemToInventory(item, player.DefaultInventory);
+			return true;
+		}
+		else
+		{
+			Inventory.DestroyItem(item);
+			Log.Info($"Could not add item to player inventory - inventory full");
+			return false;
 		}
 	}
 

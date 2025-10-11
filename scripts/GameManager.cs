@@ -48,6 +48,14 @@ public class GameManager : System<GameManager>
             StackSize = 1,
         });
 
+        MyPlayer.CobcannonItem = Item_Definition.Create(new ItemDescription()
+        {
+            Id = "cobcannon",
+            Icon = "tile.png",
+            Name = "Cobcannon",
+            StackSize = 1,
+        });
+
         if (Network.IsClient)
         {
             hudEntity = Entity.Create();

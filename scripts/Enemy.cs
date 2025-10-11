@@ -61,6 +61,29 @@ public partial class Enemy : Component
         if (!Network.IsServer)
             return;
 
+        if (OwnerPlot.Alive())
+        {
+            if (OwnerPlot.Owner.Alive())
+            {
+                bool hasRoom = false;
+                foreach (var item in OwnerPlot.Owner.DefaultInventory.Items)
+                {
+                    if (item == null)
+                    {
+                        hasRoom = true;
+                        break;
+                    }
+                }
+
+                if (hasRoom)
+                {
+                    var itemDefinition = BrainrotCatalog.GetItemDefinition(EnemyType);
+                    var itemInstance = Inventory.CreateItem(itemDefinition, 1);
+                    Inventory.MoveItemToInventory(itemInstance, OwnerPlot.Owner.DefaultInventory);
+                }
+            }
+        }
+
         Network.Despawn(Entity);
         Entity.Destroy();
     }

@@ -10,10 +10,9 @@ public partial class Turret : Component
     [Serialized] public int GridY = 0;
     [Serialized] public Plot OwnerPlot;
 
-    float lastAttackTime = 0;
+    [Serialized] public float TimeUntilNextAttack = 0;
+
     Spine_Animator spineAnimator;
-    bool isShooting = false;
-    float shootAnimTimer = 0;
     Entity currentTarget;
 
     public override void Awake()
@@ -28,34 +27,23 @@ public partial class Turret : Component
         var spinePath = CollectibleDatabase.GetSpinePath(TurretType);
         var skeleton = Assets.GetAsset<SpineSkeletonAsset>(spinePath);
         spineAnimator.SpineInstance.SetSkeleton(skeleton);
-        spineAnimator.SpineInstance.SetAnimation("Idle", true);
         spineAnimator.SpineInstance.Scale = new Vector2(2, 2);
-
         spineAnimator.DepthOffset = TurretDatabase.GetDepthOffset(TurretType);
+        spineAnimator.OnEvent += OnAnimationEvent;
+        var sm = StateMachine.Create();
+        spineAnimator.SpineInstance.SetStateMachine(sm, true);
+        var mainLayer = sm.CreateLayer("main_layer", 0);
+        var idleState = mainLayer.CreateState("Idle", 0, true);
+        var shootState = mainLayer.CreateState("Shoot", 0, false);
+        var shootTrigger = sm.CreateVariable("shoot", StateMachineVariableKind.TRIGGER);
+        mainLayer.InitialState = idleState;
+        mainLayer.CreateTransition(idleState, shootState, false).CreateTriggerCondition(shootTrigger);
+        mainLayer.CreateTransition(shootState, idleState, true);
 
-        // Set up animation event listener for projectile spawning
-        if (Network.IsClient)
-        {
-            spineAnimator.OnEvent += OnAnimationEvent;
-        }
-
-        OwnerPlot.OccupiedBy[GridX, GridY] = Entity;
+        OwnerPlot.TurretsOccupiedBy[GridX, GridY] = Entity;
     }
 
     public override void Update()
-    {
-        if (Network.IsServer)
-        {
-            ServerUpdate();
-        }
-
-        if (Network.IsClient)
-        {
-            ClientUpdate();
-        }
-    }
-
-    void ServerUpdate()
     {
         if (!OwnerPlot.Alive() || !OwnerPlot.Owner.Alive())
         {
@@ -64,7 +52,8 @@ public partial class Turret : Component
             return;
         }
 
-        if (Time.TimeSinceStartup - lastAttackTime < AttackCooldown)
+        TimeUntilNextAttack -= Time.DeltaTime;
+        if (TimeUntilNextAttack > 0)
         {
             return;
         }
@@ -73,26 +62,8 @@ public partial class Turret : Component
         if (target.Alive())
         {
             currentTarget = target;
-            lastAttackTime = Time.TimeSinceStartup;
-            CallClient_PlayShootAnimation(target);
-            // Server also spawns its own projectile on the fire event
-            SpawnProjectile(target);
-        }
-    }
-
-    void ClientUpdate()
-    {
-        if (isShooting)
-        {
-            shootAnimTimer += Time.DeltaTime;
-            if (shootAnimTimer > 0.5f)
-            {
-                isShooting = false;
-                if (spineAnimator != null)
-                {
-                    spineAnimator.SpineInstance.SetAnimation("Idle", true);
-                }
-            }
+            TimeUntilNextAttack = AttackCooldown;
+            spineAnimator.SpineInstance.StateMachine.SetTrigger("shoot");
         }
     }
 
@@ -131,12 +102,25 @@ public partial class Turret : Component
         if (!target.Alive())
             return;
 
-        // Get spawn position from bone
-        var spawnPos = spineAnimator.GetBonePosition("PROJECTILE_SPAWN");
+        var projectileType = GetProjectileType(TurretType);
+        bool isCobcannon = projectileType == "cob";
+
+        // Cobcannon spawns above target, others spawn at turret bone
+        Vector2 spawnPos;
+        if (isCobcannon)
+        {
+            // Spawn above the target
+            float heightAboveTarget = 12f;
+            spawnPos = target.Position + new Vector2(0, heightAboveTarget);
+        }
+        else
+        {
+            // Get spawn position from bone
+            spawnPos = spineAnimator.GetBonePosition("PROJECTILE_SPAWN");
+        }
+
         var projectileEntity = Entity.Create();
         projectileEntity.Position = spawnPos;
-
-        var projectileType = GetProjectileType(TurretType);
         
         var projSpineAnimator = projectileEntity.AddComponent<Spine_Animator>();
         var spinePath = GetProjectileSpinePath(projectileType);
@@ -150,6 +134,7 @@ public partial class Turret : Component
         projectile.Damage = Damage;
         projectile.ProjectileType = projectileType;
         projectile.IsServerProjectile = Network.IsServer;
+        projectile.IsCobcannon = isCobcannon;
 
         // Don't network spawn - each client creates their own
     }
@@ -187,18 +172,6 @@ public partial class Turret : Component
             "cobcannon" => "cob",
             _ => "pea",
         };
-    }
-
-    [ClientRpc]
-    public void PlayShootAnimation(Entity target)
-    {
-        if (spineAnimator != null)
-        {
-            currentTarget = target;
-            spineAnimator.SpineInstance.SetAnimation("Shoot", false);
-            isShooting = true;
-            shootAnimTimer = 0;
-        }
     }
 }
 

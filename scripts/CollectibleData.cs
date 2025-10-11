@@ -29,19 +29,6 @@ public class CollectibleEnemy
 
 public static class CollectibleDatabase
 {
-    public static CollectibleEnemy GetCollectibleData(string enemyType)
-    {
-        return enemyType switch
-        {
-            "peashooter" => new CollectibleEnemy("peashooter", 1, 1, 1.0f),
-            "sunflower" => new CollectibleEnemy("sunflower", 1, 1, 0.5f),
-            "cactus" => new CollectibleEnemy("cactus", 1, 2, 2.0f),
-            "walnut" => new CollectibleEnemy("walnut", 2, 2, 3.0f),
-            "starfruit" => new CollectibleEnemy("starfruit", 1, 1, 1.5f),
-            _ => new CollectibleEnemy("peashooter", 1, 1, 1.0f),
-        };
-    }
-
     public static string GetSpinePath(string enemyType)
     {
         return enemyType switch
@@ -60,6 +47,19 @@ public static class CollectibleDatabase
 
 public static class TurretDatabase
 {
+    public static bool IsTurret(string itemId)
+    {
+        return itemId switch
+        {
+            "peashooter" => true,
+            "cactus" => true,
+            "starfruit" => true,
+            "melonpult" => true,
+            "cobcannon" => true,
+            _ => false,
+        };
+    }
+
     public static Vector2 GetPositionOffset(string turretType)
     {
         return turretType switch
@@ -129,6 +129,7 @@ public static class TurretDatabase
             "cactus" => (8.0f, 2.0f, 15),
             "starfruit" => (5.0f, 1.0f, 8),
             "melonpult" => (10.0f, 3.0f, 30),
+            "cobcannon" => (10.0f, 3.0f, 30),
             _ => (6.0f, 1.5f, 10),
         };
     }

@@ -7,6 +7,7 @@ public class Projectile : Component
     public float MoveSpeed = 8.0f;
     public string ProjectileType = "pea";
     public bool IsServerProjectile = false;
+    public bool IsCobcannon = false;
 
     Spine_Animator spineAnimator;
 
@@ -47,11 +48,11 @@ public class Projectile : Component
         Entity.Position += normalizedDirection * MoveSpeed * Time.DeltaTime;
 
         // Update rotation
-        if (Network.IsClient && spineAnimator != null)
-        {
-            var rotation = MathF.Atan2(direction.Y, direction.X) * (180.0f / MathF.PI);
-            spineAnimator.Entity.Rotation = rotation;
-        }
+        // if (Network.IsClient && spineAnimator != null)
+        // {
+        //     var rotation = MathF.Atan2(direction.Y, direction.X) * (180.0f / MathF.PI);
+        //     spineAnimator.Entity.Rotation = rotation;
+        // }
     }
 
     void HitTarget()
