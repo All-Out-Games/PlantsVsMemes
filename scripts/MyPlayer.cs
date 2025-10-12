@@ -92,8 +92,17 @@ public partial class MyPlayer : Player
         {
             for (var y = 0; y < localPlot.CollectiblesPlacementTiles.GetLength(1); y++)
             {
-                if (localPlot.CollectiblesPlacementTiles[x, y] != null) {
-                    localPlot.CollectiblesPlacementTiles[x, y].Tint = new Vector4(100/255f, 100/255f, 100/255f, 125/255f);
+                if (localPlot.CollectiblesPlacementTiles[x, y] != null) 
+                {
+                    // Check if this tile is occupied by a collectible - color it yellow if so
+                    if (localPlot.CollectiblesPlacementOccupiedBy[x, y].Alive())
+                    {
+                        localPlot.CollectiblesPlacementTiles[x, y].Tint = new Vector4(1.0f, 1.0f, 0.3f, 0.5f); // Yellow tint
+                    }
+                    else
+                    {
+                        localPlot.CollectiblesPlacementTiles[x, y].Tint = new Vector4(100/255f, 100/255f, 100/255f, 125/255f);
+                    }
                 }
             }
         }
@@ -134,15 +143,41 @@ public partial class MyPlayer : Player
                         var sa = CollectibleGhost.AddComponent<Sprite_Renderer>();
                         var defn = BrainrotCatalog.Get(item.Definition.Id);
                         sa.Sprite = defn.Sprite;
+                        
                     }
 
                     var collectiblesPlacementTileCoords = localPlot.GetCollectiblesPlacementTileCoordsFromWorldPosition(Input.GetMousePosition());
                     var collectiblesPlacementTileX = collectiblesPlacementTileCoords.Item1;
                     var collectiblesPlacementTileY = collectiblesPlacementTileCoords.Item2;
+                    
+                    // Get the size of this collectible
+                    var size = CollectibleDatabase.GetCollectibleSize(item.Definition.Id);
+                    int width = size.width;
+                    int height = size.height;
+                    
                     if (collectiblesPlacementTileX < localPlot.CollectiblesPlacementTiles.GetLength(0) && collectiblesPlacementTileY < localPlot.CollectiblesPlacementTiles.GetLength(1) && collectiblesPlacementTileX >= 0 && collectiblesPlacementTileY >= 0)
                     {
-                        localPlot.CollectiblesPlacementTiles[collectiblesPlacementTileX, collectiblesPlacementTileY].Tint = new Vector4(50/255f, 100/255f, 50/255f, 125/255f);
-                        CollectibleGhost.Position = localPlot.GetWorldPositionForCollectiblesPlacementTile(collectiblesPlacementTileX, collectiblesPlacementTileY);
+                        // Color all tiles that this collectible would occupy
+                        bool canPlace = localPlot.CanPlaceCollectibleAt(collectiblesPlacementTileX, collectiblesPlacementTileY, width, height);
+                        Vector4 tileColor = canPlace ? new Vector4(50/255f, 100/255f, 50/255f, 125/255f) : new Vector4(100/255f, 50/255f, 50/255f, 125/255f);
+                        
+                        for (int dx = 0; dx < width; dx++)
+                        {
+                            for (int dy = 0; dy < height; dy++)
+                            {
+                                int checkX = collectiblesPlacementTileX + dx;
+                                int checkY = collectiblesPlacementTileY + dy;
+                                if (checkX < localPlot.CollectiblesPlacementTiles.GetLength(0) && 
+                                    checkY < localPlot.CollectiblesPlacementTiles.GetLength(1) && 
+                                    checkX >= 0 && checkY >= 0)
+                                {
+                                    localPlot.CollectiblesPlacementTiles[checkX, checkY].Tint = tileColor;
+                                }
+                            }
+                        }
+                        
+                        // Position ghost at center of occupied tiles
+                        CollectibleGhost.Position = localPlot.GetCenteredWorldPositionForCollectible(collectiblesPlacementTileX, collectiblesPlacementTileY, width, height);
                     }
                 }
             }
@@ -174,7 +209,8 @@ public partial class MyPlayer : Player
             else 
             {
                 var pos = localPlot.GetCollectiblesPlacementTileCoordsFromWorldPosition(Input.GetMousePosition());
-                if (localPlot.CanPlaceCollectibleAt(pos.Item1, pos.Item2, 1, 1))
+                var size = CollectibleDatabase.GetCollectibleSize(hotbarResult.DroppedItem.Definition.Id);
+                if (localPlot.CanPlaceCollectibleAt(pos.Item1, pos.Item2, size.width, size.height))
                 {
                     CallServer_PlaceCollectible(pos.Item1, pos.Item2, hotbarResult.DroppedItem.Id);
                 }
@@ -255,7 +291,12 @@ public partial class MyPlayer : Player
         if (playerPlot == null)
             return;
 
-        if (!playerPlot.CanPlaceCollectibleAt(x, y, 1, 1))
+        // Get the collectible size
+        var size = CollectibleDatabase.GetCollectibleSize(itemId);
+        int width = size.width;
+        int height = size.height;
+
+        if (!playerPlot.CanPlaceCollectibleAt(x, y, width, height))
             return;
             
         Item_Instance itemToPlace = null;
@@ -272,9 +313,8 @@ public partial class MyPlayer : Player
             return;
 
         var collectibleEntity = Entity.Create();
-        collectibleEntity.Position = playerPlot.GetWorldPositionForCollectiblesPlacementTile(x, y);
-        // collectibleEntity.Position += new Vector2(0, RNG.RangeFloat(ref RNGSeed, -0.01f, 0.01f));
-        // collectibleEntity.Position += CollectibleDatabase.GetPositionOffset(itemToPlace.Definition.Id);
+        // Position at center of occupied tiles
+        collectibleEntity.Position = playerPlot.GetCenteredWorldPositionForCollectible(x, y, width, height);
         collectibleEntity.AddComponent<Sprite_Renderer>();
         var collectible = collectibleEntity.AddComponent<PlacedCollectible>(onBeforeAwake: (p) => {
             p.GridX = x;

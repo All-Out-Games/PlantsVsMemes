@@ -29,6 +29,63 @@ public class CollectibleEnemy
 
 public static class CollectibleDatabase
 {
+    static Dictionary<string, (int width, int height)> collectibleSizes = new Dictionary<string, (int, int)>();
+    static bool isInitialized = false;
+
+    public static void Initialize()
+    {
+        if (isInitialized)
+            return;
+
+        isInitialized = true;
+
+        string debugStr = "";
+
+        // Measure all brainrot collectibles
+        foreach (var entry in BrainrotCatalog.Entries)
+        {
+            string collectibleId = entry.Key;
+            var catalogEntry = entry.Value;
+            
+            // Create a temporary entity to measure sprite size
+            var tempEntity = Entity.Create();
+            var spriteRenderer = tempEntity.AddComponent<Sprite_Renderer>();
+            spriteRenderer.Sprite = catalogEntry.Sprite;
+            
+            // Get world size of the sprite
+            var worldSize = spriteRenderer.GetWorldSize();
+            
+            // Calculate tile dimensions (each tile is 1 unit)
+            int tileWidth = Math.Max(1, (int)Math.Round(worldSize.X));
+            // int tileHeight = Math.Max(1, (int)Math.Round(worldSize.Y));
+            int tileHeight = 1;
+            
+            // Store the size
+            collectibleSizes[collectibleId] = (tileWidth, tileHeight);
+
+            debugStr += $"{collectibleId}: {tileWidth}x{tileHeight}\n";
+            
+            // Clean up
+            tempEntity.Destroy();
+        }
+
+        Log.Info(debugStr);
+
+        // Log.Info($"CollectibleDatabase: Initialized {collectibleSizes.Count} collectible sizes");
+    }
+
+    public static (int width, int height) GetCollectibleSize(string collectibleId)
+    {
+        if (!isInitialized)
+            Initialize();
+
+        if (collectibleSizes.TryGetValue(collectibleId, out var size))
+            return size;
+
+        // Default size if not found
+        return (1, 1);
+    }
+
     public static string GetSpinePath(string enemyType)
     {
         return enemyType switch

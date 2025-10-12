@@ -189,6 +189,13 @@ public partial class Plot : Component
             {
                 int checkX = x + dx;
                 int checkY = y + dy;
+                
+                // Check bounds
+                if (checkX < 0 || checkX >= CollectiblesPlacementOccupiedBy.GetLength(0) ||
+                    checkY < 0 || checkY >= CollectiblesPlacementOccupiedBy.GetLength(1))
+                    return false;
+                
+                // Check if occupied
                 if (CollectiblesPlacementOccupiedBy[checkX, checkY].Alive())
                     return false;
             }
@@ -205,6 +212,16 @@ public partial class Plot : Component
     public Vector2 GetWorldPositionForCollectiblesPlacementTile(int x, int y)
     {
         return CollectiblesPlacementTiles[x, y].Entity.Position;
+    }
+
+    public Vector2 GetCenteredWorldPositionForCollectible(int x, int y, int width, int height)
+    {
+        // Calculate the center position for a multi-tile collectible
+        float centerOffsetX = (width - 1) * 0.5f;
+        float centerOffsetY = (height - 1) * 0.5f;
+        
+        Vector2 basePos = GetWorldPositionForCollectiblesPlacementTile(x, y);
+        return basePos + new Vector2(centerOffsetX, centerOffsetY);
     }
 
     // [ServerRpc]

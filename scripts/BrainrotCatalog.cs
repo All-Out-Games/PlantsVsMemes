@@ -529,7 +529,7 @@ public static class BrainrotCatalog
 
 		// Pipi Potato
 		RegisterBrainrot(
-			"PipiPotato", "Pipi Potato", BrainrotValueRarity.Legendary, 1100, References.PipiPotato, References.MergeSound_Pipi_Potato,
+			"PipiPotato", "Pipi Potato", BrainrotValueRarity.Legendary, 700, References.PipiPotato, References.MergeSound_Pipi_Potato,
 			"PipiPotatoPipi", "Pipi Potato Pipi", References.PipiPotatoPipi, References.MergeSound_Pipi_Potato_Pipi,
 			"PipiPotatoPipiTatata", "Pipi Potato Pipi Tatata", References.PipiPotatoPipiTatata, References.MergeSound_Pipi_Potato_Pipi_Tatata);
 

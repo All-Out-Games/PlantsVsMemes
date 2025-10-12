@@ -16,6 +16,9 @@ public class GameManager : System<GameManager>
 
     public override void Awake()
     {
+        // Initialize collectible size database (both client and server need this)
+        CollectibleDatabase.Initialize();
+
         MyPlayer.PeashooterItem = Item_Definition.Create(new ItemDescription()
         {
             Id = "peashooter",
