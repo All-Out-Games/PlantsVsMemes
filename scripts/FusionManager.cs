@@ -54,6 +54,13 @@ public partial class FusionSystem : System<FusionSystem>
                                 fusibleList.Add((collectibleId, count, requiredCount, evolutionId));
                             }
                         }
+                        
+                        // Sort by rarity (highest to lowest)
+                        fusibleList.Sort((a, b) => {
+                            var rarityA = BrainrotCatalog.Get(a.id).Rarity;
+                            var rarityB = BrainrotCatalog.Get(b.id).Rarity;
+                            return rarityA.CompareTo(rarityB); // Descending order
+                        });
 
                         if (fusibleList.Count == 0)
                         {
@@ -157,6 +164,13 @@ public partial class FusionSystem : System<FusionSystem>
                                 fusibleList.Add((collectibleId, count, requiredCount, evolutionId));
                             }
                         }
+                        
+                        // Sort by rarity (highest to lowest)
+                        fusibleList.Sort((a, b) => {
+                            var rarityA = BrainrotCatalog.Get(a.id).Rarity;
+                            var rarityB = BrainrotCatalog.Get(b.id).Rarity;
+                            return rarityA.CompareTo(rarityB); // Descending order
+                        });
 
                         if (SelectedIndex < 0 || SelectedIndex >= fusibleList.Count)
                         {
@@ -172,11 +186,11 @@ public partial class FusionSystem : System<FusionSystem>
                         var targetEntry = BrainrotCatalog.Get(selected.evolutionId);
 
                         // Evolution preview section
-                        var previewHeight = 280f;
-                        var previewRect = bgRect.CutTop(previewHeight).Inset(10);
+                        var previewRect = bgRect.CutTop(280f).Inset(10);
+                        var originalPreviewRectWidth = previewRect.Width;
 
                         // Source collectible
-                        var sourceRect = previewRect.LeftRect().CutLeft(previewRect.Width * 0.4f).Inset(5);
+                        var sourceRect = previewRect.CutLeftUnscaled(originalPreviewRectWidth * 0.4f).Inset(5);
                         var sourceBg = sourceEntry.Rarity switch {
                             BrainrotValueRarity.Common => Assets.GetAsset<Texture>($"$AO/ui/kit/Modal Augments/banner_panel_1/int_sq_panel_1_grey.png"),
                             BrainrotValueRarity.Rare => Assets.GetAsset<Texture>($"$AO/ui/kit/Modal Augments/banner_panel_1/int_sq_panel_1_green.png"),
@@ -194,13 +208,8 @@ public partial class FusionSystem : System<FusionSystem>
                         var sourceTs = UI.TextSettingsForButtons with { Size = 24f, WordWrap = true };
                         UI.TextAsync(sourceNameRect, sourceEntry.Name, sourceTs);
 
-                        // Arrow
-                        var arrowRect = previewRect.CenterRect().CutLeft(previewRect.Width * 0.2f).Inset(20);
-                        var arrowTs = UI.TextSettingsForButtons with { Size = 60f };
-                        UI.TextAsync(arrowRect, "→", arrowTs);
-
                         // Target collectible
-                        var targetRect = previewRect.RightRect().CutRight(previewRect.Width * 0.4f).Inset(5);
+                        var targetRect = previewRect.CutRightUnscaled(originalPreviewRectWidth * 0.4f).Inset(5);
                         var targetBg = targetEntry.Rarity switch {
                             BrainrotValueRarity.Common => Assets.GetAsset<Texture>($"$AO/ui/kit/Modal Augments/banner_panel_1/int_sq_panel_1_grey.png"),
                             BrainrotValueRarity.Rare => Assets.GetAsset<Texture>($"$AO/ui/kit/Modal Augments/banner_panel_1/int_sq_panel_1_green.png"),
@@ -218,7 +227,9 @@ public partial class FusionSystem : System<FusionSystem>
                         var targetTs = UI.TextSettingsForButtons with { Size = 24f, WordWrap = true };
                         UI.TextAsync(targetNameRect, targetEntry.Name, targetTs);
 
-                        bgRect.CutTop(previewHeight + 20);
+                        // // Arrow
+                        var arrowTexture = Assets.GetAsset<Texture>("next_arrow.png");
+                        UI.Image(previewRect.FitAspect(arrowTexture.Aspect), arrowTexture);
 
                         // Progress info
                         var progressRect = bgRect.CutTop(100).Inset(10);
@@ -290,23 +301,7 @@ public partial class FusionSystem : System<FusionSystem>
             player.CallClient_ShowMessage($"Not enough copies! Need {requiredCount}", new RPCOptions() { Target = player });
             return;
         }
-        
-        bool hasSpace = false;
-        foreach (var item in player.DefaultInventory.Items)
-        {
-            if (item == null)
-            {
-                hasSpace = true;
-                break;
-            }
-        }
-        
-        if (!hasSpace)
-        {
-            player.CallClient_ShowMessage("Inventory is full!", new RPCOptions() { Target = player });
-            return;
-        }
-        
+
         foreach (var item in itemsToConsume)
         {
             Inventory.DestroyItem(item);

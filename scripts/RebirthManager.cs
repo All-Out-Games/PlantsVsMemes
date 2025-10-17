@@ -4,91 +4,76 @@ public partial class Rebirth : System<Rebirth>
 {
     public List<RebirthConfig> RebirthConfigs = new List<RebirthConfig>();
     
-    // Dynamically populate rebirth configs from BrainrotCatalog
+    // Populate rebirth configs from static Config lists
     void InitializeRebirthConfigs()
     {
         RebirthConfigs.Clear();
         
-        // Rebirth 1: Commons
-        var commonsForR1 = GetRandomBrainrotsByRarity(BrainrotValueRarity.Common, 2);
-        RebirthConfigs.Add(new RebirthConfig() {
-            ItemRequirements = commonsForR1,
-            RequiredQuantityPerItem = 10,
-            CurrencyRequirement = Config.Currency_Gold,
-            CurrencyRequirementAmount = 50000,
-            Rewards = new List<RebirthReward>(){
-                new RebirthReward() { Text = "x1.25 Earnings" },
-            },
-        });
+        // Rebirth 1
+        RebirthConfigs.Add(CreateRebirthConfig(
+            Config.Rebirth1_Items,
+            Config.Currency_Gold,
+            50000,
+            new List<RebirthReward>() { new RebirthReward() { Text = "x1.25 Earnings" } }
+        ));
         
-        // Rebirth 2: Rares
-        var raresForR2 = GetRandomBrainrotsByRarity(BrainrotValueRarity.Rare, 2);
-        RebirthConfigs.Add(new RebirthConfig() {
-            ItemRequirements = raresForR2,
-            RequiredQuantityPerItem = 5,
-            CurrencyRequirement = Config.Currency_Gold,
-            CurrencyRequirementAmount = 250000,
-            Rewards = new List<RebirthReward>(){
-                new RebirthReward() { Text = "x1.56 Earnings" },
-            },
-        });
+        // Rebirth 2
+        RebirthConfigs.Add(CreateRebirthConfig(
+            Config.Rebirth2_Items,
+            Config.Currency_Gold,
+            250000,
+            new List<RebirthReward>() { new RebirthReward() { Text = "x1.56 Earnings" } }
+        ));
         
-        // Rebirth 3: Epics
-        var epicsForR3 = GetRandomBrainrotsByRarity(BrainrotValueRarity.Epic, 2);
-        RebirthConfigs.Add(new RebirthConfig() {
-            ItemRequirements = epicsForR3,
-            RequiredQuantityPerItem = 3,
-            CurrencyRequirement = Config.Currency_Gold,
-            CurrencyRequirementAmount = 1000000,
-            Rewards = new List<RebirthReward>(){
-                new RebirthReward() { Text = "x1.95 Earnings" },
-            },
-        });
+        // Rebirth 3
+        RebirthConfigs.Add(CreateRebirthConfig(
+            Config.Rebirth3_Items,
+            Config.Currency_Gold,
+            1000000,
+            new List<RebirthReward>() { new RebirthReward() { Text = "x1.95 Earnings" } }
+        ));
         
-        // Rebirth 4: Legendaries
-        var legendariesForR4 = GetRandomBrainrotsByRarity(BrainrotValueRarity.Legendary, 2);
-        RebirthConfigs.Add(new RebirthConfig() {
-            ItemRequirements = legendariesForR4,
-            RequiredQuantityPerItem = 2,
-            CurrencyRequirement = Config.Currency_Gold,
-            CurrencyRequirementAmount = 5000000,
-            Rewards = new List<RebirthReward>(){
-                new RebirthReward() { Text = "x2.44 Earnings" },
-            },
-        });
+        // Rebirth 4
+        RebirthConfigs.Add(CreateRebirthConfig(
+            Config.Rebirth4_Items,
+            Config.Currency_Gold,
+            5000000,
+            new List<RebirthReward>() { new RebirthReward() { Text = "x2.44 Earnings" } }
+        ));
         
-        // Rebirth 5: Mythics
-        var mythicsForR5 = GetRandomBrainrotsByRarity(BrainrotValueRarity.Mythic, 2);
-        RebirthConfigs.Add(new RebirthConfig() {
-            ItemRequirements = mythicsForR5,
-            RequiredQuantityPerItem = 1,
-            CurrencyRequirement = Config.Currency_Gold,
-            CurrencyRequirementAmount = 25000000,
-            Rewards = new List<RebirthReward>(){
-                new RebirthReward() { Text = "x3.05 Earnings" },
-            },
-        });
+        // Rebirth 5
+        RebirthConfigs.Add(CreateRebirthConfig(
+            Config.Rebirth5_Items,
+            Config.Currency_Gold,
+            25000000,
+            new List<RebirthReward>() { new RebirthReward() { Text = "x3.05 Earnings" } }
+        ));
     }
     
-    // Get random brainrots of a specific rarity
-    List<string> GetRandomBrainrotsByRarity(BrainrotValueRarity rarity, int count)
+    // Helper to create a RebirthConfig from a list of (itemId, quantity) tuples
+    // Sums up quantities for duplicate items
+    RebirthConfig CreateRebirthConfig(
+        List<(string itemId, int quantity)> items, 
+        string currencyRequirement, 
+        long currencyAmount,
+        List<RebirthReward> rewards)
     {
-        var candidates = new List<string>();
-        
-        foreach (var entry in BrainrotCatalog.Entries)
+        // Sum up quantities for each unique item
+        var itemQuantities = new Dictionary<string, int>();
+        foreach (var (itemId, quantity) in items)
         {
-            // Only include base forms (not evolutions) that match the rarity
-            if (entry.Value.Rarity == rarity && !entry.Value.IsEvolution)
-            {
-                candidates.Add(entry.Key);
-            }
+            if (!itemQuantities.ContainsKey(itemId))
+                itemQuantities[itemId] = 0;
+            itemQuantities[itemId] += quantity;
         }
         
-        // Shuffle and take the first 'count' items
-        var rng = new Random();
-        candidates = candidates.OrderBy(x => rng.Next()).ToList();
-        
-        return candidates.Take(Math.Min(count, candidates.Count)).ToList();
+        return new RebirthConfig()
+        {
+            ItemRequirements = itemQuantities,
+            CurrencyRequirement = currencyRequirement,
+            CurrencyRequirementAmount = currencyAmount,
+            Rewards = rewards
+        };
     }
 
     public Window RebirthWindow;
@@ -190,9 +175,10 @@ public partial class Rebirth : System<Rebirth>
                         var listRect = bgRect.CutTop(200).Inset(2);
                         var grid = UI.GridLayout.Make(listRect, cfg.ItemRequirements.Count, 1, UI.GridLayout.SizeSource.ElementCount, 6);
 
-                        for (int i = 0; i < cfg.ItemRequirements.Count; i++)
+                        foreach (var kv in cfg.ItemRequirements)
                         {
-                            var id = cfg.ItemRequirements[i];
+                            var id = kv.Key;
+                            var needCount = kv.Value;
                             var brainrotEntry = BrainrotCatalog.Get(id);
 
                             var rowRect = grid.Next();
@@ -203,7 +189,6 @@ public partial class Rebirth : System<Rebirth>
                             UI.Image(iconRect.FitAspect(brainrotEntry.Sprite.Aspect), brainrotEntry.Sprite);
 
                             int haveCount = player.DefaultInventory.Items.Count(itm => itm != null && itm.Definition.Id == id);
-                            int needCount = cfg.RequiredQuantityPerItem;
                             bool have = haveCount >= needCount;
                             totalReq++;
                             if (have) completedReq++;
@@ -267,6 +252,8 @@ public partial class Rebirth : System<Rebirth>
                         var btnRect = bgRect.Inset(0, 50, 0, 50);
                         var color = (pct >= 1f) ? ButtonColor.Green : ButtonColor.Grey;
                         var rebirthIcon = Assets.GetAsset<Texture>("ui/Rebirth.png");
+
+                        using var _ = UI.PUSH_ID("REBIRTH_WINDOW");
                         
                         var result = UI.DrawWindowButton(btnRect, "Rebirth", rebirthIcon, color, ButtonStyle.BasicShiny);
                         if (result.Clicked)
@@ -292,10 +279,11 @@ public partial class Rebirth : System<Rebirth>
         }
 
         // Check each required collectible type with its quantity requirement
-        foreach (var collectibleId in rebirthConfig.ItemRequirements)
+        foreach (var kv in rebirthConfig.ItemRequirements)
         {
+            var collectibleId = kv.Key;
+            var needCount = kv.Value;
             int haveCount = player.DefaultInventory.Items.Count(itm => itm != null && itm.Definition.Id == collectibleId);
-            int needCount = rebirthConfig.RequiredQuantityPerItem;
             
             if (haveCount < needCount) return false;
         }
@@ -315,10 +303,11 @@ public partial class Rebirth : System<Rebirth>
         int newLevel = player.RebirthLevel.Value + 1;
 
         // Consume required collectibles (correct quantity per type)
-        foreach (var collectibleId in rebirthConfig.ItemRequirements)
+        foreach (var kv in rebirthConfig.ItemRequirements)
         {
+            var collectibleId = kv.Key;
+            var needToConsume = kv.Value;
             int consumed = 0;
-            int needToConsume = rebirthConfig.RequiredQuantityPerItem;
             
             foreach (var itemInstance in player.DefaultInventory.Items.ToList())
             {
@@ -484,8 +473,7 @@ public class RebirthInteractable : Component
 
 public class RebirthConfig
 {
-    public List<string> ItemRequirements;
-    public int RequiredQuantityPerItem = 1; // How many of each item in ItemRequirements
+    public Dictionary<string, int> ItemRequirements; // itemId -> quantity required
     public string CurrencyRequirement;
     public long CurrencyRequirementAmount;
     public List<RebirthReward> Rewards;

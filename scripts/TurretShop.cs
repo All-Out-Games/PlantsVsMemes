@@ -80,11 +80,11 @@ public partial class TurretShop : Component
         turretsCategory.Icon = "grass.png";
 
         // Create all turret products
-        allTurretProducts.Add(CreateTurretProduct("peashooter", "Peashooter", "Basic shooter turret", 100));
-        allTurretProducts.Add(CreateTurretProduct("cactus", "Cactus", "Long range spike shooter", 200));
-        allTurretProducts.Add(CreateTurretProduct("starfruit", "Starfruit", "Fast multi-directional shooter", 300));
-        allTurretProducts.Add(CreateTurretProduct("melonpult", "Melonpult", "Heavy damage catapult", 500));
-        allTurretProducts.Add(CreateTurretProduct("cobcannon", "Cobcannon", "Explosive artillery", 1000));
+        allTurretProducts.Add(CreateTurretProduct("peashooter", "Peashooter", "Basic shooter turret", 500));
+        allTurretProducts.Add(CreateTurretProduct("cactus", "Cactus", "Long range spike shooter", 2500));
+        allTurretProducts.Add(CreateTurretProduct("starfruit", "Starfruit", "Fast multi-directional shooter", 25_000));
+        allTurretProducts.Add(CreateTurretProduct("melonpult", "Melonpult", "Heavy damage catapult", 100_000));
+        allTurretProducts.Add(CreateTurretProduct("cobcannon", "Cobcannon", "Explosive artillery", 1_000_000));
     }
 
     ShopCategory.ProductDescription CreateTurretProduct(string turretType, string name, string description, int price)

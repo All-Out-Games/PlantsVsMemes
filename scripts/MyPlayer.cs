@@ -97,7 +97,7 @@ public partial class MyPlayer : Player
 
         var hotbarResult = Inventory.DrawHotbar(DefaultInventory.Id, new Inventory.DrawOptions()
         {
-            HotbarItemCount = 5,
+            HotbarItemCount = 8,
             AllowDragDrop = true,
             EnableUseFromHotbar = true,
             ScrollItemSelection = true,
@@ -118,10 +118,22 @@ public partial class MyPlayer : Player
             {
                 if (Plot.CollectiblesPlacementTiles[x, y] != null) 
                 {
-                    // Check if this tile is occupied by a collectible - color it yellow if so
+                    // Check if this tile is occupied by a collectible - color it based on rarity
                     if (Plot.CollectiblesPlacementOccupiedBy[x, y].Alive())
                     {
-                        Plot.CollectiblesPlacementTiles[x, y].Tint = new Vector4(1.0f, 1.0f, 0.3f, 0.5f); // Yellow tint
+                        var collectibleEntity = Plot.CollectiblesPlacementOccupiedBy[x, y];
+                        var placedCollectible = collectibleEntity.GetComponent<PlacedCollectible>();
+                        if (placedCollectible != null && placedCollectible.Entry != null)
+                        {
+                            // Get rarity color and apply it with some transparency
+                            Vector4 rarityColor = PlacedCollectible.GetRarityColor(placedCollectible.Entry.Rarity);
+                            Plot.CollectiblesPlacementTiles[x, y].Tint = rarityColor * 0.6f + new Vector4(0.2f, 0.2f, 0.2f, 0.5f);
+                        }
+                        else
+                        {
+                            // Fallback to yellow if we can't get the rarity
+                            Plot.CollectiblesPlacementTiles[x, y].Tint = new Vector4(1.0f, 1.0f, 0.3f, 0.5f);
+                        }
                     }
                     else
                     {

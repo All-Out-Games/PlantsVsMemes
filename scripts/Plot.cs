@@ -33,6 +33,7 @@ public partial class Plot : Component
     [Serialized] public Entity ExitsParent;
     [Serialized] public Entity CollectiblesPlacementParent;
     [Serialized] public Entity ZeroCollectiblesTile;
+    [Serialized] public Entity RowPurchaseParent;
 
     public MyPlayer Owner;
 
@@ -52,6 +53,7 @@ public partial class Plot : Component
     public Entity[] AreaTiles;
     public Entity[] AreaUnowned;
     public Interactable[] AreaInteractables;
+    public Interactable[] RowPurchaseInteractables;
 
     public override void Awake()
     {
@@ -79,6 +81,15 @@ public partial class Plot : Component
         {
             var tileCoords = GetTurretTileCoordsFromLocalPosition(child.LocalPosition);
             Exits[tileCoords.Item2] = child.GetComponent<Spine_Animator>();
+        }
+
+        RowPurchaseInteractables = new Interactable[7];
+        foreach (var child in RowPurchaseParent.Children)
+        {
+            var tileCoords = GetTurretTileCoordsFromLocalPosition(child.LocalPosition);
+            RowPurchaseInteractables[tileCoords.Item2] = child.TryGetChildByIndex(0).GetComponent<Interactable>();
+            RowPurchaseInteractables[tileCoords.Item2].OnInteract = (p) => OnRowPurchaseInteract(p, RowPurchaseInteractables[tileCoords.Item2]);
+            RowPurchaseInteractables[tileCoords.Item2].CanUseCallback = (p) => OnRowPurchaseCanUse(p, RowPurchaseInteractables[tileCoords.Item2]);
         }
 
         CollectiblesPlacementTiles = new Sprite_Renderer[16, 14];
@@ -118,6 +129,44 @@ public partial class Plot : Component
             
             areaIndex++;
         }
+    }
+
+    public void OnRowPurchaseInteract(Player p, Interactable interactable)
+    {
+        if (Network.IsServer == false) return;
+        if (Owner != p) return;
+        var rowStr = interactable.Entity.Parent.Name.Replace("R", "");
+        var row = int.Parse(rowStr);
+        var rowBits = (RowBits)Owner.UnlockedRows.Value;
+        if (rowBits.HasFlag(GetRowBits(row)) == false)
+        {
+            var price = row switch {
+                3 => 0,
+                2 => 10_000,
+                4 => 10_000,
+                5 => 100_000,
+                1 => 100_000,
+                6 => 1_000_000,
+                0 => 1_000_000,
+            };
+            if (Economy.GetBalance(Owner, Config.Currency_Gold) < price)
+            {
+                Owner.CallClient_ShowMessage("You don't have enough gold!", new RPCOptions() { Target = Owner });
+            }
+            else
+            {
+                Economy.WithdrawCurrency(Owner, Config.Currency_Gold, price);
+            }
+        }
+    }
+
+    public bool OnRowPurchaseCanUse(Player p, Interactable interactable)
+    {
+        if (Owner != p) return false;
+        var rowStr = interactable.Entity.Parent.Name.Replace("R", "");
+        var row = int.Parse(rowStr);
+        var rowBits = (RowBits)Owner.UnlockedRows.Value;
+        return rowBits.HasFlag(GetRowBits(row)) == false;
     }
     
     public bool OnAreaCanUse(Player p, int areaIndex)
@@ -232,6 +281,7 @@ public partial class Plot : Component
         for (var i = 0; i < Exits.Length; i++)
         {
             Exits[i].Entity.LocalEnabled = unlockedRows.HasFlag(GetRowBits(i));
+            RowPurchaseInteractables[i].Entity.LocalEnabled = !Exits[i].Entity.LocalEnabled;
         }
         
         // Update area visibility based on unlock state
