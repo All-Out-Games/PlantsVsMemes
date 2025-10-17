@@ -1,0 +1,61 @@
+TurretBee.png
+	size: 3232, 256
+	filter: Linear, Linear
+	scale: 0.5
+DropletA
+	bounds: 3018, 188, 62, 61
+	rotate: 90
+DropletB
+	bounds: 3189, 208, 42, 38
+	rotate: 90
+DropletC
+	bounds: 3141, 202, 48, 45
+	rotate: 90
+Globule/HoneyBody
+	bounds: 890, 27, 218, 223
+Globule/SplatA
+	bounds: 2328, 124, 126, 106
+	rotate: 90
+Globule/SplatB
+	bounds: 2717, 152, 98, 81
+	rotate: 90
+Globule/SplatC
+	bounds: 2952, 186, 64, 63
+	rotate: 90
+Globule/SplatD
+	bounds: 2801, 156, 94, 73
+	rotate: 90
+Hive
+	bounds: 1753, 26, 224, 196
+	rotate: 90
+HoneyBase
+	bounds: 594, 73, 293, 177
+HoneyRim
+	bounds: 3, 13, 309, 237
+Projectile/DebrisA
+	bounds: 2088, 121, 129, 115
+	rotate: 90
+Projectile/DebrisB
+	bounds: 2437, 130, 95, 120
+Projectile/DebrisC
+	bounds: 2535, 136, 94, 114
+Projectile/GlobA
+	bounds: 2632, 127, 82, 123
+Projectile/GlobB
+	bounds: 2877, 155, 95, 72
+	rotate: 90
+Projectile/GlobC
+	bounds: 2206, 127, 119, 123
+Red/Base
+	bounds: 1379, 130, 371, 120
+Red/Bee
+	bounds: 1952, 98, 152, 133
+	rotate: 90
+Red/Head
+	bounds: 315, 3, 276, 247
+Snout
+	bounds: 1111, 75, 175, 265
+	rotate: 90
+Spike
+	bounds: 3082, 185, 65, 56
+	rotate: 90

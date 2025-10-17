@@ -1,11 +1,10 @@
 using AO;
 public class References : Component
 {
-    [Serialized]
-    public Spine_Animator FartCloudScreen;
-
-    [Serialized]
-    public Spine_Animator JumpscareShadeScreen;
+    public static References Instance;
+    public override void Awake() => Instance = this;
+    
+    [Serialized] public Entity PlotsParent;
 
     public static AudioAsset MusicBG = Assets.KeepLoaded<AudioAsset>("Sounds/Music/Cool_Vibes.wav", synchronous: false);
     public static AudioAsset MusicBG_WoodEvent = Assets.KeepLoaded<AudioAsset>("Sounds/Music/Darkest_Child.wav", synchronous: false);

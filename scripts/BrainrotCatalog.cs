@@ -813,15 +813,32 @@ public static class BrainrotCatalog
 		}
 	}
 
-	private static int CalculateBasePartsToEvolve(double gps)
+	private static int CalculateBasePartsToEvolve(BrainrotValueRarity rarity)
 	{
-		int minParts = 10;   // ~30s
-		int maxParts = 2800; // ~120m
-		double partsFactor = 1.2;
-		int parts = (int)System.Math.Ceiling(System.Math.Max(0.0, gps) * partsFactor);
-		if (parts < minParts) parts = minParts;
-		if (parts > maxParts) parts = maxParts;
-		return parts;
+		switch (rarity)
+		{
+			case BrainrotValueRarity.Common:
+				return 5;
+			case BrainrotValueRarity.Rare:
+				return 5;
+			case BrainrotValueRarity.Epic:
+				return 4;
+			case BrainrotValueRarity.Legendary:
+				return 3;
+			case BrainrotValueRarity.Mythic:
+				return 2;
+			case BrainrotValueRarity.Ethereal:
+				return 2;
+			case BrainrotValueRarity.Primal:
+				return 2;
+			case BrainrotValueRarity.Secret:
+				return 2;
+			case BrainrotValueRarity.SecretForm1:
+				return 2;
+			case BrainrotValueRarity.SecretForm2:
+				return 2;
+		}
+		return 2;
 	}
 
 	public static void RegisterBrainrot(
@@ -838,7 +855,7 @@ public static class BrainrotCatalog
 				Name = baseName ?? baseKey,
 				BaseGoldGeneration = gps,
 				BasePrice = CalculateBasePrice(baseRarity, gps),
-				BasePartsToEvolve = CalculateBasePartsToEvolve(gps),
+				BasePartsToEvolve = CalculateBasePartsToEvolve(baseRarity),
 				Sprite = baseTexture,
 				Rarity = baseRarity,
 				Sound = baseSound,
@@ -874,7 +891,7 @@ public static class BrainrotCatalog
 				Name = baseName ?? baseKey,
 				BaseGoldGeneration = gps,
 				BasePrice = CalculateBasePrice(baseRarity, gps),
-				BasePartsToEvolve = CalculateBasePartsToEvolve(gps),
+				BasePartsToEvolve = CalculateBasePartsToEvolve(baseRarity),
 				Sprite = baseTexture,
 				Rarity = baseRarity,
 				Sound = baseSound,
@@ -898,7 +915,7 @@ public static class BrainrotCatalog
 				Name = evo1Name ?? evo1Key,
 				BaseGoldGeneration = gpsEvo1,
 				BasePrice = CalculateBasePrice((BrainrotValueRarity)evo1R, gpsEvo1),
-				BasePartsToEvolve = CalculateBasePartsToEvolve(gpsEvo1),
+				BasePartsToEvolve = CalculateBasePartsToEvolve((BrainrotValueRarity)evo1R),
 				Sprite = evo1Texture,
 				Rarity = (BrainrotValueRarity)evo1R,
 				Sound = evo1Sound,
@@ -915,7 +932,7 @@ public static class BrainrotCatalog
 				Name = evo2Name ?? evo2Key,
 				BaseGoldGeneration = gpsEvo2,
 				BasePrice = CalculateBasePrice((BrainrotValueRarity)evo2R, gpsEvo2),
-				BasePartsToEvolve = CalculateBasePartsToEvolve(gpsEvo2),
+				BasePartsToEvolve = CalculateBasePartsToEvolve((BrainrotValueRarity)evo2R),
 				Sprite = evo2Texture,
 				Rarity = (BrainrotValueRarity)evo2R,
 				Sound = evo2Sound,

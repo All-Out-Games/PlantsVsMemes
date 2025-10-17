@@ -1,0 +1,647 @@
+---
+alwaysApply: false
+description: Read when the user is asking you to make windows with UI
+---
+# UI System Guide
+
+This guide explains how to use the UI system defined in `src/api/CoreAssembly/UI.cs`.
+
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Creating Windows](#creating-windows)
+3. [Window Content Types](#window-content-types)
+4. [Styling Windows](#styling-windows)
+5. [Buttons](#buttons)
+6. [Alert Windows](#alert-windows)
+7. [Examples](#examples)
+
+## Overview
+
+The UI system provides a comprehensive framework for creating modal windows, dialogs, and UI elements with consistent styling. It supports multiple window layouts, content types, and styling options.
+
+### Key Constants
+
+- `MainWindowLayer = 125` - Layer for main windows
+- `SideCarWindowLayer = 120` - Layer for sidebar windows
+
+### Text Settings Presets
+
+- `TextSettingsForHeaders` - Bold, large text for headers (size 60)
+- `TextSettingsForButtons` - Auto-fitted text for buttons (16-48px)
+- `TextSettingsForMessages` - Auto-fitted, word-wrapped text for messages (16-36px)
+
+## Creating Windows
+
+### Basic Window Creation
+
+```csharp
+var window = Window.Make(new WindowOptions() 
+{
+    Title = "My Window",
+    WindowBackgroundStyle = WindowBackgroundStyle.Simple,
+    WindowBackgroundColor = WindowBackgroundColor.Blue,
+    Content = new CustomWindowContent()
+    {
+        DrawContent = (rect) => 
+        {
+            // Your custom UI code here
+            UI.TextAsync(rect, "Hello World!", UI.TextSettingsForMessages);
+        }
+    }
+});
+
+// Draw the window (returns false when closed)
+bool stayOpen = UI.DrawWindow(window);
+```
+
+### Window Options
+
+All windows inherit from `WindowOptionsBase`:
+
+```csharp
+public class WindowOptions : WindowOptionsBase
+{
+    public string Title;                                      // Window title
+    public AnimateType AnimateType;                           // None, Slide, or Scale
+    public WindowTitleFlare WindowTitleFlare;                 // Title decoration
+    public WindowBackgroundStyle WindowBackgroundStyle;       // Simple, SimpleWithBottomStripe, Blueprint, Rounded
+    public WindowBackgroundColor WindowBackgroundColor;       // Black, Blue, Brown, Gold, Green, Grey, Orange, Purple, Red, White, Yellow
+    public WindowHeaderColor WindowHeaderColor;               // Header color (MatchBackground or specific color)
+    public WindowContent Content;                             // Window content (see below)
+}
+```
+
+## Window Content Types
+
+### 1. CustomWindowContent
+
+Draw custom UI with full control:
+
+```csharp
+new CustomWindowContent()
+{
+    DrawContent = (rect) =>
+    {
+        // Draw whatever you want
+        UI.Image(rect, myTexture);
+        UI.TextAsync(rect, "Custom content", UI.TextSettingsForMessages);
+    }
+}
+```
+
+### 2. TabbedWindowContent
+
+Create tabbed interfaces:
+
+```csharp
+new TabbedWindowContent()
+{
+    TabLocation = TabLocation.Top,           // Top or Side
+    TabHeight = 60,                          // -1 for default
+    SelectedTab = 0,                         // Initial tab
+    TabButtonStyle = TabButtonStyle.Default, // Default, Simple, Shiny, Trapezoid
+    TabButtonColor = ButtonColor.Grey,       // Inactive tab color
+    TabSelectedButtonColor = ButtonColor.Orange, // Active tab color
+    Tabs = new List<TabContent>()
+    {
+        new TabContent()
+        {
+            Label = "Tab 1",
+            Icon = myTexture,  // Optional, used for side tabs
+            Content = new CustomWindowContent() { /* ... */ }
+        },
+        new TabContent()
+        {
+            Label = "Tab 2",
+            Content = new CustomWindowContent() { /* ... */ }
+        }
+    }
+}
+```
+
+**Note**: Side tabs use icons instead of labels.
+
+### 3. GridWindowContent
+
+Display items in a grid layout:
+
+```csharp
+new GridWindowContent()
+{
+    Columns = 3,                  // Number of columns (-1 for default: 3)
+    ItemHeight = 400,             // Height of each item (-1 for default: 400)
+    DrawElementTabs = true,       // Draw tabs at bottom of items
+    SelectedIndex = -1,           // Currently selected item (-1 for none)
+    Items = new List<CollectionElement>()
+    {
+        new CollectionElement()
+        {
+            Label = "Item 1",
+            Icon = itemTexture,
+            Color = ElementColor.Blue,        // Blue, Green, Grey, Red, Rainbow, Yellow
+            Style = ElementStyle.Simple,      // Simple, Banner, Banner2
+            RarityStyle = RarityPipStyle.Star,      // None, Diamond, Pentagon, Star
+            RarityColor = RarityPipColor.Gold,      // Various colors
+            RarityPipLocation = RarityPipLocation.TopRight, // TopLeft, TopRight, BottomLeft, BottomRight
+            Userdata = myCustomObject         // Store custom data
+        }
+    }
+}
+```
+
+### 4. ListWindowContent
+
+Display items in a vertical list:
+
+```csharp
+new ListWindowContent()
+{
+    ItemHeight = 200,             // Height of each item (-1 for default: 200)
+    SelectedIndex = -1,           // Currently selected item
+    Items = new List<CollectionElement>()
+    {
+        new CollectionElement()
+        {
+            Label = "Item Title",
+            Description = "Item description text",
+            Icon = itemTexture,
+            Color = ElementColor.Blue,
+            ListItemAction = (element) => 
+            {
+                // Action when button is clicked
+                Console.WriteLine($"Clicked: {element.Label}");
+            },
+            ListItemActionButtonText = "Select",
+            ListItemButtonColor = ButtonColor.Green,
+            ListItemButtonStyle = ButtonStyle.Arrow
+        }
+    }
+}
+```
+
+### 5. TreeWindowContent
+
+Display items in a tree/grid with connections:
+
+```csharp
+new TreeWindowContent()
+{
+    NodeWidth = 125,
+    NodeHeight = 125,
+    RowSpacing = 25,
+    ColumnSpacing = 50,
+    SelectedNodeIndex = -1,
+    Nodes = new List<TreeWindowNode>()
+    {
+        new TreeWindowNode()
+        {
+            Id = "node1",
+            Row = 0,
+            Column = 0,
+            ConnectionState = TreeWindowNodeConnectionState.ConnectedEnabled, // None, Connected, ConnectedEnabled
+            BackgroundColor = ButtonColor.Grey,
+            SelectedBackgroundColor = ButtonColor.Blue,
+            BackgroundStyle = ButtonStyle.Basic,
+            ParentIds = null,  // No parent for root nodes
+            Element = new CollectionElement()
+            {
+                Icon = nodeTexture
+            }
+        },
+        new TreeWindowNode()
+        {
+            Id = "node2",
+            Row = 1,
+            Column = 0,
+            ConnectionState = TreeWindowNodeConnectionState.Connected,
+            ParentIds = new List<string>() { "node1" },  // Connect to parent
+            Element = new CollectionElement() { Icon = nodeTexture }
+        }
+    }
+}
+```
+
+**Connection Drawing**: Lines are automatically drawn from child nodes to their parents based on `ParentIds`.
+
+### 6. ElementDisplayWindowContent
+
+Display a single item with details:
+
+```csharp
+new ElementDisplayWindowContent()
+{
+    Element = new CollectionElement()
+    {
+        Label = "Item Name",
+        Icon = largeTexture
+    },
+    Stats = new List<ElementStat>()
+    {
+        new ElementStat() { Text = "Attack: 50", Icon = attackIcon },
+        new ElementStat() { Text = "Defense: 30", Icon = defenseIcon }
+    },
+    ButtonAction = (element) =>
+    {
+        // Action when button is clicked
+    },
+    ButtonText = "Equip",
+    ButtonColor = ButtonColor.Orange,
+    ButtonStyle = ButtonStyle.Basic,
+    ItemUpdater = (content) => 
+    {
+        // Optional: Update the element dynamically each frame
+        return updatedElement;
+    }
+}
+```
+
+### 7. SplitWindowContent
+
+Split window into two regions:
+
+```csharp
+new SplitWindowContent()
+{
+    Axis = SplitAxis.Horizontal,  // Horizontal or Vertical
+    SplitRatio = 0.5f,             // 0.0 to 1.0
+    First = new CustomWindowContent() { /* ... */ },
+    Second = new GridWindowContent() { /* ... */ }
+}
+```
+
+### 8. SideCarWindowContent
+
+Main content with sidebar:
+
+```csharp
+new SideCarWindowContent()
+{
+    Position = SideCarPosition.Right,  // Left or Right
+    SideCarSize = new Vector2(400, 500),
+    SideCarBackgroundColor = WindowBackgroundColor.Blue,
+    SideCarBackgroundColorMultiplier = new Vector4(0.9f, 0.9f, 0.9f, 1),
+    Main = new GridWindowContent() { /* ... */ },
+    Side = new ElementDisplayWindowContent() { /* ... */ }
+}
+```
+
+## Styling Windows
+
+### Window Background Styles
+
+- `Simple` - Basic modal window
+- `SimpleWithBottomStripe` - Modal with decorative bottom stripe
+- `Blueprint` - Blueprint/schematic style
+- `Rounded` - Rounded corners style
+
+### Window Background Colors
+
+Available colors: `Black`, `Blue`, `Brown`, `Gold`, `Green`, `Grey`, `Orange`, `Purple`, `Red`, `White`, `Yellow`
+
+Blueprint-specific colors: `BlueprintBlue`, `BlueprintPink`, `BlueprintYellow`
+
+### Title Flares
+
+Add decorative banners to window titles:
+
+```csharp
+WindowTitleFlare = WindowTitleFlare.Gold  // None, Black, Blue, Green, Red, White, Yellow, Gold, Silver, Bronze
+```
+
+Gold, Silver, and Bronze flares include wreath decorations.
+
+### Window Headers
+
+Customize the header color separately from the background:
+
+```csharp
+WindowHeaderColor = WindowHeaderColor.Gold  // MatchBackground, or any color, or RoundedRed
+```
+
+## Buttons
+
+### Drawing Buttons
+
+Use `DrawWindowButton` for consistent button styling:
+
+```csharp
+var result = UI.DrawWindowButton(buttonRect, "Click Me", iconTexture, ButtonColor.Orange, ButtonStyle.Basic);
+if (result.Pressed)
+{
+    // Button was clicked
+}
+```
+
+### Button Styles
+
+- `Basic` - Standard rectangular button
+- `Arrow` - Button with arrow decoration
+- `Skew` - Skewed/slanted button
+- `BasicShiny` - Shiny rectangular button
+- `ArrowShiny` - Shiny arrow button
+- `SkewShiny` - Shiny skewed button
+
+### Button Colors
+
+Available colors: `Black`, `Blue`, `Brown`, `Green`, `Grey`, `Purple`, `Red`, `White`, `Yellow`, `Orange`
+
+### Manual Button Creation
+
+For more control:
+
+```csharp
+var result = UI.BeginButton(buttonRect, "MY_BUTTON_ID", new ButtonSettings(), new TextSettings());
+{
+    var buttonTexture = UI.GetButtonTexture(ButtonColor.Orange, ButtonStyle.Basic);
+    var buttonSlice = UI.GetButtonSlice(ButtonColor.Orange, ButtonStyle.Basic);
+    UI.Image(buttonRect, buttonTexture, buttonSlice);
+    
+    var textSettings = UI.TextSettingsForButtons;
+    textSettings.OutlineColor = UI.ColorFromButtonColor(ButtonColor.Orange) * 0.7f;
+    UI.TextAsync(buttonRect.Inset(25), "Click Me", textSettings);
+}
+UI.EndButton();
+
+if (result.Clicked)
+{
+    // Handle click
+}
+```
+
+## Alert Windows
+
+Simple two-button dialogs:
+
+```csharp
+var result = UI.DrawAlertWindow(new AlertWindowOptions()
+{
+    Title = "Confirm Action",
+    Message = "Are you sure you want to proceed?",
+    WindowBackgroundColor = WindowBackgroundColor.Blue,
+    WindowBackgroundStyle = WindowBackgroundStyle.Simple,
+    
+    AcceptButtonText = "Yes",
+    AcceptButtonColor = ButtonColor.Green,
+    AcceptButtonStyle = ButtonStyle.Basic,
+    
+    DeclineButtonText = "No",
+    DeclineButtonColor = ButtonColor.Red,
+    DeclineButtonStyle = ButtonStyle.Basic
+});
+
+switch (result)
+{
+    case AlertWindowResult.Accept:
+        // User clicked accept
+        break;
+    case AlertWindowResult.Decline:
+        // User clicked decline
+        break;
+    case AlertWindowResult.Close:
+        // User clicked X button
+        break;
+    case AlertWindowResult.None:
+        // Still open
+        break;
+}
+```
+
+## Examples
+
+### Example 1: Simple Message Window
+
+```csharp
+var window = Window.Make(new WindowOptions()
+{
+    Title = "Welcome",
+    WindowBackgroundStyle = WindowBackgroundStyle.Simple,
+    WindowBackgroundColor = WindowBackgroundColor.Blue,
+    WindowTitleFlare = WindowTitleFlare.Gold,
+    Content = new CustomWindowContent()
+    {
+        DrawContent = (rect) =>
+        {
+            var textSettings = UI.TextSettingsForMessages;
+            textSettings.Color = Vector4.White;
+            UI.TextAsync(rect.Inset(50), "Welcome to the game!", textSettings);
+        }
+    }
+});
+```
+
+### Example 2: Inventory Grid
+
+```csharp
+var window = Window.Make(new WindowOptions()
+{
+    Title = "Inventory",
+    WindowBackgroundStyle = WindowBackgroundStyle.SimpleWithBottomStripe,
+    WindowBackgroundColor = WindowBackgroundColor.Brown,
+    Content = new GridWindowContent()
+    {
+        Columns = 4,
+        ItemHeight = 300,
+        Items = inventoryItems.Select(item => new CollectionElement()
+        {
+            Label = item.Name,
+            Icon = item.Icon,
+            Color = GetColorForRarity(item.Rarity),
+            Style = ElementStyle.Banner,
+            RarityStyle = RarityPipStyle.Star,
+            RarityColor = GetRarityColor(item.Rarity),
+            RarityPipLocation = RarityPipLocation.TopRight,
+            Userdata = item
+        }).ToList()
+    }
+});
+```
+
+### Example 3: Character Sheet with Tabs
+
+```csharp
+var window = Window.Make(new WindowOptions()
+{
+    Title = "Character",
+    WindowBackgroundStyle = WindowBackgroundStyle.Simple,
+    WindowBackgroundColor = WindowBackgroundColor.Blue,
+    Content = new TabbedWindowContent()
+    {
+        TabLocation = TabLocation.Top,
+        TabButtonStyle = TabButtonStyle.Shiny,
+        TabButtonColor = ButtonColor.Grey,
+        TabSelectedButtonColor = ButtonColor.Orange,
+        Tabs = new List<TabContent>()
+        {
+            new TabContent()
+            {
+                Label = "Stats",
+                Content = new CustomWindowContent()
+                {
+                    DrawContent = (rect) => DrawCharacterStats(rect)
+                }
+            },
+            new TabContent()
+            {
+                Label = "Equipment",
+                Content = new GridWindowContent()
+                {
+                    Items = GetEquipmentItems()
+                }
+            },
+            new TabContent()
+            {
+                Label = "Skills",
+                Content = new TreeWindowContent()
+                {
+                    Nodes = GetSkillTreeNodes()
+                }
+            }
+        }
+    }
+});
+```
+
+### Example 4: Shop with Item Details
+
+```csharp
+var gridContent = new GridWindowContent()
+{
+    Columns = 3,
+    Items = shopItems
+};
+
+var detailContent = new ElementDisplayWindowContent()
+{
+    ButtonText = "Purchase",
+    ButtonColor = ButtonColor.Green,
+    ButtonAction = (element) => PurchaseItem(element.Userdata),
+    ItemUpdater = (content) => 
+    {
+        // Update to show selected item
+        if (gridContent.SelectedIndex >= 0 && gridContent.SelectedIndex < gridContent.Items.Count)
+        {
+            return gridContent.Items[gridContent.SelectedIndex];
+        }
+        return null;
+    }
+};
+
+var window = Window.Make(new WindowOptions()
+{
+    Title = "Shop",
+    WindowBackgroundColor = WindowBackgroundColor.Gold,
+    Content = new SideCarWindowContent()
+    {
+        Position = SideCarPosition.Right,
+        SideCarSize = new Vector2(500, 600),
+        Main = gridContent,
+        Side = detailContent
+    }
+});
+```
+
+### Example 5: Skill Tree
+
+```csharp
+var window = Window.Make(new WindowOptions()
+{
+    Title = "Skill Tree",
+    WindowBackgroundStyle = WindowBackgroundStyle.Blueprint,
+    WindowBackgroundColor = WindowBackgroundColor.BlueprintBlue,
+    Content = new TreeWindowContent()
+    {
+        NodeWidth = 125,
+        NodeHeight = 125,
+        RowSpacing = 25,
+        ColumnSpacing = 50,
+        Nodes = new List<TreeWindowNode>()
+        {
+            // Tier 1
+            new TreeWindowNode()
+            {
+                Id = "basic_attack",
+                Row = 0, Column = 1,
+                ConnectionState = TreeWindowNodeConnectionState.ConnectedEnabled,
+                BackgroundColor = ButtonColor.Grey,
+                SelectedBackgroundColor = ButtonColor.Green,
+                Element = new CollectionElement() { Icon = basicAttackIcon }
+            },
+            // Tier 2
+            new TreeWindowNode()
+            {
+                Id = "power_attack",
+                Row = 1, Column = 0,
+                ConnectionState = TreeWindowNodeConnectionState.Connected,
+                ParentIds = new List<string>() { "basic_attack" },
+                BackgroundColor = ButtonColor.Grey,
+                SelectedBackgroundColor = ButtonColor.Blue,
+                Element = new CollectionElement() { Icon = powerAttackIcon }
+            },
+            new TreeWindowNode()
+            {
+                Id = "quick_attack",
+                Row = 1, Column = 2,
+                ConnectionState = TreeWindowNodeConnectionState.None,
+                ParentIds = new List<string>() { "basic_attack" },
+                BackgroundColor = ButtonColor.Grey,
+                SelectedBackgroundColor = ButtonColor.Blue,
+                Element = new CollectionElement() { Icon = quickAttackIcon }
+            }
+        }
+    }
+});
+```
+
+## Best Practices
+
+1. **Use Appropriate Content Types**: Choose the content type that best fits your use case rather than building everything custom.
+
+2. **Consistent Styling**: Use the predefined text settings (`TextSettingsForHeaders`, `TextSettingsForButtons`, `TextSettingsForMessages`) for consistency.
+
+3. **Color Contrasts**: Use `ContrastingTextColorForWindowBackground()` to ensure text is readable.
+
+4. **Layer Management**: Use `UI.PUSH_LAYER()` when you need to draw UI on top of other elements.
+
+5. **Scroll Views**: For large content, wrap it in a scroll view rather than trying to fit everything in a fixed space.
+
+6. **IDs**: Always use unique IDs for buttons when using `UI.BeginButton()` to avoid conflicts.
+
+7. **Userdata**: Use the `Userdata` property on `CollectionElement` to store references to your game objects.
+
+8. **TryGet Pattern**: Use `window.TryGet<T>()` to safely access specific content types from nested window structures.
+
+## Helper Functions
+
+- `GetButtonTexture(color, style)` - Get button texture
+- `GetButtonSlice(color, style)` - Get button nine-slice settings
+- `ColorFromButtonColor(color)` - Get Vector4 color from button color enum
+- `ContrastingTextColorForWindowBackground(backgroundColor)` - Get appropriate text color
+- `GetRarityPipTexture(style, color)` - Get rarity indicator texture
+
+## Utility
+
+### Accessing Nested Content
+
+```csharp
+// Find specific content type in nested structure
+var gridContent = window.TryGet<GridWindowContent>();
+if (gridContent != null)
+{
+    // Access the grid
+    var selectedItem = gridContent.SelectedIndex >= 0 
+        ? gridContent.Items[gridContent.SelectedIndex] 
+        : null;
+}
+```
+
+### Dynamic Content Updates
+
+Use `ItemUpdater` in `ElementDisplayWindowContent` to update displayed content each frame based on user selection in another panel.
+
+---
+
+## Summary
+
+The UI system provides a complete solution for creating game UIs with consistent styling. By combining different content types and styling options, you can create complex interfaces without writing low-level rendering code. Focus on the data and layout, and let the system handle the visual presentation.
+

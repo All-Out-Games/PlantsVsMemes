@@ -57,8 +57,8 @@ public static class CollectibleDatabase
             
             // Calculate tile dimensions (each tile is 1 unit)
             int tileWidth = Math.Max(1, (int)Math.Round(worldSize.X));
-            // int tileHeight = Math.Max(1, (int)Math.Round(worldSize.Y));
-            int tileHeight = 1;
+            int tileHeight = Math.Max(1, (int)Math.Round(worldSize.Y / 2));
+            // int tileHeight = 1;
             
             // Store the size
             collectibleSizes[collectibleId] = (tileWidth, tileHeight);
@@ -145,9 +145,10 @@ public static class TurretDatabase
         return turretType switch
         {
             "peashooter" => 50,
-            "cactus" => 75,
-            "starfruit" => 100,
-            "melonpult" => 150,
+            "cactus" => 50,
+            "starfruit" => 50,
+            "melonpult" => 50,
+            "cobcannon" => 50,
             _ => 50,
         };
     }
@@ -182,11 +183,11 @@ public static class TurretDatabase
     {
         return turretType switch
         {
-            "peashooter" => (6.0f, 1.5f, 10),
-            "cactus" => (8.0f, 2.0f, 15),
-            "starfruit" => (5.0f, 1.0f, 8),
-            "melonpult" => (10.0f, 3.0f, 30),
-            "cobcannon" => (10.0f, 3.0f, 30),
+            "peashooter" => (10.0f, 1.5f, 25),
+            "cactus"     => (10.0f, 0.5f, 250),
+            "starfruit"  => (10.0f, 1.0f, 400),
+            "melonpult"  => (10.0f, 3.0f, 1_000),
+            "cobcannon"  => (10.0f, 5.0f, 10_000),
             _ => (6.0f, 1.5f, 10),
         };
     }

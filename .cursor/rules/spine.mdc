@@ -1,5 +1,6 @@
 ---
-alwaysApply: true
+alwaysApply: false
+description: Read when the user is asking you to animate things or interact with spine.
 ---
 # Spine Reference
 We use Esoteric Spine to animate characters and objects. The Player component has a SpineAnimator property, for other objects get the Spine_Animator using Entity.GetComponent<Spine_Animator>()
