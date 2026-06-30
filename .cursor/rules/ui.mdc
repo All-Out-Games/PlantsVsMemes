@@ -1,6 +1,5 @@
 ---
 description: Any time the user requests ANY UI you must reference this documentation first.
-globs: 
 alwaysApply: false
 ---
 # UI Requirements

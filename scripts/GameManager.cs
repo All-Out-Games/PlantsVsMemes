@@ -5,7 +5,6 @@ public class GameManager : System<GameManager>
     public float ServerLuck = 1.0f;
 
     Entity hudEntity;
-    Entity inventoryEntity;
 
     public Material GoldMaterial;
 	public Material DiamondMaterial;
@@ -63,7 +62,12 @@ public class GameManager : System<GameManager>
         {
             hudEntity = Entity.Create();
             hudEntity.AddComponent<GameHUD>();
+            
+            // FusionSystem, Rebirth, and CraftingSystem are Systems (singletons) and auto-initialize
+            // They will be available via FusionSystem.Instance, Rebirth.Instance, and CraftingSystem.Instance
         }
+
+        Economy.RegisterCurrency(Config.Currency_Gold, Config.Currency_GoldIcon);
     }
 
     public override void Start()
@@ -191,6 +195,20 @@ public class GameManager : System<GameManager>
             {
                 BleachMaterial = IM.CreateMaterial(shaderBleach);
             }
+        }
+
+        if (Network.IsServer)
+        {
+            var entityGM = Entity.Create();
+            entityGM.AddComponent<TurretShop>();
+            entityGM.AddComponent<CraftingSystem>();
+            foreach (var plot in References.Instance.PlotsParent.Children)
+            {
+                var e = Entity.Instantiate(Assets.GetAsset<Prefab>("Plot.prefab"));
+                e.Position = plot.Position;
+                Network.Spawn(e);
+            }
+            Network.Spawn(entityGM);
         }
     }
 }

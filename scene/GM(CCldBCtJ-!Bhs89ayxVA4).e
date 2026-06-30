@@ -13,7 +13,8 @@
     "X": 1,
     "Y": 1
   },
-  "next_sibling": "483372683434490:1760028467149220500"
+  "next_sibling": "551803134082607:1760044411451813000",
+  "spawn_as_networked_entity": true
 },
 {
   "cid": 1,
@@ -21,6 +22,6 @@
   "component_type": "Mono_Component",
   "mono_component_type": "References",
   "data": {
-
+    "PlotsParent": "13708354188513:1760716747834858100"
   }
 }

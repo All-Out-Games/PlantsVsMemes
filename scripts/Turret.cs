@@ -13,6 +13,7 @@ public partial class Turret : Component
     [Serialized] public float TimeUntilNextAttack = 0;
 
     Spine_Animator spineAnimator;
+    Interactable interactable;
     Entity currentTarget;
 
     public override void Awake()
@@ -41,15 +42,94 @@ public partial class Turret : Component
         mainLayer.CreateTransition(shootState, idleState, true);
 
         OwnerPlot.TurretsOccupiedBy[GridX, GridY] = Entity;
+
+        // Setup interactable
+        interactable = Entity.GetComponent<Interactable>();
+        if (interactable != null)
+        {
+            interactable.CanUseCallback += (Player p) =>
+            {
+                var myPlayer = (MyPlayer)p;
+                // Only the owner can pick it up
+                return OwnerPlot.Alive() && OwnerPlot.Owner.Alive() && OwnerPlot.Owner == myPlayer;
+            };
+
+            interactable.OnInteract = (Player p) =>
+            {
+                if (!Network.IsServer) return;
+
+                var myPlayer = (MyPlayer)p;
+                if (!myPlayer.Entity.Alive() || !OwnerPlot.Alive() || OwnerPlot.Owner != myPlayer)
+                    return;
+
+                // Check if player has inventory space
+                bool hasSpace = false;
+                foreach (var itm in myPlayer.DefaultInventory.Items)
+                {
+                    if (itm == null)
+                    {
+                        hasSpace = true;
+                        break;
+                    }
+                }
+
+                if (!hasSpace)
+                {
+                    myPlayer.CallClient_ShowMessage("Inventory is full!", new RPCOptions() { Target = myPlayer });
+                    return;
+                }
+
+                // Find the item definition for this turret type
+                Item_Definition itemDef = null;
+                if (TurretType == "peashooter") itemDef = MyPlayer.PeashooterItem;
+                else if (TurretType == "cactus") itemDef = MyPlayer.CactusItem;
+                else if (TurretType == "starfruit") itemDef = MyPlayer.StarfruitItem;
+                else if (TurretType == "melonpult") itemDef = MyPlayer.MelonpultItem;
+                else if (TurretType == "cobcannon") itemDef = MyPlayer.CobcannonItem;
+
+                if (itemDef == null)
+                    return;
+
+                // Create item and add to inventory
+                var item = Inventory.CreateItem(itemDef, 1);
+                if (Inventory.CanMoveItemToInventory(item, myPlayer.DefaultInventory, out var willDestroyItem))
+                {
+                    Inventory.MoveItemToInventory(item, myPlayer.DefaultInventory);
+
+                    // Clear the occupied tile
+                    if (OwnerPlot.Alive())
+                    {
+                        OwnerPlot.TurretsOccupiedBy[GridX, GridY] = default;
+                    }
+
+                    // Despawn and destroy
+                    Network.Despawn(Entity);
+                    Entity.Destroy();
+                    
+                    // Save after picking up
+                    myPlayer.SavePlacedItems();
+                }
+                else
+                {
+                    Inventory.DestroyItem(item);
+                }
+            };
+        }
     }
 
     public override void Update()
     {
-        if (!OwnerPlot.Alive() || !OwnerPlot.Owner.Alive())
+        // if (!OwnerPlot.Alive() || !OwnerPlot.Owner.Alive())
+        // {
+        //     Network.Despawn(Entity);
+        //     Entity.Destroy();
+        //     return;
+        // }
+
+        // Update interactable text
+        if (Network.IsClient && interactable != null)
         {
-            Network.Despawn(Entity);
-            Entity.Destroy();
-            return;
+            interactable.Text = "Pick up turret";
         }
 
         TimeUntilNextAttack -= Time.DeltaTime;

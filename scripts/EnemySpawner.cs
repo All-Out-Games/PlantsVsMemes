@@ -4,7 +4,7 @@ public class EnemySpawner : Component
 {
     [Serialized] public Plot TargetPlot;
     
-    public float spawnInterval = 7.0f;
+    public float spawnInterval = 11.0f;
     public float[] lastSpawnTimes;
 
     ulong rngSeed;
@@ -15,7 +15,7 @@ public class EnemySpawner : Component
         lastSpawnTimes = new float[7];
         for (int i = 0; i < 7; i++)
         {
-            lastSpawnTimes[i] = Time.TimeSinceStartup + RNG.RangeFloat(ref rngSeed, 0, spawnInterval);
+            lastSpawnTimes[i] = Time.TimeSinceStartup + RNG.RangeFloat(ref rngSeed, 0, spawnInterval) - spawnInterval;
         }
     }
 
@@ -46,7 +46,6 @@ public class EnemySpawner : Component
             
         string enemyType = BrainrotCatalog.GetRandomId();
         BrainrotModifier modifier = BrainrotCatalog.GetRandomModifier();
-        int health = GetEnemyHealth();
 
         var enemyEntity = Entity.Create();
         enemyEntity.AddComponent<Sprite_Renderer>();
@@ -54,7 +53,8 @@ public class EnemySpawner : Component
             e.OwnerPlot = TargetPlot;
             e.LaneIndex = lane;
             e.EnemyType = enemyType;
-            e.Health = health;
+            e.Health = GetEnemyHealth(enemyType);
+            e.MaxHealth = e.Health;
             e.Modifier = modifier;
 
             e.StartPosition = TargetPlot.Portals[lane].Position;
@@ -65,9 +65,27 @@ public class EnemySpawner : Component
         Network.Spawn(enemyEntity);
     }
 
-    int GetEnemyHealth()
+    int GetEnemyHealth(string enemyType)
     {
-        return 100;
+        var entry = BrainrotCatalog.Get(enemyType);
+        
+        // Base health by rarity (exponential scaling)
+        int baseHealth = entry.Rarity switch
+        {
+            BrainrotValueRarity.Common => 100,
+            BrainrotValueRarity.Rare => 1000,
+            BrainrotValueRarity.Epic => 10000,
+            BrainrotValueRarity.Legendary => 100000,
+            BrainrotValueRarity.Mythic => 1000000,
+            BrainrotValueRarity.Ethereal => 5000000,
+            BrainrotValueRarity.Primal => 10000000,
+            _ => 100
+        };
+        
+        // Small adjustment based on gold generation (adds up to ~30% variation within same rarity)
+        float goldAdjustment = 1.0f + (entry.BaseGoldGeneration / 10000.0f);
+        
+        return (int)(baseHealth * goldAdjustment);
     }
 }
 

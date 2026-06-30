@@ -1,0 +1,273 @@
+{
+"skeleton": { "hash": "S+nWb35/yTg", "spine": "4.0.64", "x": -213.58, "y": -189.2, "width": 386.61, "height": 467.07 },
+"bones": [
+	{ "name": "root" },
+	{ "name": "Projectile", "parent": "root", "scaleX": 0.7034, "scaleY": 0.7034 },
+	{ "name": "bone_Bees", "parent": "Projectile", "scaleX": 0.7 },
+	{ "name": "bone_Anim3_Bee1", "parent": "bone_Bees", "scaleY": 0.5 },
+	{ "name": "bone_Anim2_Bee1", "parent": "bone_Anim3_Bee1", "length": 312.08, "rotation": 90 },
+	{
+		"name": "bone_Anim3_Bee2",
+		"parent": "bone_Bees",
+		"rotation": 23.93,
+		"x": 147.13,
+		"y": 2.41,
+		"scaleY": 0.66,
+		"shearX": 6.9,
+		"shearY": -2.7
+	},
+	{ "name": "bone_Anim2_Bee2", "parent": "bone_Anim3_Bee2", "length": 312.08, "rotation": 90 },
+	{
+		"name": "bone_Bee1",
+		"parent": "bone_Anim2_Bee1",
+		"length": 244,
+		"rotation": 90,
+		"x": 310,
+		"scaleX": 0.7,
+		"scaleY": 0.7,
+		"transform": "noScale"
+	},
+	{
+		"name": "bone_Bee2",
+		"parent": "bone_Anim2_Bee2",
+		"length": 244,
+		"rotation": 90,
+		"x": 391.27,
+		"y": 56.55,
+		"scaleX": 0.7,
+		"scaleY": 0.7,
+		"transform": "noScale"
+	},
+	{ "name": "bone_Hive", "parent": "Projectile" }
+],
+"slots": [
+	{ "name": "Bee1", "bone": "bone_Bee1", "attachment": "Red/Bee" },
+	{ "name": "Red/Hive", "bone": "bone_Hive", "attachment": "Red/Hive" },
+	{ "name": "Bee2", "bone": "bone_Bee2", "attachment": "Red/Bee" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"Bee1": {
+				"Red/Bee": { "x": 93, "y": -56, "rotation": 180, "width": 303, "height": 266 }
+			},
+			"Bee2": {
+				"Red/Bee": { "x": 93, "y": -56, "rotation": 180, "width": 303, "height": 266 }
+			},
+			"Red/Hive": {
+				"Red/Hive": { "width": 492, "height": 538 }
+			}
+		}
+	}
+],
+"animations": {
+	"IdleLoop": {
+		"bones": {
+			"bone_Hive": {
+				"rotate": [
+					{
+						"value": -0.88,
+						"curve": [ 0.051, 0.59, 0.084, 2 ]
+					},
+					{
+						"time": 0.1333,
+						"value": 2,
+						"curve": [ 0.212, 2, 0.289, 0 ]
+					},
+					{
+						"time": 0.3667,
+						"value": -2,
+						"curve": [ 0.437, -2, 0.474, -1.43 ]
+					},
+					{
+						"time": 0.5,
+						"value": -0.88,
+						"curve": [ 0.551, 0.59, 0.584, 2 ]
+					},
+					{
+						"time": 0.6333,
+						"value": 2,
+						"curve": [ 0.712, 2, 0.789, 0 ]
+					},
+					{
+						"time": 0.8667,
+						"value": -2,
+						"curve": [ 0.937, -2, 0.974, -1.43 ]
+					},
+					{ "time": 1, "value": -0.88 }
+				],
+				"translate": [
+					{
+						"x": -10,
+						"curve": [ 0.067, -10, 0.103, 10, 0.067, 0, 0.103, 0 ]
+					},
+					{
+						"time": 0.2667,
+						"x": 10,
+						"curve": [ 0.325, 10, 0.357, -10, 0.325, 0, 0.357, 0 ]
+					},
+					{
+						"time": 0.5,
+						"x": -10,
+						"curve": [ 0.567, -10, 0.603, 10, 0.567, 0, 0.603, 0 ]
+					},
+					{
+						"time": 0.7667,
+						"x": 10,
+						"curve": [ 0.825, 10, 0.857, -10, 0.825, 0, 0.857, 0 ]
+					},
+					{ "time": 1, "x": -10 }
+				]
+			},
+			"bone_Anim2_Bee1": {
+				"rotate": [
+					{ "value": -180 },
+					{ "time": 0.5, "value": -360 },
+					{ "time": 1, "value": -540 }
+				]
+			},
+			"bone_Bee1": {
+				"rotate": [
+					{ "value": 13.33 },
+					{ "time": 0.3333, "value": -20 },
+					{ "time": 0.8333, "value": 30 },
+					{ "time": 1, "value": 13.33 }
+				],
+				"translate": [
+					{
+						"curve": [ 0.042, 0, 0.125, 206.02, 0.042, 0, 0.125, 0 ]
+					},
+					{
+						"time": 0.1667,
+						"x": 206.02,
+						"curve": [ 0.208, 206.02, 0.292, 0, 0.208, 0, 0.292, 0 ]
+					},
+					{
+						"time": 0.3333,
+						"curve": [ 0.375, 0, 0.458, 206.02, 0.375, 0, 0.458, 0 ]
+					},
+					{
+						"time": 0.5,
+						"x": 206.02,
+						"curve": [ 0.542, 206.02, 0.625, 0, 0.542, 0, 0.625, 0 ]
+					},
+					{
+						"time": 0.6667,
+						"curve": [ 0.708, 0, 0.792, 206.02, 0.708, 0, 0.792, 0 ]
+					},
+					{
+						"time": 0.8333,
+						"x": 206.02,
+						"curve": [ 0.875, 206.02, 0.958, 0, 0.875, 0, 0.958, 0 ]
+					},
+					{ "time": 1 }
+				],
+				"scale": [
+					{
+						"x": 0.5,
+						"y": 0.5,
+						"curve": [ 0.125, 0.5, 0.108, 0.997, 0.125, 0.5, 0.108, 0.997 ]
+					},
+					{
+						"time": 0.5,
+						"curve": [ 0.877, 1, 0.875, 0.5, 0.877, 1, 0.875, 0.5 ]
+					},
+					{ "time": 1, "x": 0.5, "y": 0.5 }
+				]
+			},
+			"bone_Bee2": {
+				"rotate": [
+					{ "value": 3.33 },
+					{ "time": 0.2667, "value": 30 },
+					{ "time": 0.4333, "value": 13.33 },
+					{ "time": 0.7667, "value": -20 },
+					{ "time": 1, "value": 3.33 }
+				],
+				"translate": [
+					{
+						"x": 130.23,
+						"curve": [ 0.036, 72.35, 0.075, 0, 0.036, 0, 0.075, 0 ]
+					},
+					{
+						"time": 0.1,
+						"curve": [ 0.142, 0, 0.225, 206.02, 0.142, 0, 0.225, 0 ]
+					},
+					{
+						"time": 0.2667,
+						"x": 206.02,
+						"curve": [ 0.308, 206.02, 0.392, 0, 0.308, 0, 0.392, 0 ]
+					},
+					{
+						"time": 0.4333,
+						"curve": [ 0.49, 0, 0.544, 205.83, 0.49, 0, 0.544, 0 ]
+					},
+					{
+						"time": 0.6,
+						"x": 206.02,
+						"curve": [ 0.642, 206.02, 0.725, 0, 0.642, 0, 0.725, 0 ]
+					},
+					{
+						"time": 0.7667,
+						"curve": [ 0.808, 0, 0.892, 206.02, 0.808, 0, 0.892, 0 ]
+					},
+					{
+						"time": 0.9333,
+						"x": 206.02,
+						"curve": [ 0.951, 206.02, 0.975, 171.57, 0.951, 0, 0.975, 0 ]
+					},
+					{ "time": 1, "x": 130.23 }
+				],
+				"scale": [
+					{
+						"x": 0.991,
+						"y": 0.991,
+						"curve": [ 0.291, 0.888, 0.306, 0.5, 0.291, 0.888, 0.306, 0.5 ]
+					},
+					{
+						"time": 0.4333,
+						"x": 0.5,
+						"y": 0.5,
+						"curve": [ 0.602, 0.5, 0.764, 1, 0.602, 0.5, 0.764, 1 ]
+					},
+					{
+						"time": 0.9333,
+						"curve": [ 0.959, 1, 0.981, 0.997, 0.959, 1, 0.981, 0.997 ]
+					},
+					{ "time": 1, "x": 0.991, "y": 0.991 }
+				]
+			},
+			"bone_Anim2_Bee2": {
+				"rotate": [
+					{ "value": -24 },
+					{ "time": 0.4333, "value": -180 },
+					{ "time": 0.9333, "value": -360 },
+					{ "time": 1, "value": -384 }
+				]
+			}
+		},
+		"drawOrder": [
+			{
+				"time": 0.1333,
+				"offsets": [
+					{ "slot": "Bee1", "offset": 2 }
+				]
+			},
+			{
+				"time": 0.3333,
+				"offsets": [
+					{ "slot": "Bee1", "offset": 2 },
+					{ "slot": "Red/Hive", "offset": 0 }
+				]
+			},
+			{
+				"time": 0.5667,
+				"offsets": [
+					{ "slot": "Bee1", "offset": 2 }
+				]
+			},
+			{ "time": 0.9 }
+		]
+	}
+}
+}
