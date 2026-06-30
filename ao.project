@@ -1,4 +1,5 @@
 {
+  "manual_mip_divisor": 16,
   "projects": [
     {
       "name": "Plants vs Memes",

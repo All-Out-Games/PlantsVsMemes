@@ -1,6 +1,7 @@
 [
   {
     "id": "grass.png",
+    "should_mip": true,
     "texture": {
       "resample_multiplier": 1,
       "wrap_repeat": true
@@ -8,6 +9,7 @@
   },
   {
     "id": "tile.png",
+    "should_mip": true,
     "texture": {
       "resample_multiplier": 1
     }
@@ -2443,5 +2445,17 @@
         -0.7971863746643066
       ]
     }
+  },
+  {
+    "id": "DarkGrass.png",
+    "should_mip": true
+  },
+  {
+    "id": "road/road_mid_horiz.png",
+    "should_mip": true
+  },
+  {
+    "id": "road/road_end_horiz.png",
+    "should_mip": true
   }
 ]
